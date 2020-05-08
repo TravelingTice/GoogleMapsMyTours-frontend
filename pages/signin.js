@@ -33,7 +33,7 @@ const Signin = ({ router }) => {
 
             <SigninComponent/>
 
-            <div className="mt-3">
+            <div className="mt-4">
               <Link href="/forgot-password"><a style={{opacity: 0.8}}>Forgot password?</a></Link>
             </div>
 

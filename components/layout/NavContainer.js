@@ -18,7 +18,7 @@ const ClickLayer = styled.div`
 const Nav = styled.nav`
   background-color: ${props => props.bg};
   color: ${props => props.color};
-  width: ${props => `${props.width}px`};
+  width: ${props => `${props.width - 7}px`};
   height: 100%;
   position: absolute;
   display: grid;
@@ -26,6 +26,7 @@ const Nav = styled.nav`
   top: 0;
   right: ${props => `${props.rightOffset}px`};
   z-index: 5;
+  box-shadow: -1px -1px 4px rgba(0,0,0,.2);
 `;
 
 const Top = styled.div`
@@ -56,8 +57,8 @@ const NavContainer = () => {
   }, [isNav]);
 
   const navWidth = 300;
-  const navBg = '#3e2723';
-  const navColor = '#fff';
+  const navBg = '#fff';
+  const navColor = '#333';
 
   const rightOffset = isNav ? 0 : -navWidth;
 

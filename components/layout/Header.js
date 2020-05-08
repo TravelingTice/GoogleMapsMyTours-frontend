@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Router from 'next/router';
 import MenuRoundedIcon from '@material-ui/icons/MenuOutlined';
+import { useTheme } from '@material-ui/core/styles';
 import NProgress from 'nprogress';
 import { APP_NAME } from '../../config';
 
@@ -14,7 +15,7 @@ const HeaderContainer = styled.header`
   align-items: center;
   box-shadow: 1px 1px 4px rgba(0,0,0,.2);
   justify-content: space-between;
-  background-color: #fcfcfc;
+  background-color: #fdfdfd;
   color: white;
   filter: ${props => props.blur ? 'blur(3px)' : 'blur(0)' };
 `;
@@ -32,11 +33,12 @@ const Brand = styled.h2`
 
 const HamburgerContainer = styled.button`
   border: none;
-  background-color: #5d4037;
+  background-color: #fdfdfd;
   padding: 7px 13px;
   border-radius: 5px;
   cursor: pointer;
   transition: box-shadow 150ms ease-out;
+  box-shadow: 2px 2px 5px rgba(0,0,0,.2);
   &:hover {
     box-shadow: 3px 3px 4px rgba(0,0,0,.2);
   }
@@ -54,6 +56,7 @@ Router.onRouteChangeComplete = url => NProgress.done();
 Router.onRouteChangeError = url => NProgress.done();
 
 const Header = () => {
+  const { palette } = useTheme();
   const { isNav, openNav } = useContext(NavContext);
 
   return (
@@ -62,14 +65,14 @@ const Header = () => {
       <Link href='/'>
         <a style={{ textDecoration: 'none'}} >
           <div className="d-flex align-items-center">
-            <Logo src="/wallet.svg" alt={APP_NAME} />
+            <Logo src="/logo.svg" alt={APP_NAME} />
             <Brand>{APP_NAME}</Brand>
           </div>
         </a>
       </Link>
 
       <HamburgerContainer onClick={openNav}>
-        <MenuRoundedIcon style={{ fontSize: 28, color: 'white' }} />
+        <MenuRoundedIcon style={{ fontSize: 28, color: '#333' }} />
       </HamburgerContainer>
       
     </HeaderContainer>

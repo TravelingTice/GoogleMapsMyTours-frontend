@@ -1,0 +1,18 @@
+{
+  "name": "googlemapsmytours-frontend",
+  "version": "1.0.0",
+  "description": "Google Maps My Tours Nextjs App",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "google",
+    "maps",
+    "google",
+    "maps",
+    "API"
+  ],
+  "author": "Matthijs Kralt",
+  "license": "ISC"
+}

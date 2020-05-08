@@ -1,18 +1,19 @@
 {
-  "name": "googlemapsmytours-frontend",
+  "name": "GoogleMapsMyTours-frontend",
   "version": "1.0.0",
-  "description": "Google Maps My Tours Nextjs App",
+  "description": "Google Maps application",
   "main": "index.js",
+  "repository": "git@github.com:TravelingTice/GoogleMapsMyTours-frontend.git",
+  "author": "TravelingTice <matthijs29@live.com>",
+  "license": "MIT",
   "scripts": {
-    "test": "test"
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
   },
-  "keywords": [
-    "google",
-    "maps",
-    "google",
-    "maps",
-    "API"
-  ],
-  "author": "Matthijs Kralt",
-  "license": "ISC"
+  "dependencies": {
+    "next": "^9.3.6",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
 }

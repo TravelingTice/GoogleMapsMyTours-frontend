@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Source+Sans+Pro|Material+Icons');
+
+
+body {
+  font-family: Roboto, sans-serif;
+  color: #343434;
+  background-color: #fdfdfd;
+  min-height: 100vh;
+}
+
+#__next {
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.MuiInput-input {
+  color: #1E88E5!important;
+}
+
+a {
+  color: #111;
+  transition: color 150ms ease-out;
+  &:hover {
+    color: #000;
+    text-decoration: none;
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+// nprogress
+#nprogress .bar {
+  background-color: #e4c05c;
+  height: 3px;
+}
+
+#nprogress .spinner {
+  display: none;
+}

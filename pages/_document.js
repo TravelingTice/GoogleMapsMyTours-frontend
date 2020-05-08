@@ -6,6 +6,8 @@ import { ServerStyleSheets as MaterialUiServerStyleSheets } from '@material-ui/s
 import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 
+import { APP_NAME, DOMAIN, APP_DESC } from '../config.js';
+
 class MyDocument extends Document {
   static async getInitialProps (ctx) {
     const styledComponentSheet = new StyledComponentSheets()
@@ -77,39 +79,39 @@ class MyDocument extends Document {
 
           <link rel="manifest" href="/manifest.json"/>
 
-          <meta name='msapplication-TileColor' content='#5d4037' />
+          <meta name='msapplication-TileColor' content='#1E88E5' />
           <meta name="msapplication-TileImage" content="/ms-icon-144x144.png"/>
-          <meta name="theme-color" content="#4e342e"/>
-          <meta name='application-name' content='Personal Wallet App' />
+          <meta name="theme-color" content="#1E88E5"/>
+          <meta name='application-name' content={APP_NAME} />
 
           <meta name='apple-mobile-web-app-capable' content='yes' />
           <meta name='apple-mobile-web-app-status-bar-style' content='default' />
-          <meta name='apple-mobile-web-app-title' content='Personal Wallet App' />
+          <meta name='apple-mobile-web-app-title' content={APP_NAME} />
 
-          <meta name='description' content='Best PWA App in the world' />
+          <meta name='description' content={APP_DESC} />
           <meta name='format-detection' content='telephone=no' />
           <meta name='mobile-web-app-capable' content='yes' />
           <meta name='msapplication-config' content='/browserconfig.xml' />
           <meta name='msapplication-tap-highlight' content='no' />
           
-          <meta name='theme-color' content='#4e342e' />
+          <meta name='theme-color' content='#1E88E5' />
                     
           {/* <link rel='mask-icon' href='/safari-pinned-tab.svg' color='#5bbad5' /> */}
           <link rel='shortcut icon' href='/favicon.ico' />
           {/* <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' /> */}
               
           <meta name='twitter:card' content='summary' />
-          <meta name='twitter:url' content='https://personal-wallet-app.now.sh' />
-          <meta name='twitter:title' content='Personal Wallet App' />
-          <meta name='twitter:description' content='Best PWA App in the world' />
-          <meta name='twitter:image' content='https://personal-wallet-app.now.sh/android-icon-192x192.png' />
+          <meta name='twitter:url' content={DOMAIN} />
+          <meta name='twitter:title' content={APP_NAME} />
+          <meta name='twitter:description' content={APP_DESC} />
+          <meta name='twitter:image' content={`${DOMAIN}/android-icon-192x192.png`} />
           <meta name='twitter:creator' content='@travelingtice' />
           <meta property='og:type' content='website' />
-          <meta property='og:title' content='Personal Wallet App' />
-          <meta property='og:description' content='Best PWA App in the world' />
-          <meta property='og:site_name' content='Personal Wallet App' />
-          <meta property='og:url' content='https://personal-wallet-app.now.sh' />
-          <meta property='og:image' content='https://personal-wallet-app.now.sh/apple-icon.png' />
+          <meta property='og:title' content={APP_NAME} />
+          <meta property='og:description' content={APP_DESC} />
+          <meta property='og:site_name' content={APP_NAME} />
+          <meta property='og:url' content={DOMAIN} />
+          <meta property='og:image' content={`${DOMAIN}/apple-icon.png`} />
         </Head>
         <body>
           <Main />

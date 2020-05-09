@@ -14,6 +14,7 @@ module.exports = withPWA({
     DOMAIN_DEV: 'http://localhost:3000',
     DOMAIN_PROD: 'https://google-maps-my-tours.now.sh',
     API_DEV: 'http://localhost:3001/v1',
-    API_PROD: 'https://google-maps-my-tours-api.herokuapp.com/v1'
+    API_PROD: 'https://google-maps-my-tours-api.herokuapp.com/v1',
+    CLOUDINARY_CLOUDNAME: 'ticekralt'
   }
 })

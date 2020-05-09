@@ -8,6 +8,10 @@ import '../styles/index.scss';
 // config
 import { APP_NAME } from '../config';
 
+// Cloudinary context provider for cloudinary images
+import { CloudinaryContext } from 'cloudinary-react';
+import { CLOUDINARY_CLOUDNAME } from '../config';
+
 // Themeprovider for providing theme context
 import { ThemeProvider } from '@material-ui/core/styles';
 // import theme for ThemeProvider
@@ -37,9 +41,11 @@ export default class App extends NextApp {
         <Head>
           <title>{APP_NAME}</title>
         </Head>
-        <ThemeProvider theme={theme}>
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <CloudinaryContext cloudName={CLOUDINARY_CLOUDNAME}>
+          <ThemeProvider theme={theme}>
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </CloudinaryContext>
       </>
     );
   }

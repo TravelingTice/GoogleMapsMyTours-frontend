@@ -9,6 +9,7 @@ export const MarkerIconContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [modalError, setModalError] = useState('');
+  const [modalLoading, setModalLoading] = useState(true);
   const [editId, setEditId] = useState('');
   const [markerIcons, setMarkerIcons] = useState([]);
 
@@ -46,7 +47,7 @@ export const MarkerIconContextProvider = ({ children }) => {
   const closeModal = () => setModal(false);
 
   const handleCreateUpdate = async (markericon) => {
-    setLoading(true);
+    setModalLoading(true);
 
     let data;
 
@@ -56,7 +57,7 @@ export const MarkerIconContextProvider = ({ children }) => {
       data = await createMarkerIcon(markericon, token);
     }
     
-    setLoading(false);
+    setModalLoading(false);
     
     if (data.error) return setModalError(data.error);
     
@@ -82,6 +83,7 @@ export const MarkerIconContextProvider = ({ children }) => {
         editId,
         loading,
         error,
+        modalLoading,
         modalError,
         markerIcons,
         initNew,

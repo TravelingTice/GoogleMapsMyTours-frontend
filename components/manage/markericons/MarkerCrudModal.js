@@ -11,7 +11,7 @@ import { getCookie } from "../../../actions/auth";
 import Error from '../../Error';
 
 const MarkerCrudModal = () => {
-  const { isModal, closeModal, editId, handleCreateUpdate, modalError } = useContext(MarkerIconContext);
+  const { isModal, closeModal, editId, handleCreateUpdate, modalError, modalLoading } = useContext(MarkerIconContext);
   const [imgPreview, setPreview] = useState(null);
   const [cloudinaryImg, setCloudinaryImg] = useState('');
   const [name, setName] = useState('');

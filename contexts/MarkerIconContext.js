@@ -3,7 +3,8 @@ import { useState, createContext } from 'react';
 export const MarkerIconContext = createContext();
 
 export const MarkerIconContextProvider = ({ children }) => {
-  const [isModal, setModal] = useState(false);
+  const [isModal, setModal] = useState(true);
+  const [editId, setEditId] = useState('');
 
   const openModal = () => setModal(true);
 
@@ -13,6 +14,7 @@ export const MarkerIconContextProvider = ({ children }) => {
     <MarkerIconContext.Provider
       value={{
         isModal,
+        editId,
         openModal,
         closeModal
       }}>

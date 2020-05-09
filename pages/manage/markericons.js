@@ -3,6 +3,7 @@ import { Container, Row, Col } from "reactstrap";
 import Private from '../../components/auth/Private';
 import Layout from '../../components/layout/Layout';
 import MarkerIconList from '../../components/manage/markericons/MarkerIconList';
+import MarkerCrudModal from '../../components/manage/markericons/MarkerCrudModal';
 import PlusIcon from '../../components/PlusIcon';
 import { MarkerIconContextProvider, MarkerIconContext } from '../../contexts/MarkerIconContext';
 
@@ -30,6 +31,8 @@ const MarkerIcons = () => {
             </Row>
           </Container>
         </Layout>
+
+        <MarkerCrudModal />
 
         <AddMarkerIcon />
 

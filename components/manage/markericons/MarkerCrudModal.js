@@ -1,8 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { MarkerIconContext } from '../../../contexts/MarkerIconContext';
 import { Modal, ModalHeader, ModalBody, Form } from 'reactstrap';
 import { FormGroup, FormControl, InputLabel, Input, Button } from '@material-ui/core';
-import styled from 'styled-components';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import convertToBase64 from "../../../helpers/convertToBase64";
 import { Image, Transformation } from 'cloudinary-react';
@@ -11,12 +10,27 @@ import { getCookie } from "../../../actions/auth";
 import Error from '../../Error';
 
 const MarkerCrudModal = () => {
-  const { isModal, closeModal, editId, handleCreateUpdate, modalError, modalLoading } = useContext(MarkerIconContext);
+  const { isModal, closeModal, editId, handleCreateUpdate, modalError, modalLoading, findMarkerIconById } = useContext(MarkerIconContext);
   const [imgPreview, setPreview] = useState(null);
   const [cloudinaryImg, setCloudinaryImg] = useState('');
   const [name, setName] = useState('');
 
   const token = getCookie('token');
+
+  useEffect(() => {
+    if (isModal) {
+      if (editId) {
+        const selectedIcon = findMarkerIconById(editId);
+        setName(selectedIcon.name);
+        setCloudinaryImg(selectedIcon.image);
+        setPreview('');
+      } else {
+        setName('');
+        setCloudinaryImg('');
+        setPreview('');
+      }
+    }
+  }, [isModal])
 
   const handleChange = e => setName(e.target.value);
 
@@ -58,7 +72,7 @@ const MarkerCrudModal = () => {
     if (imgPreview) return <img height="50" src={imgPreview} alt="Icon Preview" />;
     if (cloudinaryImg) return (
       <Image publicId={cloudinaryImg} height="50" alt="Icon Preview">
-        <Transformation crop="fill" width="50" />
+        <Transformation crop="fill" width="150" />
       </Image>
     )
     return null;
@@ -66,8 +80,8 @@ const MarkerCrudModal = () => {
 
   const showSubmitButton = () => {
     let text = 'Create';
-    if (modalLoading) text = <img style={{height: '0.875rem'}} src="/loading.svg" alt="Loading..."/>
     if (editId) text = 'Update';
+    if (modalLoading) text = <img style={{height: '0.875rem'}} src="/loading.svg" alt="Loading..."/>
     return <Button color='primary' type="submit" variant='outlined'>{text}</Button>
   }
 

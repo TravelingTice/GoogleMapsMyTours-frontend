@@ -9,11 +9,13 @@ export const MarkerIconContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [modalError, setModalError] = useState('');
-  const [modalLoading, setModalLoading] = useState(true);
+  const [modalLoading, setModalLoading] = useState(false);
   const [editId, setEditId] = useState('');
   const [markerIcons, setMarkerIcons] = useState([]);
 
   const token = getCookie('token');
+
+  const findMarkerIconById = id => markerIcons.find(icon => icon.id === id);
   
   useEffect(() => {
     initMarkerIcons();
@@ -86,6 +88,7 @@ export const MarkerIconContextProvider = ({ children }) => {
         modalLoading,
         modalError,
         markerIcons,
+        findMarkerIconById,
         initNew,
         initEdit,
         openModal,

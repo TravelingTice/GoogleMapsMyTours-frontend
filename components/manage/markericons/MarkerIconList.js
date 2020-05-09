@@ -36,12 +36,14 @@ const MarkerIconList = () => {
     <>
       {showLoading()}
       {showError()}
-      <GridContainer>
-        {markerIcons.map(icon => (
-          <MarkerIcon icon={icon} />
-        ))}
-        <AddMarkerBtn />
-      </GridContainer>
+      {!loading && (
+        <GridContainer>
+          {markerIcons.map(icon => (
+            <MarkerIcon icon={icon} />
+          ))}
+          <AddMarkerBtn />
+        </GridContainer>
+      )}
     </>
   )
 }

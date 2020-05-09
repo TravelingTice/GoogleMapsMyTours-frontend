@@ -1,5 +1,5 @@
 import { useState, createContext, useEffect } from 'react';
-import { getMarkerIcons, updateMarkerIcon, createMarkerIcon } from '../actions/markerIcon';
+import { getMarkerIcons, updateMarkerIcon, createMarkerIcon, removeMarkerIcon } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
 
 export const MarkerIconContext = createContext();
@@ -78,6 +78,17 @@ export const MarkerIconContextProvider = ({ children }) => {
     setModal(false);
   }
 
+  const onRemoveMarkerIcon = async () => {
+    setModal(false);
+
+    const data = await removeMarkerIcon(editId, token);
+
+    if (data.error) return setError(data.error);
+
+    const newMarkerIcons = markerIcons.filter(icon => icon.id !== editId);
+    setMarkerIcons(newMarkerIcons);
+  }
+
   return (
     <MarkerIconContext.Provider
       value={{
@@ -93,7 +104,8 @@ export const MarkerIconContextProvider = ({ children }) => {
         initEdit,
         openModal,
         closeModal,
-        handleCreateUpdate
+        handleCreateUpdate,
+        onRemoveMarkerIcon
       }}>
       {children}
     </MarkerIconContext.Provider>

@@ -10,7 +10,7 @@ import { getCookie } from "../../../actions/auth";
 import Error from '../../Error';
 
 const MarkerCrudModal = () => {
-  const { isModal, closeModal, editId, handleCreateUpdate, modalError, modalLoading, findMarkerIconById } = useContext(MarkerIconContext);
+  const { isModal, closeModal, editId, handleCreateUpdate, modalError, modalLoading, findMarkerIconById, onRemoveMarkerIcon } = useContext(MarkerIconContext);
   const [imgPreview, setPreview] = useState(null);
   const [cloudinaryImg, setCloudinaryImg] = useState('');
   const [name, setName] = useState('');
@@ -85,6 +85,10 @@ const MarkerCrudModal = () => {
     return <Button color='primary' type="submit" variant='outlined'>{text}</Button>
   }
 
+  const showDeleteButton = () => (
+    <Button color="secondary" onClick={onRemoveMarkerIcon} variant="outlined">Delete</Button>
+  )
+
   const showError = () => modalError && <Error content={modalError} />
   
   return (
@@ -120,8 +124,9 @@ const MarkerCrudModal = () => {
           </FormGroup>
 
 
-          <div className="mt-3">
+          <div className="mt-3 d-flex justify-content-between">
             {showSubmitButton()}
+            {editId && showDeleteButton()}
           </div>
         </Form>
       </ModalBody>

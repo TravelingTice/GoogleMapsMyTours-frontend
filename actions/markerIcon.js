@@ -39,3 +39,15 @@ export const updateMarkerIcon = (markerIcon, id, token) => {
   .then(res => res.json())
   .catch(err => console.log(err))
 }
+
+export const removeMarkerIcon = (id, token) => {
+  return fetch(`${API}/marker_icons/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(res => res.json())
+  .catch(err => console.log(err))
+}

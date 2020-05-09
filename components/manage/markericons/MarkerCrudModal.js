@@ -8,9 +8,10 @@ import convertToBase64 from "../../../helpers/convertToBase64";
 import { Image, Transformation } from 'cloudinary-react';
 import { Motion, spring } from 'react-motion';
 import { getCookie } from "../../../actions/auth";
+import Error from '../../Error';
 
 const MarkerCrudModal = () => {
-  const { isModal, closeModal, editId, handleCreateUpdate } = useContext(MarkerIconContext);
+  const { isModal, closeModal, editId, handleCreateUpdate, modalError } = useContext(MarkerIconContext);
   const [imgPreview, setPreview] = useState(null);
   const [cloudinaryImg, setCloudinaryImg] = useState('');
   const [name, setName] = useState('');
@@ -62,12 +63,15 @@ const MarkerCrudModal = () => {
     )
     return null;
   }
+
+  const showError = () => modalError && <Error content={modalError} />
   
   return (
     <Modal isOpen={isModal} toggle={closeModal}>
       <ModalHeader toggle={closeModal}>Add Marker Icon</ModalHeader>
 
       <ModalBody>
+        {showError()}
         <Form onSubmit={handleSubmit}>
 
           <FormGroup>

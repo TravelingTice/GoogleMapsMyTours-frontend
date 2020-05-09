@@ -8,6 +8,7 @@ export const MarkerIconContextProvider = ({ children }) => {
   const [isModal, setModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [modalError, setModalError] = useState('');
   const [editId, setEditId] = useState('');
   const [markerIcons, setMarkerIcons] = useState([]);
 
@@ -29,6 +30,16 @@ export const MarkerIconContextProvider = ({ children }) => {
     
     setMarkerIcons(data);
   }
+
+  const initNew = () => {
+    setEditId('');
+    setModal(true);
+  }
+
+  const initEdit = id => {
+    setEditId(id);
+    setModal(true);
+  }
   
   const openModal = () => setModal(true);
 
@@ -47,7 +58,7 @@ export const MarkerIconContextProvider = ({ children }) => {
     
     setLoading(false);
     
-    if (data.error) return setError(data.error);
+    if (data.error) return setModalError(data.error);
     
     if (editId) {
       setMarkerIcons(markerIcons.map(icon => {
@@ -71,7 +82,10 @@ export const MarkerIconContextProvider = ({ children }) => {
         editId,
         loading,
         error,
+        modalError,
         markerIcons,
+        initNew,
+        initEdit,
         openModal,
         closeModal,
         handleCreateUpdate

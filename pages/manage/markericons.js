@@ -1,6 +1,7 @@
 import { Container, Row, Col } from "reactstrap";
 import Private from '../../components/auth/Private';
 import Layout from '../../components/layout/Layout';
+import MarkerIconList from '../../components/manage/markericons/MarkerIconList';
 import PlusIcon from '../../components/PlusIcon';
 import { MarkerIconContextProvider } from '../../contexts/MarkerIconContext';
 
@@ -22,7 +23,7 @@ const MarkerIcons = () => {
               </Col>
 
               <Col xs="12">
-                <MarkerCreateUpdate />
+                <MarkerIconList />
               </Col>
             </Row>
           </Container>

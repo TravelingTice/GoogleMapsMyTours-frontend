@@ -1,5 +1,6 @@
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 import { getMarkerIcons, updateMarkerIcon, createMarkerIcon } from '../actions/markerIcon';
+import { getCookie } from '../actions/auth';
 
 export const MarkerIconContext = createContext();
 
@@ -10,6 +11,23 @@ export const MarkerIconContextProvider = ({ children }) => {
   const [editId, setEditId] = useState('');
   const [markerIcons, setMarkerIcons] = useState([]);
 
+  const token = getCookie('token');
+  
+  useEffect(() => {
+    initMarkerIcons();
+  }, []);
+  
+  const initMarkerIcons = async () => {
+    const data = await getMarkerIcons(token);
+    
+    if (data.error) {
+      console.log(data.error);
+      return setError('uh oh.. something went wrong');
+    }
+    
+    setMarkerIcons(data);
+  }
+  
   const openModal = () => setModal(true);
 
   const closeModal = () => setModal(false);

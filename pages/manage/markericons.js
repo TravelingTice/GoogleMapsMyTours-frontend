@@ -1,13 +1,15 @@
+import { useContext } from 'react';
 import { Container, Row, Col } from "reactstrap";
 import Private from '../../components/auth/Private';
 import Layout from '../../components/layout/Layout';
 import MarkerIconList from '../../components/manage/markericons/MarkerIconList';
 import PlusIcon from '../../components/PlusIcon';
-import { MarkerIconContextProvider } from '../../contexts/MarkerIconContext';
+import { MarkerIconContextProvider, MarkerIconContext } from '../../contexts/MarkerIconContext';
 
 const AddMarkerIcon = () => {
+  const { openModal } = useContext(MarkerIconContext);
   return (
-    <PlusIcon />
+    <PlusIcon onClick={openModal} />
   )
 }
 

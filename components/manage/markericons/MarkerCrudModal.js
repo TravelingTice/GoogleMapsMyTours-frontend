@@ -64,6 +64,13 @@ const MarkerCrudModal = () => {
     return null;
   }
 
+  const showSubmitButton = () => {
+    let text = 'Create';
+    if (modalLoading) text = <img style={{height: '0.875rem'}} src="/loading.svg" alt="Loading..."/>
+    if (editId) text = 'Update';
+    return <Button color='primary' type="submit" variant='outlined'>{text}</Button>
+  }
+
   const showError = () => modalError && <Error content={modalError} />
   
   return (
@@ -100,7 +107,7 @@ const MarkerCrudModal = () => {
 
 
           <div className="mt-3">
-            <Button color='primary' type="submit" variant='outlined'>{!editId ? 'Create': 'Update'}</Button>
+            {showSubmitButton()}
           </div>
         </Form>
       </ModalBody>

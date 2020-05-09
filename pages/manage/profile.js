@@ -7,6 +7,7 @@ import Message from '../../components/Message';
 import { getUserForEdit, updateUser, getCookie, forgotPassword, isAuth } from '../../actions/auth';
 import { Form, Container, Row, Col } from 'reactstrap';
 import { FormGroup, FormControl, InputLabel, Input, Button } from '@material-ui/core';
+import { setInStorage } from '../../helpers/storage';
 
 const ProfileUpdate = () => {
   const [error, setError] = useState('');
@@ -45,6 +46,8 @@ const ProfileUpdate = () => {
       } else {
         setLoading(false);
         setSuccess(data.message);
+        // set new user in storage
+        setInStorage('user', data.user);
       }
     });
   }

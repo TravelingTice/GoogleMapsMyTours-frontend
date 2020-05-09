@@ -43,6 +43,7 @@ const NavList = ({ router }) => {
         {isAuth() && (
           <>
             <Link href='/dashboard'><NavItem>Dashboard</NavItem></Link>
+            <Link href='/manage/markericons'><NavItem>My Marker Icons</NavItem></Link>
             <Link href='/manage/profile'><NavItem>Update profile</NavItem></Link>
           </>
         )}

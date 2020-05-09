@@ -5,8 +5,8 @@ import { getCookie } from '../actions/auth';
 export const MarkerIconContext = createContext();
 
 export const MarkerIconContextProvider = ({ children }) => {
-  const [isModal, setModal] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [isModal, setModal] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [editId, setEditId] = useState('');
   const [markerIcons, setMarkerIcons] = useState([]);
@@ -19,6 +19,8 @@ export const MarkerIconContextProvider = ({ children }) => {
   
   const initMarkerIcons = async () => {
     const data = await getMarkerIcons(token);
+
+    setLoading(false);
     
     if (data.error) {
       console.log(data.error);
@@ -69,6 +71,7 @@ export const MarkerIconContextProvider = ({ children }) => {
         editId,
         loading,
         error,
+        markerIcons,
         openModal,
         closeModal,
         handleCreateUpdate

@@ -7,12 +7,15 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import convertToBase64 from "../../../helpers/convertToBase64";
 import { Image, Transformation } from 'cloudinary-react';
 import { Motion, spring } from 'react-motion';
+import { getCookie } from "../../../actions/auth";
 
 const MarkerCrudModal = () => {
-  const { isModal, closeModal, editId } = useContext(MarkerIconContext);
+  const { isModal, closeModal, editId, handleCreateUpdate } = useContext(MarkerIconContext);
   const [imgPreview, setPreview] = useState(null);
   const [cloudinaryImg, setCloudinaryImg] = useState('');
   const [name, setName] = useState('');
+
+  const token = getCookie('token');
 
   const handleChange = e => setName(e.target.value);
 
@@ -26,7 +29,11 @@ const MarkerCrudModal = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('submit');
+    const markerIcon = {
+      name,
+      image: imgPreview
+    }
+    handleCreateUpdate(markerIcon);
   }
 
   const mapWrapper = icon => {
@@ -47,9 +54,9 @@ const MarkerCrudModal = () => {
   }
 
   const showImgPreview = () => {
-    if (imgPreview) return <img width="50" src={imgPreview} alt="Icon Preview" />;
+    if (imgPreview) return <img height="50" src={imgPreview} alt="Icon Preview" />;
     if (cloudinaryImg) return (
-      <Image publicId={cloudinaryImg} width="30" alt="Icon Preview">
+      <Image publicId={cloudinaryImg} height="50" alt="Icon Preview">
         <Transformation crop="fill" width="50" />
       </Image>
     )

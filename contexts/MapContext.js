@@ -15,6 +15,7 @@ export const MapContextProvider = ({ children }) => {
   const [modalError, setModalError] = useState('');
   const [modalLoading, setModalLoading] = useState(false);
   const [markerIcons, setMarkerIcons] = useState([]);
+  const [selectedMarkerIcon, setSelectedMarkerIcon] = useState(null);
   const [markers, setMarkers] = useState([]);
 
   const token = getCookie('token');
@@ -44,6 +45,10 @@ export const MapContextProvider = ({ children }) => {
     setMarkerIcons(data);
     setTimeout(() => setPlusIcon(true), 500);
   }
+
+  const onSelectMarkerIcon = e => {
+    console.log(e.target.value);
+  }
   
   const openModal = () => setModal(true);
 
@@ -61,9 +66,11 @@ export const MapContextProvider = ({ children }) => {
         modalLoading,
         modalError,
         markerIcons,
+        selectedMarkerIcon,
         setState,
         toggleMenu,
         findMarkerIconById,
+        onSelectMarkerIcon,
         openModal,
         closeModal
       }}>

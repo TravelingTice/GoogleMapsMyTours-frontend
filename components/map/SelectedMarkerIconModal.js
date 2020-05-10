@@ -1,15 +1,16 @@
 import { useContext } from 'react';
-import { Modal, ModalHeader, ModalBody, Button }  from 'reactstrap';
+import { Modal, ModalHeader, ModalBody }  from 'reactstrap';
 import { MapContext } from "../../contexts/MapContext";
-import { Select, MenuItem, InputLabel } from '@material-ui/core';
+import { Select, MenuItem, Button } from '@material-ui/core';
 import { Image, Transformation } from 'cloudinary-react';
 
 const SelectedMarkerIconModal = () => {
-  const { selectedMarkerIcon, state, setState, markerIcons, onSelectMarkerIcon } = useContext(MapContext);
+  const { selectedMarkerIcon, state, setState, markerIcons, onSelectMarkerIcon, isSelectedMarkerIconModal, setSelectedMarkerIconModal } = useContext(MapContext);
 
-  const onClose = () => setState('');
-
-  const isOpen = !selectedMarkerIcon && state === 'marker';
+  const onClose = () => {
+    setSelectedMarkerIconModal(false);
+    setState('');
+  };
 
   const showIconImg = key => (
     <Image publicId={key} height='20' style={{marginRight: 20}}>
@@ -18,7 +19,7 @@ const SelectedMarkerIconModal = () => {
   )
 
   return (
-    <Modal isOpen={isOpen} toggle={onClose}>
+    <Modal isOpen={isSelectedMarkerIconModal} toggle={onClose}>
       <ModalHeader toggle={onClose}>Select marker icon</ModalHeader>
 
       <ModalBody>
@@ -29,6 +30,8 @@ const SelectedMarkerIconModal = () => {
               <MenuItem value={icon}>{showIconImg(icon.image)}{icon.name}</MenuItem>
             ))}
           </Select>
+
+          <Button className="mt-4" color="primary" variant="outlined" onClick={onClose}>Select</Button>
         </div>
 
       </ModalBody>

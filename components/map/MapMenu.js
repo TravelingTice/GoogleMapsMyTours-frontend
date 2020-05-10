@@ -9,7 +9,7 @@ import { Motion, spring } from 'react-motion';
 import { MapContext } from "../../contexts/MapContext";
 
 const MapMenu = () => {
-  const { plusIconAppear, isMenu, toggleMenu, setState } = useContext(MapContext);
+  const { plusIconAppear, isMenu, toggleMenu, setState, setSelectedMarkerIconModal } = useContext(MapContext);
   const [step, setStep] = useState(0);
   const [menuZIndex, setMenuZIndex] = useState(-1);
 
@@ -47,6 +47,7 @@ const MapMenu = () => {
     return (
       <>
         {button(buttonAppears[0], <RoomIcon/>, 'Marker', () => {
+          setSelectedMarkerIconModal(true)
           setState('marker');
         })}
         {button(buttonAppears[1], <TimelineIcon/>, 'Line', () => {

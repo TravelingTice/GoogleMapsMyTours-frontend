@@ -9,7 +9,7 @@ export const MapContextProvider = ({ children }) => {
   const [state, setState] = useState('');
   const [plusIconAppear, setPlusIcon] = useState(false);
   const [isMenu, setMenu] = useState(false);
-  const [isModal, setModal] = useState(false);
+  const [isSelectedMarkerIconModal, setSelectedMarkerIconModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [modalError, setModalError] = useState('');
@@ -43,22 +43,18 @@ export const MapContextProvider = ({ children }) => {
     }
     
     setMarkerIcons(data);
+    // set the selected marker icon as the first
+    setSelectedMarkerIcon(data[0]);
     setTimeout(() => setPlusIcon(true), 500);
   }
 
-  const onSelectMarkerIcon = e => {
-    console.log(e.target.value);
-  }
+  const onSelectMarkerIcon = e => setSelectedMarkerIcon(e.target.value);
   
-  const openModal = () => setModal(true);
-
-  const closeModal = () => setModal(false);
-
   return (
     <MapContext.Provider
       value={{
         state,
-        isModal,
+        isSelectedMarkerIconModal,
         isMenu,
         plusIconAppear,
         loading,
@@ -67,12 +63,11 @@ export const MapContextProvider = ({ children }) => {
         modalError,
         markerIcons,
         selectedMarkerIcon,
+        setSelectedMarkerIconModal,
         setState,
         toggleMenu,
         findMarkerIconById,
         onSelectMarkerIcon,
-        openModal,
-        closeModal
       }}>
       {children}
     </MapContext.Provider>

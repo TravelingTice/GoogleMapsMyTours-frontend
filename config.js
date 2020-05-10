@@ -11,3 +11,5 @@ export const DOMAIN = publicRuntimeConfig.PRODUCTION ? publicRuntimeConfig.DOMAI
 export const APP_DESC = publicRuntimeConfig.APP_DESC;
 
 export const CLOUDINARY_CLOUDNAME = publicRuntimeConfig.CLOUDINARY_CLOUDNAME;
+
+export const GOOGLE_API_KEY = publicRuntimeConfig.GOOGLE_API_KEY;

@@ -1,5 +1,6 @@
 const withPWA = require('next-pwa');
 const cacheOptions = require('./cache');
+require('dotenv').config();
 
 module.exports = withPWA({
   pwa: {
@@ -15,6 +16,7 @@ module.exports = withPWA({
     DOMAIN_PROD: 'https://google-maps-my-tours.now.sh',
     API_DEV: 'http://localhost:3001/v1',
     API_PROD: 'https://google-maps-my-tours-api.herokuapp.com/v1',
-    CLOUDINARY_CLOUDNAME: 'ticekralt'
+    CLOUDINARY_CLOUDNAME: 'ticekralt',
+    GOOGLE_API_KEY: process.env.GOOGLE_API_KEY
   }
 })

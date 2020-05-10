@@ -1,22 +1,26 @@
 import { useState, createContext, useEffect } from 'react';
 import { getMarkerIcons } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
+import generateId from 'generate-unique-id';
 
 export const MapContext = createContext();
 
 export const MapContextProvider = ({ children }) => {
-  // states: add marker, add line, add kml
-  const [state, setState] = useState('');
-  const [plusIconAppear, setPlusIcon] = useState(false);
-  const [isMenu, setMenu] = useState(false);
-  const [isSelectedMarkerIconModal, setSelectedMarkerIconModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [modalError, setModalError] = useState('');
-  const [modalLoading, setModalLoading] = useState(false);
+  // startup
+  const [plusIconAppear, setPlusIcon] = useState(false);
   const [markerIcons, setMarkerIcons] = useState([]);
+  // states: add marker, add line, add kml
+  const [state, setState] = useState('');
+  const [isMenu, setMenu] = useState(false);
+  // marker crud
+  const [isSelectedMarkerIconModal, setSelectedMarkerIconModal] = useState(false);
   const [selectedMarkerIcon, setSelectedMarkerIcon] = useState(null);
   const [markers, setMarkers] = useState([]);
+
+  const [modalError, setModalError] = useState('');
+  const [modalLoading, setModalLoading] = useState(false);
 
   const token = getCookie('token');
 
@@ -43,12 +47,21 @@ export const MapContextProvider = ({ children }) => {
     }
     
     setMarkerIcons(data);
-    // set the selected marker icon as the first
-    setSelectedMarkerIcon(data[0]);
     setTimeout(() => setPlusIcon(true), 500);
   }
 
   const onSelectMarkerIcon = e => setSelectedMarkerIcon(e.target.value);
+
+  // marker crud
+  const onAddMarker = (coords) => {
+    const newMarker = {
+      lat: coords.latLng.lat(),
+      lng: coords.latLng.lng(),
+      refId: generateId(),
+      markerIconId: selectedMarkerIcon.id
+    }
+    setMarkers(markers.concat(newMarker));
+  }
   
   return (
     <MapContext.Provider
@@ -64,10 +77,12 @@ export const MapContextProvider = ({ children }) => {
         markerIcons,
         selectedMarkerIcon,
         setSelectedMarkerIconModal,
+        setMenu,
         setState,
         toggleMenu,
         findMarkerIconById,
         onSelectMarkerIcon,
+        onAddMarker,
       }}>
       {children}
     </MapContext.Provider>

@@ -5,10 +5,16 @@ import { MapContext } from '../../contexts/MapContext';
 import { Container, Row, Col } from 'reactstrap';
 
 const GoogleMap = ({ google }) => {
-  const { state, selectedMarkerIcon } = useContext(MapContext);
+  const { state, selectedMarkerIcon, setMenu, onAddMarker } = useContext(MapContext);
 
   const handleClickMap = (t, map, coord) => {
-    console.log(coord.latLng.lat());
+    // just to be sure, make sure the menu is collapsed
+    setMenu(false);
+    // handle click for when state = marker
+    if (state === 'newMarker') {
+      onAddMarker(coord);
+    }
+
   }
 
   const showMap = () => (
@@ -24,9 +30,10 @@ const GoogleMap = ({ google }) => {
   const showAddMarkerPrompt = () => (
     <Container>
       <Row>
-        <Col xs="12">
-          <div style={{height: 20, width: 20, backgroundColor: 'rgba(0,0,0,.2)'}}></div>
-        
+        <Col xs="12" className="mt-4 text-center text-white">
+          <div style={{backgroundColor: 'rgba(0,0,0,.5)', borderRadius: 5, padding: 5}}>
+            <p className="m-0">Click anywhere on the map to drop the marker</p>
+          </div>
         </Col>
       </Row>
     </Container>
@@ -35,7 +42,7 @@ const GoogleMap = ({ google }) => {
   return (
     <>
      {showMap()}
-     {state === 'marker' && selectedMarkerIcon && showAddMarkerPrompt()}
+     {state === 'newMarker' && selectedMarkerIcon && showAddMarkerPrompt()}
     </>
   )
 }

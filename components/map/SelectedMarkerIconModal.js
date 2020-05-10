@@ -31,7 +31,7 @@ const SelectedMarkerIconModal = () => {
             ))}
           </Select>
 
-          <Button className="mt-4" color="primary" variant="outlined" onClick={onClose}>Select</Button>
+          <Button className="mt-4" color="primary" variant="outlined" onClick={() => setSelectedMarkerIconModal(false)}>Select</Button>
         </div>
 
       </ModalBody>

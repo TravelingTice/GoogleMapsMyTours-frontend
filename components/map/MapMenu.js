@@ -48,13 +48,13 @@ const MapMenu = () => {
       <>
         {button(buttonAppears[0], <RoomIcon/>, 'Marker', () => {
           setSelectedMarkerIconModal(true)
-          setState('marker');
+          setState('newMarker');
         })}
         {button(buttonAppears[1], <TimelineIcon/>, 'Line', () => {
-          setState('line')
+          setState('newLine')
         })}
         {button(buttonAppears[2], <CodeIcon/>, 'KML', () => {
-          setState('kml');
+          setState('newKML');
         })}
       </>
     )

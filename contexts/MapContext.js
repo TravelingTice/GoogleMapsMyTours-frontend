@@ -5,6 +5,8 @@ import { getCookie } from '../actions/auth';
 export const MapContext = createContext();
 
 export const MapContextProvider = ({ children }) => {
+  // states: add marker, add line, add kml
+  const [state, setState] = useState('');
   const [plusIconAppear, setPlusIcon] = useState(false);
   const [isMenu, setMenu] = useState(false);
   const [isModal, setModal] = useState(false);
@@ -24,6 +26,10 @@ export const MapContextProvider = ({ children }) => {
   useEffect(() => {
     initMarkerIcons();
   }, []);
+
+  useEffect(() => {
+    setMenu(false);
+  }, [state]);
   
   const initMarkerIcons = async () => {
     const data = await getMarkerIcons(token);
@@ -46,6 +52,7 @@ export const MapContextProvider = ({ children }) => {
   return (
     <MapContext.Provider
       value={{
+        state,
         isModal,
         isMenu,
         plusIconAppear,
@@ -54,6 +61,7 @@ export const MapContextProvider = ({ children }) => {
         modalLoading,
         modalError,
         markerIcons,
+        setState,
         toggleMenu,
         findMarkerIconById,
         openModal,

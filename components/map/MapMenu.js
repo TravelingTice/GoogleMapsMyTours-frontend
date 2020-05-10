@@ -9,7 +9,7 @@ import { Motion, spring } from 'react-motion';
 import { MapContext } from "../../contexts/MapContext";
 
 const MapMenu = () => {
-  const { plusIconAppear, isMenu, toggleMenu } = useContext(MapContext);
+  const { plusIconAppear, isMenu, toggleMenu, setState } = useContext(MapContext);
   const [step, setStep] = useState(0);
   const [menuZIndex, setMenuZIndex] = useState(-1);
 
@@ -31,9 +31,9 @@ const MapMenu = () => {
 
   }, [step]);
 
-  const button = (style, icon, text) => (
+  const button = (style, icon, text, onClick) => (
     <Motion style={{opacity: spring(style.opacity), right: spring(style.right)}}>{({opacity, right}) =>
-      <Button style={{opacity, position: 'relative', right }} startIcon={icon} className="mb-2" color="primary" variant="contained">{text}</Button> 
+      <Button onClick={onClick} style={{opacity, position: 'relative', right }} startIcon={icon} className="mb-2" color="primary" variant="contained">{text}</Button> 
     }</Motion>
   )
   
@@ -46,9 +46,15 @@ const MapMenu = () => {
     
     return (
       <>
-        {button(buttonAppears[0], <RoomIcon/>, 'Marker')}
-        {button(buttonAppears[1], <TimelineIcon/>, 'Line')}
-        {button(buttonAppears[2], <CodeIcon/>, 'KML')}
+        {button(buttonAppears[0], <RoomIcon/>, 'Marker', () => {
+          setState('marker');
+        })}
+        {button(buttonAppears[1], <TimelineIcon/>, 'Line', () => {
+          setState('line')
+        })}
+        {button(buttonAppears[2], <CodeIcon/>, 'KML', () => {
+          setState('kml');
+        })}
       </>
     )
   }

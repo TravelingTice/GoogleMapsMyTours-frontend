@@ -9,8 +9,7 @@ import { Motion, spring } from 'react-motion';
 import { MapContext } from "../../contexts/MapContext";
 
 const MapMenu = () => {
-  const { plusIconAppear } = useContext(MapContext);
-  const [isMenu, setMenu] = useState(false);
+  const { plusIconAppear, isMenu, toggleMenu } = useContext(MapContext);
   const [step, setStep] = useState(0);
   const [menuZIndex, setMenuZIndex] = useState(-1);
 
@@ -31,8 +30,6 @@ const MapMenu = () => {
   useEffect(() => {
 
   }, [step]);
-
-  const toggleMenu = () => setMenu(!isMenu);
 
   const button = (style, icon, text) => (
     <Motion style={{opacity: spring(style.opacity), right: spring(style.right)}}>{({opacity, right}) =>

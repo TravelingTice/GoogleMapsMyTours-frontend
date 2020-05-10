@@ -6,6 +6,7 @@ export const MapContext = createContext();
 
 export const MapContextProvider = ({ children }) => {
   const [plusIconAppear, setPlusIcon] = useState(false);
+  const [isMenu, setMenu] = useState(false);
   const [isModal, setModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -17,6 +18,8 @@ export const MapContextProvider = ({ children }) => {
   const token = getCookie('token');
 
   const findMarkerIconById = id => markerIcons.find(icon => icon.id === id);
+
+  const toggleMenu = () => setMenu(!isMenu);
   
   useEffect(() => {
     initMarkerIcons();
@@ -44,12 +47,14 @@ export const MapContextProvider = ({ children }) => {
     <MapContext.Provider
       value={{
         isModal,
+        isMenu,
         plusIconAppear,
         loading,
         error,
         modalLoading,
         modalError,
         markerIcons,
+        toggleMenu,
         findMarkerIconById,
         openModal,
         closeModal

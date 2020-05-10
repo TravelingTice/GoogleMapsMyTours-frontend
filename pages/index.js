@@ -3,6 +3,9 @@ import { APP_NAME } from '../config';
 import Layout from '../components/layout/Layout';
 import { useState, useEffect } from "react";
 import { Motion, spring } from 'react-motion';
+import { Button } from '@material-ui/core';
+
+const stepIntervals = [1000, 1000, 200, 200, 1000];
 
 const Home = () => {
   const [step, setStep] = useState(0);
@@ -10,8 +13,10 @@ const Home = () => {
   const incrementStep = () => setStep(step + 1);
 
   useEffect(() => {
-    setTimeout(incrementStep, 1000);
-  }, []);
+    if (stepIntervals.length > step) {
+      setTimeout(incrementStep, stepIntervals[step]);
+    }
+  }, [step]);
 
   const showSubtitle = () => {
     const appear = step >= 1;
@@ -27,6 +32,46 @@ const Home = () => {
     }</Motion>
   }
 
+  const showMapImage = (url, appearStep) => {
+    const appear = step >= appearStep;
+    const opacity = appear ? 1 : 0;
+    const top = appear ? 0 : 35;
+    let left;
+    console.log(appearStep);
+    if (appearStep === 2) {
+      left = -100;
+    } else if (appearStep === 3) {
+      left = -50
+    } else {
+      left = 0;
+    }
+
+    return (
+      <Motion style={{opacity: spring(opacity), top: spring(top)}}>{({opacity, top}) => 
+        <img src={url} alt="Map" style={{position: 'absolute', objectFit: 'cover', top, opacity, left, width: 200, height: 150, borderRadius: 5, boxShadow: '1px 1px 3px rgba(0,0,0,.2)', zIndex: appearStep}} />
+      }</Motion>
+    )
+  }
+
+  const showMaps = () => (
+    <div style={{display: 'flex', maxWidth: 400, width: '100%', height: '100%', margin: '0 auto'}}>
+      <div style={{width: '100%', height: 150, alignSelf: 'flex-end', position: 'relative'}}>{showMapImage('/map1.jpg', 4)}</div>
+      <div style={{width: '100%', height: 150, margin: 'auto', position: 'relative'}}>{showMapImage('/map2.jpg', 3)}</div>
+      <div style={{width: '100%', height: 150, position: 'relative'}}>{showMapImage('/map3.jpg', 2)}</div>
+    </div>
+  )
+
+  const showTryNowButton = () => {
+    const appear = step >= 5;
+    const opacity = appear ? 1 : 0;
+
+    return (
+      <Motion style={{opacity: spring(opacity)}}>{({opacity}) =>
+        <Button color="primary" variant="contained" style={{opacity}}>Try now</Button>
+      }</Motion>
+    )
+  }
+
   return (
     <Layout>
       <Container>
@@ -39,6 +84,14 @@ const Home = () => {
 
           <Col xs="12">
             {showSubtitle()}
+          </Col>
+
+          <Col xs="12" className="mt-4" style={{height: 300}}>
+            {showMaps()}
+          </Col>
+
+          <Col xs="12" className="mt-4 text-center">
+            {showTryNowButton()}
           </Col>
         </Row>
       </Container>

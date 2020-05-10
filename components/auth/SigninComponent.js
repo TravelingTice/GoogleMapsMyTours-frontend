@@ -20,7 +20,7 @@ const SigninComponent = () => {
 
   // redirect user when already signed in
   useEffect(() => {
-    isAuth() && Router.push('/')
+    isAuth() && Router.push('/dashboard')
   }, []);
 
   const handleSubmit = (e) => {

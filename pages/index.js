@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "reactstrap";
 import { APP_NAME } from '../config';
+import Router from 'next/router';
 import Layout from '../components/layout/Layout';
 import { useState, useEffect } from "react";
 import { Motion, spring } from 'react-motion';
@@ -67,7 +68,7 @@ const Home = () => {
 
     return (
       <Motion style={{opacity: spring(opacity)}}>{({opacity}) =>
-        <Button color="primary" variant="contained" style={{opacity}}>Try now</Button>
+        <Button color="primary" onClick={() => Router.push('/signup')} variant="contained" style={{opacity}}>Try now</Button>
       }</Motion>
     )
   }
@@ -90,7 +91,7 @@ const Home = () => {
             {showMaps()}
           </Col>
 
-          <Col xs="12" className="mt-4 text-center">
+          <Col xs="12" className="mt-5 text-center">
             {showTryNowButton()}
           </Col>
         </Row>

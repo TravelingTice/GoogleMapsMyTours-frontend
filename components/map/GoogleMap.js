@@ -3,9 +3,10 @@ import { GOOGLE_API_KEY } from '../../config';
 import { useState, useContext } from 'react';
 import { MapContext } from '../../contexts/MapContext';
 import { Container, Row, Col } from 'reactstrap';
+import { cloudinaryCore } from '../../config';
 
 const GoogleMap = ({ google }) => {
-  const { state, selectedMarkerIcon, setMenu, onAddMarker } = useContext(MapContext);
+  const { state, selectedMarkerIcon, setMenu, onAddMarker, markers, findMarkerIconById } = useContext(MapContext);
 
   const handleClickMap = (t, map, coord) => {
     // just to be sure, make sure the menu is collapsed
@@ -17,6 +18,8 @@ const GoogleMap = ({ google }) => {
 
   }
 
+  console.log('ya')
+
   const showMap = () => (
     <Map 
       google={google} 
@@ -24,6 +27,17 @@ const GoogleMap = ({ google }) => {
       zoom={2}
       disableDefaultUI={true}
       onClick={handleClickMap}>
+        {markers.map(marker => (
+          <Marker 
+            name='New marker'
+            position={{lat: marker.lat, lng: marker.lng }}
+            icon={{
+              url: cloudinaryCore.url(findMarkerIconById(marker.markerIconId).image, {height: 50, crop: 'fill'}),
+              scaledSize: new google.maps.Size(20,32),
+              anchor: new google.maps.Point(10,16)
+            }}
+            />
+        ))}
     </Map>
   );
 

@@ -1,4 +1,5 @@
 import getConfig from 'next/config';
+import cloudinary from 'cloudinary-core';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -13,3 +14,5 @@ export const APP_DESC = publicRuntimeConfig.APP_DESC;
 export const CLOUDINARY_CLOUDNAME = publicRuntimeConfig.CLOUDINARY_CLOUDNAME;
 
 export const GOOGLE_API_KEY = publicRuntimeConfig.GOOGLE_API_KEY;
+
+export const cloudinaryCore = new cloudinary.Cloudinary({ cloud_name: CLOUDINARY_CLOUDNAME });

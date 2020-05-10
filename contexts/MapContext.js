@@ -75,6 +75,7 @@ export const MapContextProvider = ({ children }) => {
         modalLoading,
         modalError,
         markerIcons,
+        markers,
         selectedMarkerIcon,
         setSelectedMarkerIconModal,
         setMenu,

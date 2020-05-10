@@ -1,6 +1,13 @@
+import Private from '../../components/auth/Private';
+import Layout from '../../components/layout/Layout';
+
 const MapsNew = () => {
   return (
-    <p>New maps</p>
+    <Private>
+      <Layout>
+        
+      </Layout>
+    </Private>
   )
 }
 

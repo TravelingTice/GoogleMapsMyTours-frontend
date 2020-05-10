@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { MarkerIconContext } from '../../../contexts/MarkerIconContext';
 import { Modal, ModalHeader, ModalBody, Form, Row, Col } from 'reactstrap';
-import { FormGroup, FormControl, InputLabel, Input, Button } from '@material-ui/core';
+import { FormGroup, FormControl, InputLabel, Input, Button, Select, MenuItem } from '@material-ui/core';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import convertToBase64 from "../../../helpers/convertToBase64";
 import { Image, Transformation } from 'cloudinary-react';
@@ -10,19 +10,19 @@ import { getCookie } from "../../../actions/auth";
 import Error from '../../Error';
 
 const MarkerCrudModal = () => {
+  const anchorOptions = ['bottom', 'center'];
   const { isModal, closeModal, editId, handleCreateUpdate, modalError, modalLoading, findMarkerIconById, onRemoveMarkerIcon } = useContext(MarkerIconContext);
   const [imgPreview, setPreview] = useState(null);
   const [cloudinaryImg, setCloudinaryImg] = useState('');
   const [name, setName] = useState('');
   const [isDimensionsForm, setDimensionsForm] = useState(false);
   const [dimensions, setDimensions] = useState({
-    height: 50,
-    width: 50,
-    anchorX: 50,
-    anchorY: 25
+    height: 40,
+    width: 27,
+    anchor: anchorOptions[0]
   });
 
-  const { height, width, anchorX, anchorY } = dimensions;
+  const { height, width, anchor } = dimensions;
 
   const token = getCookie('token');
 
@@ -30,15 +30,14 @@ const MarkerCrudModal = () => {
     if (isModal) {
       if (editId) {
         const selectedIcon = findMarkerIconById(editId);
-        const { name, image, height, width, anchorX, anchorY } = selectedIcon;
+        const { name, image, height, width, anchor } = selectedIcon;
         setName(name);
         setCloudinaryImg(image);
         setPreview('');
         setDimensions({
           height,
           width,
-          anchorX,
-          anchorY
+          anchor
         });
         setDimensionsForm(true);
       } else {
@@ -46,10 +45,9 @@ const MarkerCrudModal = () => {
         setCloudinaryImg('');
         setPreview('');
         setDimensions({
-          height: 50,
-          width: 50,
-          anchorX: 50,
-          anchorY: 25
+          height: 40,
+          width: 27,
+          anchor: anchorOptions[0]
         });
         setDimensionsForm(false);
       }
@@ -77,9 +75,23 @@ const MarkerCrudModal = () => {
     e.preventDefault();
     const markerIcon = {
       name,
-      image: imgPreview
+      image: imgPreview,
+      height,
+      width,
+      anchor
     }
     handleCreateUpdate(markerIcon);
+  }
+
+  const showAnchor = () => {
+    const top = anchor === 'bottom' ? height - 2 : (height - 2) / 2;
+    const left = (width - 2) / 2;
+
+    return (
+      <div style={{position: 'absolute', top, left, width: 4, height: 4, borderRadius: '50%', backgroundColor: 'red'}}>
+  
+      </div>
+    )
   }
 
   const mapWrapper = icon => {
@@ -91,7 +103,10 @@ const MarkerCrudModal = () => {
         <div className="d-flex align-items-center" style={{height, overflow: 'hidden'}}>
           <div style={{width: '100%', height: 200, backgroundImage: 'url(/map-preview.jpg)', backgroundPosition: 'center', backgroundSize: '700px'}}>
             <div className="d-flex w-100 h-100 align-items-center justify-content-center">
-              {icon}
+              <div style={{position: 'relative'}}>
+                {icon}
+                {showAnchor()}
+              </div>
             </div>
           </div>
         </div>
@@ -100,9 +115,9 @@ const MarkerCrudModal = () => {
   }
 
   const showImgPreview = () => {
-    if (imgPreview) return <img height="50" src={imgPreview} alt="Icon Preview" />;
+    if (imgPreview) return <img height={height} width={width} src={imgPreview} alt="Icon Preview" />;
     if (cloudinaryImg) return (
-      <Image publicId={cloudinaryImg} height="50" alt="Icon Preview">
+      <Image publicId={cloudinaryImg} height={height} width={width} alt="Icon Preview">
         <Transformation crop="fill" width="150" />
       </Image>
     )
@@ -111,6 +126,7 @@ const MarkerCrudModal = () => {
 
   const showDimensionsEdit = () => {
     const divHeight = isDimensionsForm ? 200 : 0;
+
     return (
       <Motion style={{divHeight: spring(divHeight)}}>{({divHeight}) =>
         <div style={{height: divHeight, overflow: 'hidden'}}>
@@ -122,7 +138,7 @@ const MarkerCrudModal = () => {
               <FormGroup>
                 <FormControl>
                   <InputLabel htmlFor="width">Width</InputLabel>
-                  <Input id="width" onChange={handleDimensionChange('width')} value={width} />
+                  <Input type="number" id="width" onChange={handleDimensionChange('width')} value={width} />
                 </FormControl>
               </FormGroup>
             </Col>
@@ -131,7 +147,7 @@ const MarkerCrudModal = () => {
               <FormGroup>
                 <FormControl>
                   <InputLabel htmlFor="height">Height</InputLabel>
-                  <Input id="height" onChange={handleDimensionChange('height')} value={height} />
+                  <Input type="number" id="height" onChange={handleDimensionChange('height')} value={height} />
                 </FormControl>
               </FormGroup>
             </Col>
@@ -141,23 +157,15 @@ const MarkerCrudModal = () => {
             <Col xs="12">
               <p className="m-0">Anchor point</p>
             </Col>
-            <Col xs="6">
-              <FormGroup>
-                <FormControl>
-                  <InputLabel htmlFor="anchorX">X</InputLabel>
-                  <Input id="anchorX" onChange={handleDimensionChange('anchorX')} value={anchorX} />
-                </FormControl>
-              </FormGroup>
+
+            <Col xs="12">
+              <Select style={{width: '100%'}} labelId="anchoroption" id="anchorselect" onChange={handleDimensionChange('anchor')} value={anchor}>
+                {anchorOptions.map(option => (
+                  <MenuItem value={option}>{option}</MenuItem>
+                ))}
+              </Select>
             </Col>
 
-            <Col xs="6">
-              <FormGroup>
-                <FormControl>
-                  <InputLabel htmlFor="anchorY">Y</InputLabel>
-                  <Input id="anchorY" onChange={handleDimensionChange('anchorY')} value={anchorY} />
-                </FormControl>
-              </FormGroup>
-            </Col>
           </Row>
         </div>
       }</Motion>

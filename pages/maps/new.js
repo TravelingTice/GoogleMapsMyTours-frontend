@@ -7,6 +7,7 @@ import SelectedMarkerIconModal from '../../components/map/SelectedMarkerIconModa
 import InfoWindowModal from '../../components/map/InfoWindowModal';
 import SavingPrompt from '../../components/map/SavingPrompt';
 import LoadingPrompt from '../../components/map/LoadingPrompt';
+import MapNameModal from '../../components/map/MapNameModal';
 
 const MapsNew = () => {
   return (
@@ -22,6 +23,7 @@ const MapsNew = () => {
               <InfoWindowModal />
               <SavingPrompt />
               <LoadingPrompt />
+              <MapNameModal />
 
             </div>
           </Layout>

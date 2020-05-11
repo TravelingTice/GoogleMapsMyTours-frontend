@@ -11,6 +11,7 @@ import Layout from '../../components/layout/Layout';
 const MapShow = ({ google, router }) => {
   const [markers, setMarkers] = useState([]);
   const [error, setError] = useState('');
+  const [bounds, setBounds] = useState('');
   const [activeGoogleMarker, setActiveGoogleMarker] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const [isInfoWindow, setInfoWindow] = useState(false);
@@ -25,9 +26,19 @@ const MapShow = ({ google, router }) => {
 
       if (data.error) return setError(data.error);
 
-      setMarkers(data.markers);
+      const { markers, mapName } = data;
 
-      document.title = data.mapName
+      setMarkers(markers);
+
+      // extend the bounds to the map markers
+      const bounds = new google.maps.LatLngBounds();
+      for (let i = 0; i < markers.length; i++) {
+        bounds.extend(markers[i]);
+      }
+
+      setBounds(bounds);
+
+      document.title = mapName
     }
   }
 
@@ -103,7 +114,7 @@ const MapShow = ({ google, router }) => {
       <Map 
         google={google} 
         initialCenter={{ lat: 24.523387, lng: 11.510063 }} 
-        zoom={2}
+        bounds={bounds}
         disableDefaultUI={true}
         onClick={handleClickMap}>
 

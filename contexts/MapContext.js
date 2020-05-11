@@ -16,8 +16,10 @@ export const MapContextProvider = ({ children }) => {
   const [isMenu, setMenu] = useState(false);
   // marker crud
   const [isSelectedMarkerIconModal, setSelectedMarkerIconModal] = useState(false);
+  const [isInfoWindowModal, setInfoWindowModal] = useState(false);
   const [selectedMarkerIcon, setSelectedMarkerIcon] = useState(null);
   const [markers, setMarkers] = useState([]);
+  const [markerEditId, setMarkerEditId] = useState('');
 
   const [modalError, setModalError] = useState('');
   const [modalLoading, setModalLoading] = useState(false);
@@ -61,6 +63,8 @@ export const MapContextProvider = ({ children }) => {
       markerIconId: selectedMarkerIcon.id
     }
     setMarkers(markers.concat(newMarker));
+    // open infowindow modal
+    setInfoWindowModal(true);
   }
   
   return (
@@ -77,6 +81,7 @@ export const MapContextProvider = ({ children }) => {
         markerIcons,
         markers,
         selectedMarkerIcon,
+        isInfoWindowModal,
         setSelectedMarkerIconModal,
         setMenu,
         setState,

@@ -4,6 +4,7 @@ import { MapContextProvider } from '../../contexts/MapContext';
 import GoogleMap from '../../components/map/GoogleMap';
 import MapMenu from '../../components/map/MapMenu';
 import SelectedMarkerIconModal from '../../components/map/SelectedMarkerIconModal';
+import InfoWindowModal from '../../components/map/InfoWindowModal';
 
 const MapsNew = ({ google }) => {
   return (
@@ -16,6 +17,7 @@ const MapsNew = ({ google }) => {
               <GoogleMap />
               <MapMenu />
               <SelectedMarkerIconModal />
+              <InfoWindowModal />
 
 
             </div>

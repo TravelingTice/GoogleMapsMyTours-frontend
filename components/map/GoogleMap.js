@@ -1,6 +1,6 @@
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { GOOGLE_API_KEY } from '../../config';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { MapContext } from '../../contexts/MapContext';
 import { Container, Row, Col } from 'reactstrap';
 import { cloudinaryCore } from '../../config';
@@ -15,7 +15,6 @@ const GoogleMap = ({ google }) => {
     if (state === 'newMarker') {
       onAddMarker(coord);
     }
-
   }
 
   const showMap = () => (

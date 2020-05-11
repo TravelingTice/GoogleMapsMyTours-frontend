@@ -79,7 +79,7 @@ const Map = ({ map }) => {
 
     return (
       <Motion style={{opacity: spring(opacity), right: spring(right)}}>{({opacity, right}) =>
-        <div style={{position: 'absolute', bottom: 105, opacity, right, zIndex}}>
+        <div style={{position: 'absolute', bottom: 135, opacity, right, zIndex}}>
           <div className="my-1">
             <Button color="primary" variant="contained" startIcon={<ShareIcon/>}></Button>
           </div>

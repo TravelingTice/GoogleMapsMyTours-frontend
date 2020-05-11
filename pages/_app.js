@@ -8,6 +8,9 @@ import '../styles/index.scss';
 // config
 import { APP_NAME } from '../config';
 
+// import datefns for calendar pickers
+import 'date-fns';
+
 // Cloudinary context provider for cloudinary images
 import { CloudinaryContext } from 'cloudinary-react';
 import { CLOUDINARY_CLOUDNAME } from '../config';

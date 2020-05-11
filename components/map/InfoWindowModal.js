@@ -5,14 +5,17 @@ import { Button, FormGroup, FormControl, Input, InputLabel, TextField, Checkbox 
 import convertToBase64 from '../../helpers/convertToBase64';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { Image, Transformation } from 'cloudinary-react';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 const InfoWindowModal = () => {
-  const { isInfoWindowModal, markerEditId, findMarkerByRefId, markers } = useContext(MapContext);
+  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findMarkerByRefId, markers } = useContext(MapContext);
   const isEdit = !!markerEditId;
 
   const [values, setValues] = useState({
     title: '',
     body: '',
+    date: new Date(),
     youtube: '',
     image: '',
     cloudinaryImage: '',
@@ -20,7 +23,7 @@ const InfoWindowModal = () => {
     markerRefId: ''
   });
 
-  const { title, body, youtube, image, markerRefId, option } = values;
+  const { title, body, date, youtube, image, markerRefId, option, cloudinaryImage } = values;
 
   useEffect(() => {
     if (isInfoWindowModal) {
@@ -31,6 +34,7 @@ const InfoWindowModal = () => {
         setValues({
           title: '',
           body: '',
+          date: new Date(),
           youtube: '',
           image: '',
           cloudinaryImage: '',
@@ -50,8 +54,7 @@ const InfoWindowModal = () => {
       const prev = await convertToBase64(e.target.files[0]);
 
       if (prev) {
-        setPreview(prev);
-        setTimeout(() => setDimensionsForm(true), 600);
+        setValues({ ...values, image: prev });
       };
     }
   }
@@ -60,14 +63,20 @@ const InfoWindowModal = () => {
     setValues({ ...values, option: name });
   }
 
+  const handleDateChange = date => setValues({ ...values, date });
+
   const handleSubmit = e => {
     e.preventDefault();
+    console.log(values);
   }
 
   const closeModal = () => {
     if (!isEdit) {
-      // clear the last marker because no infowindow is attached to it
-
+      // clear the attached marker because no infowindow is attached to it
+      setMarkers(markers.filter(mark => mark.refId !== markerRefId));
+      setInfoWindowModal(false);
+    } else {
+      setInfoWindowModal(false);
     }
   }
 
@@ -77,7 +86,7 @@ const InfoWindowModal = () => {
     const isCloudinaryImage = option === 'image' && cloudinaryImage;
 
     if (isImage) return (
-      <img src={image} alt="" height="130" />
+      <img src={image} alt="" style={{maxHeight: 130}} />
     )
     if (isCloudinaryImage) return (
       <Image publicId={cloudinaryImage} height="130">
@@ -124,6 +133,19 @@ const InfoWindowModal = () => {
               />
             </FormControl>
           </FormGroup>
+
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id="date"
+            label='Date'
+            value={date}
+            onChange={handleDateChange}
+            />
+          </MuiPickersUtilsProvider>
 
           <Row className="mt-3">
             <Col xs="2">

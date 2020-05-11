@@ -7,6 +7,7 @@ export const MapContext = createContext();
 
 export const MapContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   // startup
   const [plusIconAppear, setPlusIcon] = useState(false);
@@ -19,7 +20,7 @@ export const MapContextProvider = ({ children }) => {
   const [isInfoWindowModal, setInfoWindowModal] = useState(false);
   const [selectedMarkerIcon, setSelectedMarkerIcon] = useState(null);
   const [markers, setMarkers] = useState([]);
-  const [infoWindows, setInfoWindow] = useState([]);
+  const [infoWindows, setInfoWindows] = useState([]);
   const [markerEditId, setMarkerEditId] = useState('');
 
   const [modalError, setModalError] = useState('');
@@ -81,6 +82,52 @@ export const MapContextProvider = ({ children }) => {
     setMarkerEditId('');
     // open infowindow modal
     setInfoWindowModal(true);
+  }
+
+  const addMarkerInfoWindow = async infoWindow => {
+    // frontend -> add infowindow for the marker (marker is already on the map)
+    setInfoWindows(infoWindows.concat(infoWindow));
+
+    // backend
+    // show saving prompt in the top right
+    setSaving(true);
+    // get the marker we need
+    const marker = findMarkerByRefId(infoWindow.markerRefId);
+    console.log(marker);
+    console.log(infoWindow);
+
+    const data = await addMarkerInfoWindow({ marker, infoWindow }, token);
+
+    setSaving(false);
+
+    if (data.error) return setError(data.error);
+  }
+
+  const updateMarkerInfoWindow = async newInfoWindow => {
+    // frontend
+    const oldInfoWindow = findInfoWindowByMarkerRefId(infoWindow.refId);
+    const index = infoWindows.indexOf(oldInfoWindow);
+
+    if (index !== -1) {
+      const newInfoWindowArr = infoWindows;
+      newInfoWindowArr[index] = newInfoWindow;
+      setInfoWindows(newInfoWindowArr);
+    } else {
+      return setError('info window cannot be found');
+    }
+
+    // backend
+    const marker = findMarkerByRefId(newInfoWindow.markerRefId);
+    console.log(marker);
+    console.log(infoWindow);
+
+    setSaving(true);
+
+    const data = await updateMarkerInfoWindow({ marker, newInfoWindow });
+
+    setSaving(false);
+
+    if (data.error) return setError(data.error);
   }
   
   return (

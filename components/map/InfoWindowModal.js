@@ -9,7 +9,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 const InfoWindowModal = () => {
-  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findMarkerByRefId, markers } = useContext(MapContext);
+  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findMarkerByRefId, markers, addMarkerInfoWindow, updateMarkerInfoWindow } = useContext(MapContext);
   const isEdit = !!markerEditId;
 
   const [values, setValues] = useState({
@@ -45,9 +45,7 @@ const InfoWindowModal = () => {
     }
   }, [isInfoWindowModal]);
 
-  const handleChange = name => e => {
-    setValues({ ...values, [name]: e.target.value });
-  }
+  const handleChange = name => e => setValues({ ...values, [name]: e.target.value });
 
   const handleImageChange = async e => {
     if (e.target.files && e.target.files[0]) {
@@ -59,15 +57,17 @@ const InfoWindowModal = () => {
     }
   }
 
-  const handleOptionChange = name => e => {
-    setValues({ ...values, option: name });
-  }
+  const handleOptionChange = name => e => setValues({ ...values, option: name });
 
   const handleDateChange = date => setValues({ ...values, date });
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(values);
+    if (isEdit) {
+      updateMarkerInfoWindow(values);
+    } else {
+      addMarkerInfoWindow(values);
+    }
   }
 
   const closeModal = () => {
@@ -99,13 +99,9 @@ const InfoWindowModal = () => {
     return null;
   }
 
-  const showSubmitButton = () => (
-    <Button color="primary" variant="outlined">{isEdit ? 'Update' : 'Create'}</Button>
-  )
+  const showSubmitButton = () => <Button type="submit" color="primary" variant="outlined">{isEdit ? 'Update' : 'Create'}</Button>
   
-  const showDeleteButton = () => (
-    <Button color="secondary" variant="outlined">Delete</Button>
-  )
+  const showDeleteButton = () => <Button color="secondary" variant="outlined">Delete</Button>
 
   return (
     <Modal isOpen={isInfoWindowModal} toggle={closeModal}>
@@ -117,7 +113,7 @@ const InfoWindowModal = () => {
           <FormGroup>
             <FormControl>
               <InputLabel htmlFor="title">Title</InputLabel>
-              <Input id="title" onChange={handleChange(title)} value={title} />
+              <Input id="title" onChange={handleChange('title')} value={title} />
             </FormControl>
           </FormGroup>
 

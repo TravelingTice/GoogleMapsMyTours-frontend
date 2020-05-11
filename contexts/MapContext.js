@@ -3,7 +3,7 @@ import { getMarkerIcons } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
 import generateId from 'generate-unique-id';
 import { getMapForEdit } from '../actions/map';
-import { addMarkerInfoWindow, updateMarkerInfoWindow } from '../actions/marker';
+import { addMarkerInfoWindow, updateMarkerInfoWindow, removeMarker } from '../actions/marker';
 import lowerSnakalize from '../helpers/lowerSnakalize';
 import Router from 'next/router';
 
@@ -144,6 +144,26 @@ export const MapContextProvider = ({ children, id }) => {
 
     if (data.error) return setError(data.error);
   }
+
+  const onRemoveMarker = async () => {
+    const answer = window.confirm('Are you sure?');
+
+    if (answer) {
+      // frontend
+      setMarkers(markers.filter(marker => marker.refId !== markerEditId));
+      setMarkerEditId('');
+      setInfoWindowModal(false);
+
+      // backend
+      setSaving(true);
+
+      const data = await removeMarker(markerEditId, token);
+
+      setSaving(false);
+
+      if (data.error) return setError(data.error);
+    }
+  }
   
   return (
     <MapContext.Provider
@@ -178,7 +198,8 @@ export const MapContextProvider = ({ children, id }) => {
         onSelectMarkerIcon,
         onAddMarker,
         onAddMarkerInfoWindow,
-        onUpdateMarkerInfoWindow
+        onUpdateMarkerInfoWindow,
+        onRemoveMarker
       }}>
       {children}
     </MapContext.Provider>

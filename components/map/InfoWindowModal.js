@@ -10,7 +10,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import Error from '../Error';
 
 const InfoWindowModal = () => {
-  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findInfoWindowByMarkerRefId, markers, onAddMarkerInfoWindow, onUpdateMarkerInfoWindow, error } = useContext(MapContext);
+  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findInfoWindowByMarkerRefId, markers, onAddMarkerInfoWindow, onUpdateMarkerInfoWindow, error, onRemoveMarker } = useContext(MapContext);
   const isEdit = !!markerEditId;
 
   const [values, setValues] = useState({
@@ -103,7 +103,7 @@ const InfoWindowModal = () => {
 
   const showSubmitButton = () => <Button type="submit" color="primary" variant="outlined">{isEdit ? 'Update' : 'Create'}</Button>
   
-  const showDeleteButton = () => <Button color="secondary" variant="outlined">Delete</Button>
+  const showDeleteButton = () => <Button onClick={onRemoveMarker} color="secondary" variant="outlined">Delete</Button>
 
   const showError = () => error && <Error content={error} />
 

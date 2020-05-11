@@ -2,6 +2,7 @@ import { useState, createContext, useEffect } from 'react';
 import { getMarkerIcons } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
 import generateId from 'generate-unique-id';
+import { addMarkerInfoWindow, updateMarkerInfoWindow } from '../actions/marker';
 
 export const MapContext = createContext();
 
@@ -84,7 +85,7 @@ export const MapContextProvider = ({ children }) => {
     setInfoWindowModal(true);
   }
 
-  const addMarkerInfoWindow = async infoWindow => {
+  const onAddMarkerInfoWindow = async infoWindow => {
     // frontend -> add infowindow for the marker (marker is already on the map)
     setInfoWindows(infoWindows.concat(infoWindow));
 
@@ -103,7 +104,7 @@ export const MapContextProvider = ({ children }) => {
     if (data.error) return setError(data.error);
   }
 
-  const updateMarkerInfoWindow = async newInfoWindow => {
+  const onUpdateMarkerInfoWindow = async newInfoWindow => {
     // frontend
     const oldInfoWindow = findInfoWindowByMarkerRefId(infoWindow.refId);
     const index = infoWindows.indexOf(oldInfoWindow);
@@ -123,7 +124,7 @@ export const MapContextProvider = ({ children }) => {
 
     setSaving(true);
 
-    const data = await updateMarkerInfoWindow({ marker, newInfoWindow });
+    const data = await updateMarkerInfoWindow({ marker, newInfoWindow }, marker.id, token);
 
     setSaving(false);
 
@@ -156,6 +157,8 @@ export const MapContextProvider = ({ children }) => {
         findMarkerByRefId,
         onSelectMarkerIcon,
         onAddMarker,
+        onAddMarkerInfoWindow,
+        onUpdateMarkerInfoWindow
       }}>
       {children}
     </MapContext.Provider>

@@ -3,10 +3,13 @@ import { getMarkerIcons } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
 import generateId from 'generate-unique-id';
 import { addMarkerInfoWindow, updateMarkerInfoWindow } from '../actions/marker';
+import lowerSnakalize from '../helpers/lowerSnakalize';
+import Router from 'next/router';
 
 export const MapContext = createContext();
 
 export const MapContextProvider = ({ children }) => {
+  const [mapId, setMapId] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -57,15 +60,6 @@ export const MapContextProvider = ({ children }) => {
     
     setMarkerIcons(data);
     setTimeout(() => setPlusIcon(true), 500);
-    // add new marker for testing purpose
-    const newM = {
-      lat: 54.23955075555233,
-      lng: 39.052787609375,
-      refId: "50y519e680f23k5gra0e",
-      markerIconId: 7
-    }
-    setMarkers([newM]);
-    setInfoWindowModal(true);
   }
 
   const onSelectMarkerIcon = e => setSelectedMarkerIcon(e.target.value);
@@ -94,14 +88,15 @@ export const MapContextProvider = ({ children }) => {
     setSaving(true);
     // get the marker we need
     const marker = findMarkerByRefId(infoWindow.markerRefId);
-    console.log(marker);
-    console.log(infoWindow);
 
-    const data = await addMarkerInfoWindow({ marker, infoWindow }, token);
+    const data = await addMarkerInfoWindow({ marker: lowerSnakalize(marker), info_window: lowerSnakalize(infoWindow), map_id: mapId || undefined }, token);
 
     setSaving(false);
 
     if (data.error) return setError(data.error);
+
+    // set the map id in the router
+    Router.replace(`/maps/${data.mapId}`);
   }
 
   const onUpdateMarkerInfoWindow = async newInfoWindow => {

@@ -9,7 +9,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 const InfoWindowModal = () => {
-  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findMarkerByRefId, markers, addMarkerInfoWindow, updateMarkerInfoWindow } = useContext(MapContext);
+  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findMarkerByRefId, markers, onAddMarkerInfoWindow, onUpdateMarkerInfoWindow } = useContext(MapContext);
   const isEdit = !!markerEditId;
 
   const [values, setValues] = useState({
@@ -64,9 +64,9 @@ const InfoWindowModal = () => {
   const handleSubmit = e => {
     e.preventDefault();
     if (isEdit) {
-      updateMarkerInfoWindow(values);
+      onUpdateMarkerInfoWindow(values);
     } else {
-      addMarkerInfoWindow(values);
+      onAddMarkerInfoWindow(values);
     }
   }
 

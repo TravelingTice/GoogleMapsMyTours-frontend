@@ -28,3 +28,15 @@ export const updateMarkerInfoWindow = (data, id, token) => {
   .then(res => res.json())
   .catch(err => console.log(err))
 }
+
+export const removeMarker = (id, token) => {
+  return fetch(`${API}/markers/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .catch(err => console.log(err))
+}

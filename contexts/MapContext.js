@@ -2,18 +2,20 @@ import { useState, createContext, useEffect } from 'react';
 import { getMarkerIcons } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
 import generateId from 'generate-unique-id';
-import { addMarkerInfoWindow, updateMarkerInfoWindow } from '../actions/marker';
+import { getMapForEdit } from '../actions/map';
+import { addMarkerInfoWindow, updateMarkerInfoWindow, removeMarker } from '../actions/marker';
 import lowerSnakalize from '../helpers/lowerSnakalize';
 import Router from 'next/router';
 
 export const MapContext = createContext();
 
-export const MapContextProvider = ({ children }) => {
-  const [mapId, setMapId] = useState('');
+export const MapContextProvider = ({ children, id }) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   // startup
+  const [mapName, setMapName] = useState('');
+  const [isMapNameModal, setMapNameModal] = useState(false);
   const [plusIconAppear, setPlusIcon] = useState(false);
   const [markerIcons, setMarkerIcons] = useState([]);
   // states: add marker, add line, add kml
@@ -41,25 +43,41 @@ export const MapContextProvider = ({ children }) => {
   const toggleMenu = () => setMenu(!isMenu);
   
   useEffect(() => {
-    initMarkerIcons();
-  }, []);
+    fetchMapData(id);
+  }, [id]);
 
   useEffect(() => {
     setMenu(false);
   }, [state]);
   
-  const initMarkerIcons = async () => {
-    const data = await getMarkerIcons(token);
+  const fetchMapData = async (id) => {
+    const markerIcons = await getMarkerIcons(token);
+    setMarkerIcons(markerIcons);
+
+    if (id) {
+      const { markers, infoWindows, mapName } = await getMapForEdit(id, token);
+      setMarkers(markers);
+      setInfoWindows(infoWindows);
+      setMapName(mapName);
+    } else {
+      // new map -> fetch name
+      setMapNameModal(true);
+    }
 
     setLoading(false);
-    
-    if (data.error) {
-      console.log(data.error);
-      return setError('uh oh.. something went wrong');
-    }
-    
-    setMarkerIcons(data);
+        
     setTimeout(() => setPlusIcon(true), 500);
+  }
+
+  const initMapName = name => {
+    setMapName(name);
+    setMapNameModal(false);
+    setMenu(true);
+  }
+
+  const initMarkerEdit = refId => (props, marker, e) => {
+    setMarkerEditId(refId);
+    setInfoWindowModal(true);
   }
 
   const onSelectMarkerIcon = e => setSelectedMarkerIcon(e.target.value);
@@ -89,21 +107,23 @@ export const MapContextProvider = ({ children }) => {
     // get the marker we need
     const marker = findMarkerByRefId(infoWindow.markerRefId);
 
-    const data = await addMarkerInfoWindow({ marker: lowerSnakalize(marker), info_window: lowerSnakalize(infoWindow), map_id: mapId || undefined }, token);
+    const data = await addMarkerInfoWindow({ marker: lowerSnakalize(marker), info_window: lowerSnakalize(infoWindow), map_id: id || undefined, map_name: mapName }, token);
 
     setSaving(false);
 
     if (data.error) return setError(data.error);
 
-    // set the map id in the router
-    Router.replace(`/maps/${data.mapId}`);
+    // set the map id in the router if the id is not provided already
+    if (!id) {
+      Router.replace(`/manage/maps/${data.mapId}`);
+    }
   }
 
   const onUpdateMarkerInfoWindow = async newInfoWindow => {
     // frontend
-    const oldInfoWindow = findInfoWindowByMarkerRefId(infoWindow.refId);
+    const oldInfoWindow = findInfoWindowByMarkerRefId(markerEditId);
     const index = infoWindows.indexOf(oldInfoWindow);
-
+    
     if (index !== -1) {
       const newInfoWindowArr = infoWindows;
       newInfoWindowArr[index] = newInfoWindow;
@@ -111,19 +131,38 @@ export const MapContextProvider = ({ children }) => {
     } else {
       return setError('info window cannot be found');
     }
+    setInfoWindowModal(false);
 
     // backend
     const marker = findMarkerByRefId(newInfoWindow.markerRefId);
-    console.log(marker);
-    console.log(infoWindow);
 
     setSaving(true);
 
-    const data = await updateMarkerInfoWindow({ marker, newInfoWindow }, marker.id, token);
+    const data = await updateMarkerInfoWindow({ marker: lowerSnakalize(marker), info_window: lowerSnakalize(newInfoWindow) }, marker.id, token);
 
     setSaving(false);
 
     if (data.error) return setError(data.error);
+  }
+
+  const onRemoveMarker = async () => {
+    const answer = window.confirm('Are you sure?');
+
+    if (answer) {
+      // frontend
+      setMarkers(markers.filter(marker => marker.refId !== markerEditId));
+      setMarkerEditId('');
+      setInfoWindowModal(false);
+
+      // backend
+      setSaving(true);
+
+      const data = await removeMarker(markerEditId, token);
+
+      setSaving(false);
+
+      if (data.error) return setError(data.error);
+    }
   }
   
   return (
@@ -132,6 +171,7 @@ export const MapContextProvider = ({ children }) => {
         state,
         saving,
         isSelectedMarkerIconModal,
+        mapName,
         isMenu,
         plusIconAppear,
         loading,
@@ -143,6 +183,9 @@ export const MapContextProvider = ({ children }) => {
         selectedMarkerIcon,
         isInfoWindowModal,
         markerEditId,
+        isMapNameModal,
+        initMapName,
+        initMarkerEdit,
         setSelectedMarkerIconModal,
         setInfoWindowModal,
         setMenu,
@@ -151,10 +194,12 @@ export const MapContextProvider = ({ children }) => {
         setMarkers,
         findMarkerIconById,
         findMarkerByRefId,
+        findInfoWindowByMarkerRefId,
         onSelectMarkerIcon,
         onAddMarker,
         onAddMarkerInfoWindow,
-        onUpdateMarkerInfoWindow
+        onUpdateMarkerInfoWindow,
+        onRemoveMarker
       }}>
       {children}
     </MapContext.Provider>

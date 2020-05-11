@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 import { API } from '../config';
 
 export const getMaps = token => {
-  return fetch(`${API}/maps/`, {
+  return fetch(`${API}/maps`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

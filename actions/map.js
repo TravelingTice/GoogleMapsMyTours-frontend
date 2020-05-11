@@ -10,3 +10,9 @@ export const getMapForEdit = (id, token) => {
   .then(res => res.json())
   .catch(err => console.log(err))
 }
+
+export const getMap = id => {
+  return fetch(`${API}/maps/${id}`)
+  .then(res => res.json())
+  .catch(err => console.log(err))
+}

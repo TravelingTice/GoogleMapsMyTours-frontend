@@ -31,9 +31,7 @@ const MapShow = ({ google, router }) => {
     }
   }
 
-  const handleClickMap = (t, map, coord) => {
-    setInfoWindow(false);
-  }
+  const handleClickMap = (t, map, coord) => setInfoWindow(false);
 
   const onMarkerClick = marker => (props, googleMarker, e) => {
     if (activeMarker === marker) {

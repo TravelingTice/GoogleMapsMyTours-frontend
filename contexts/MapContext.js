@@ -2,14 +2,14 @@ import { useState, createContext, useEffect } from 'react';
 import { getMarkerIcons } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
 import generateId from 'generate-unique-id';
+import { getMap } from '../actions/map';
 import { addMarkerInfoWindow, updateMarkerInfoWindow } from '../actions/marker';
 import lowerSnakalize from '../helpers/lowerSnakalize';
 import Router from 'next/router';
 
 export const MapContext = createContext();
 
-export const MapContextProvider = ({ children }) => {
-  const [mapId, setMapId] = useState('');
+export const MapContextProvider = ({ children, id }) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -43,6 +43,14 @@ export const MapContextProvider = ({ children }) => {
   useEffect(() => {
     initMarkerIcons();
   }, []);
+
+  useEffect(() => {
+    if (id) {
+      getMap(id, token).then(data => {
+        console.log(data);
+      });
+    }
+  }, [id]);
 
   useEffect(() => {
     setMenu(false);

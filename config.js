@@ -13,6 +13,6 @@ export const APP_DESC = publicRuntimeConfig.APP_DESC;
 
 export const CLOUDINARY_CLOUDNAME = publicRuntimeConfig.CLOUDINARY_CLOUDNAME;
 
-export const GOOGLE_API_KEY = publicRuntimeConfig.GOOGLE_API_KEY;
+export const GOOGLE_API_KEY = 'AIzaSyBQPDoYkte_-bXJOrSL9Oe2jRylizXFz8M';
 
 export const cloudinaryCore = new cloudinary.Cloudinary({ cloud_name: CLOUDINARY_CLOUDNAME });

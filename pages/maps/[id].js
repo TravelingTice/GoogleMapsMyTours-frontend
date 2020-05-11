@@ -5,9 +5,12 @@ import { cloudinaryCore } from '../../config';
 import moment from 'moment';
 import { withRouter } from 'next/router';
 import { getMap } from '../../actions/map';
+import Error from '../../components/Error';
+import Layout from '../../components/layout/Layout';
 
 const MapShow = ({ google, router }) => {
   const [markers, setMarkers] = useState([]);
+  const [error, setError] = useState('');
   const [activeGoogleMarker, setActiveGoogleMarker] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const [isInfoWindow, setInfoWindow] = useState(false);
@@ -18,29 +21,33 @@ const MapShow = ({ google, router }) => {
 
   const fetchMapData = async () => {
     if (router.query.id) {
-      const { markers } = await getMap(id);
-      setMarkers(markers);
+      const data = await getMap(router.query.id);
+
+      if (data.error) return setError(data.error);
+
+      setMarkers(data.markers);
+
+      document.title = data.mapName
     }
   }
 
   const handleClickMap = (t, map, coord) => {
-    // just to be sure, make sure the menu is collapsed
-    setMenu(false);
-    // handle click for when state = marker
-    if (state === 'newMarker') {
-      onAddMarker(coord);
-    }
+    setInfoWindow(false);
   }
 
   const onMarkerClick = marker => (props, googleMarker, e) => {
-    setActiveMarker(marker);
-    setActiveGoogleMarker(googleMarker);
-    setInfoWindow(true);
+    if (activeMarker === marker) {
+      setInfoWindow(false);
+    } else {
+      setActiveMarker(marker);
+      setActiveGoogleMarker(googleMarker);
+      setInfoWindow(true);
+    }
   }
 
   const showMarkers = () => markers.map(marker => {
-    const { markerIconId, lat, lng, refId } = marker;
-    const { image, width, height, anchor } = findMarkerIconById(markerIconId);
+    const { lat, lng } = marker;
+    const { image, width, height, anchor } = marker.markerIcon;
     const anchorX = width / 2;
     const anchorY = anchor === 'bottom' ? height : height / 2;
 
@@ -48,7 +55,7 @@ const MapShow = ({ google, router }) => {
       <Marker 
         name='New marker'
         position={{ lat, lng }}
-        onClick={onMarkerClick(refId)}
+        onClick={onMarkerClick(marker)}
         icon={{
           url: cloudinaryCore.url(image, { height: 100, crop: 'fill' }),
           scaledSize: new google.maps.Size(width, height),
@@ -57,29 +64,27 @@ const MapShow = ({ google, router }) => {
     )
   });
 
-  const showInfoWindowContent = (info) => {
-    const marker = findMarkerByRefId(activeMarkerRefId);
-    const markerIcon = findMarkerIconById(marker.markerIconId);
-    const isImage = info.option === 'image' && info.image;
-    const isYoutube = info.option === 'youtube' && info.youtube;
+  const showInfoWindowContent = ({ infoWindow, markerIcon }) => {
+    const isImage = infoWindow.option === 'image' && infoWindow.image;
+    const isYoutube = infoWindow.option === 'youtube' && infoWindow.youtube;
 
     return (
       <div className="infowindow">
         <div className="d-flex align-items-center">
-          <img src={cloudinaryCore.url(markerIcon.image, { height: 100, crop: 'fill' })} alt="yo" height="25" className="mr-2" />
-          <h4 className="m-0">{info.title}</h4>
+          <img src={cloudinaryCore.url(markerIcon.image, { height: 100, crop: 'fill' })} alt='' height="25" className="mr-2" />
+          <h4 className="m-0">{infoWindow.title}</h4>
         </div>
-        <div className="mt-3 pb-2 border-bottom">{moment(info.date).format('DD MMMM YYYY')}</div>
+        <div className="mt-3 pb-2 border-bottom">{moment(infoWindow.date).format('DD MMMM YYYY')}</div>
         <div className="mt-2">
-          <p>{info.body}</p>
+          <p>{infoWindow.body}</p>
         </div>
 
         {isYoutube && (
-          <iframe width="200" height="130" src={`https://www.youtube.com/embed/${info.youtube}`}></iframe>
+          <iframe width="200" height="130" src={`https://www.youtube.com/embed/${infoWindow.youtube}`}></iframe>
         )}
 
         {isImage && (
-          <img src={cloudinaryCore.url(markerIcon.image, { height: 400, crop: 'fill' })} alt={info.title} height="130"/>
+          <img src={cloudinaryCore.url(markerIcon.image, { height: 400, crop: 'fill' })} alt={infoWindow.title} height="130"/>
         )}
       </div>
     )
@@ -88,15 +93,14 @@ const MapShow = ({ google, router }) => {
   const showInfoWindow = () => {
     return (
       <InfoWindow
-        marker={activeMarker}
+        marker={activeGoogleMarker}
         visible={isInfoWindow}>
-          {/* {info && showInfoWindowContent(info)} */}
-          <div>test</div>
+          {activeMarker && showInfoWindowContent(activeMarker)}
       </InfoWindow>
     )
   }
 
-  return (
+  return !error ? (
     <div style={{width: '100vw', height: '100vh'}}>
       <Map 
         google={google} 
@@ -110,7 +114,7 @@ const MapShow = ({ google, router }) => {
 
       </Map>
     </div>
-  )
+  ) : <Layout><Error content={error} /></Layout>
 }
 
 export default withRouter(GoogleApiWrapper({

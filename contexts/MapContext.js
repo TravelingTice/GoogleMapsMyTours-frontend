@@ -41,7 +41,7 @@ export const MapContextProvider = ({ children, id }) => {
   const toggleMenu = () => setMenu(!isMenu);
   
   useEffect(() => {
-    if (id) fetchMapData(id);
+    fetchMapData(id);
   }, [id]);
 
   useEffect(() => {
@@ -52,9 +52,11 @@ export const MapContextProvider = ({ children, id }) => {
     const markerIcons = await getMarkerIcons(token);
     setMarkerIcons(markerIcons);
 
-    const { markers, infoWindows } = await getMapForEdit(id, token);
-    setMarkers(markers);
-    setInfoWindows(infoWindows);
+    if (id) {
+      const { markers, infoWindows } = await getMapForEdit(id, token);
+      setMarkers(markers);
+      setInfoWindows(infoWindows);
+    }
 
     setLoading(false);
         
@@ -88,7 +90,7 @@ export const MapContextProvider = ({ children, id }) => {
     // get the marker we need
     const marker = findMarkerByRefId(infoWindow.markerRefId);
 
-    const data = await addMarkerInfoWindow({ marker: lowerSnakalize(marker), info_window: lowerSnakalize(infoWindow), map_id: mapId || undefined }, token);
+    const data = await addMarkerInfoWindow({ marker: lowerSnakalize(marker), info_window: lowerSnakalize(infoWindow), map_id: id || undefined }, token);
 
     setSaving(false);
 

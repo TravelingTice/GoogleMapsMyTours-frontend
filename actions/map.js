@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch';
 import { API } from '../config';
 
-export const getMap = (id, token) => {
-  return fetch(`${API}/maps/${id}`, {
+export const getMapForEdit = (id, token) => {
+  return fetch(`${API}/maps/${id}/edit`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

@@ -2,7 +2,7 @@ import { useState, createContext, useEffect } from 'react';
 import { getMarkerIcons } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
 import generateId from 'generate-unique-id';
-import { getMap } from '../actions/map';
+import { getMapForEdit } from '../actions/map';
 import { addMarkerInfoWindow, updateMarkerInfoWindow } from '../actions/marker';
 import lowerSnakalize from '../helpers/lowerSnakalize';
 import Router from 'next/router';
@@ -41,32 +41,23 @@ export const MapContextProvider = ({ children, id }) => {
   const toggleMenu = () => setMenu(!isMenu);
   
   useEffect(() => {
-    initMarkerIcons();
-  }, []);
-
-  useEffect(() => {
-    if (id) {
-      getMap(id, token).then(data => {
-        console.log(data);
-      });
-    }
+    if (id) fetchMapData(id);
   }, [id]);
 
   useEffect(() => {
     setMenu(false);
   }, [state]);
   
-  const initMarkerIcons = async () => {
-    const data = await getMarkerIcons(token);
+  const fetchMapData = async (id) => {
+    const markerIcons = await getMarkerIcons(token);
+    setMarkerIcons(markerIcons);
+
+    const { markers, infoWindows } = await getMapForEdit(id, token);
+    setMarkers(markers);
+    setInfoWindows(infoWindows);
 
     setLoading(false);
-    
-    if (data.error) {
-      console.log(data.error);
-      return setError('uh oh.. something went wrong');
-    }
-    
-    setMarkerIcons(data);
+        
     setTimeout(() => setPlusIcon(true), 500);
   }
 

@@ -5,8 +5,27 @@ import { MapContext } from '../../contexts/MapContext';
 import { Container, Row, Col } from 'reactstrap';
 import { cloudinaryCore } from '../../config';
 
+const MapMarker = ({ marker }) => {
+  const { findMarkerIconById } = useContext(MapContext);
+
+  const { markerIconId, lat, lng } = marker;
+  const { image, width, height, anchor } = findMarkerIconById(markerIconId);
+  const anchorX = width / 2;
+  const anchorY = anchor === 'bottom' ? height : height / 2;
+  return (
+    <Marker 
+      name='New marker'
+      position={{lat, lng }}
+      icon={{
+        url: cloudinaryCore.url(image, { height: 70, crop: 'fill' }),
+        scaledSize: new google.maps.Size(width, height),
+        anchor: new google.maps.Point(anchorX, anchorY)
+      }}/>
+  )
+}
+
 const GoogleMap = ({ google }) => {
-  const { state, selectedMarkerIcon, setMenu, onAddMarker, markers, findMarkerIconById } = useContext(MapContext);
+  const { state, selectedMarkerIcon, setMenu, onAddMarker, markers } = useContext(MapContext);
 
   const handleClickMap = (t, map, coord) => {
     // just to be sure, make sure the menu is collapsed
@@ -24,21 +43,9 @@ const GoogleMap = ({ google }) => {
       zoom={2}
       disableDefaultUI={true}
       onClick={handleClickMap}>
-        {markers.map(({ markerIconId, lat, lng }) => {
-          const { image, width, height, anchor } = findMarkerIconById(markerIconId);
-          const anchorX = width / 2;
-          const anchorY = anchor === 'bottom' ? height : height / 2;
-          return (
-            <Marker 
-              name='New marker'
-              position={{lat, lng }}
-              icon={{
-                url: cloudinaryCore.url(image, { height: 70, crop: 'fill' }),
-                scaledSize: new google.maps.Size(width, height),
-                anchor: new google.maps.Point(anchorX, anchorY)
-              }}/>
-          )
-        })}
+        {markers.map(marker => (
+          <MapMarker key={marker.refId} marker={marker} />
+        ))}
     </Map>
   );
 

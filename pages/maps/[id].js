@@ -6,6 +6,7 @@ import MapMenu from '../../components/map/MapMenu';
 import SelectedMarkerIconModal from '../../components/map/SelectedMarkerIconModal';
 import InfoWindowModal from '../../components/map/InfoWindowModal';
 import SavingPrompt from '../../components/map/SavingPrompt';
+import LoadingPrompt from '../../components/map/LoadingPrompt';
 import { withRouter } from 'next/router';
 
 const MapsEdit = ({ router }) => {
@@ -21,7 +22,8 @@ const MapsEdit = ({ router }) => {
               <SelectedMarkerIconModal />
               <InfoWindowModal />
               <SavingPrompt />
-
+              <LoadingPrompt />
+              
             </div>
           </Layout>
         </div>

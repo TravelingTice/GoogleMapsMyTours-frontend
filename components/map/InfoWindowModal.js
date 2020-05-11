@@ -7,9 +7,10 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { Image, Transformation } from 'cloudinary-react';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import Error from '../Error';
 
 const InfoWindowModal = () => {
-  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findMarkerByRefId, markers, onAddMarkerInfoWindow, onUpdateMarkerInfoWindow } = useContext(MapContext);
+  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findInfoWindowByMarkerRefId, markers, onAddMarkerInfoWindow, onUpdateMarkerInfoWindow, error } = useContext(MapContext);
   const isEdit = !!markerEditId;
 
   const [values, setValues] = useState({
@@ -28,7 +29,8 @@ const InfoWindowModal = () => {
   useEffect(() => {
     if (isInfoWindowModal) {
       if (isEdit) {
-        
+        const infoWindow = findInfoWindowByMarkerRefId(markerEditId);
+        setValues({ ...infoWindow });
       } else {
         // new marker, which means we only need to attach the last marker that was added to this marker ref id value
         setValues({
@@ -103,11 +105,14 @@ const InfoWindowModal = () => {
   
   const showDeleteButton = () => <Button color="secondary" variant="outlined">Delete</Button>
 
+  const showError = () => error && <Error content={error} />
+
   return (
     <Modal isOpen={isInfoWindowModal} toggle={closeModal}>
-      <ModalHeader toggle={closeModal}>Add Info Window</ModalHeader>
+      <ModalHeader toggle={closeModal}>{isEdit ? 'Edit' : 'Add'} Info Window</ModalHeader>
 
       <ModalBody>
+        {showError()}
         <Form onSubmit={handleSubmit}>
 
           <FormGroup>

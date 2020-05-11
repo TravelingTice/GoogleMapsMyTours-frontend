@@ -1,30 +1,30 @@
 import { useContext, useState, useEffect } from "react";
 import { MapContext } from '../../contexts/MapContext';
 import { Motion, spring } from "react-motion";
-import Message from '../Message';
+import Error from '../Error';
 
-const SavingPrompt = () => {
-  const { saving } = useContext(MapContext);
+const ErrorPrompt = () => {
+  const { error } = useContext(MapContext);
   const [zIndex, setZIndex] = useState(-1);
 
-  const top = saving ? 15 : 30;
-  const opacity = saving ? 1 : 0;
+  const top = error ? 15 : 30;
+  const opacity = error ? 1 : 0;
 
   useEffect(() => {
-    if (saving) {
+    if (error) {
       setZIndex(1);
     } else {
       setTimeout(() => setZIndex(-1), 400);
     }
-  }, [saving]);
+  }, [error]);
 
   return (
     <Motion style={{top: spring(top), opacity: spring(opacity)}}>{({top, opacity}) =>
       <div style={{position: 'absolute', right: 10, zIndex, top, opacity, borderRadius: 5}}>
-        <Message content='Saving...' />
+        <Error content={error} />
       </div>
     }</Motion>
   )
 }
 
-export default SavingPrompt;
+export default ErrorPrompt;

@@ -121,9 +121,9 @@ export const MapContextProvider = ({ children, id }) => {
 
   const onUpdateMarkerInfoWindow = async newInfoWindow => {
     // frontend
-    const oldInfoWindow = findInfoWindowByMarkerRefId(infoWindow.refId);
+    const oldInfoWindow = findInfoWindowByMarkerRefId(markerEditId);
     const index = infoWindows.indexOf(oldInfoWindow);
-
+    
     if (index !== -1) {
       const newInfoWindowArr = infoWindows;
       newInfoWindowArr[index] = newInfoWindow;
@@ -131,15 +131,14 @@ export const MapContextProvider = ({ children, id }) => {
     } else {
       return setError('info window cannot be found');
     }
+    setInfoWindowModal(false);
 
     // backend
     const marker = findMarkerByRefId(newInfoWindow.markerRefId);
-    console.log(marker);
-    console.log(infoWindow);
 
     setSaving(true);
 
-    const data = await updateMarkerInfoWindow({ marker, newInfoWindow }, marker.id, token);
+    const data = await updateMarkerInfoWindow({ marker: lowerSnakalize(marker), info_window: lowerSnakalize(newInfoWindow) }, marker.id, token);
 
     setSaving(false);
 

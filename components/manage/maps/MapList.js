@@ -10,6 +10,7 @@ import { Motion, spring } from 'react-motion';
 import { Button } from '@material-ui/core';
 import ShareIcon from '@material-ui/icons/Share';
 import CodeIcon from '@material-ui/icons/Code';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 const GridContainer = styled.div`
   display: grid;
@@ -70,7 +71,10 @@ const Map = ({ map }) => {
           <div className="my-1">
             <Button color="primary" variant="contained" startIcon={<ShareIcon/>}></Button>
           </div>
-          <Button color="primary" variant="contained" startIcon={<CodeIcon/>}></Button>
+          <div className="my-1">
+            <Button color="primary" variant="contained" startIcon={<CodeIcon/>}></Button>
+          </div>
+          <Button role="link" onClick={() => Router.push(`/maps/${map.id}`)} color="primary" variant="contained" startIcon={<VisibilityIcon/>}></Button>
         </div>
       }</Motion>
     )

@@ -19,6 +19,7 @@ export const MapContextProvider = ({ children }) => {
   const [isInfoWindowModal, setInfoWindowModal] = useState(false);
   const [selectedMarkerIcon, setSelectedMarkerIcon] = useState(null);
   const [markers, setMarkers] = useState([]);
+  const [infoWindows, setInfoWindow] = useState([]);
   const [markerEditId, setMarkerEditId] = useState('');
 
   const [modalError, setModalError] = useState('');
@@ -27,6 +28,10 @@ export const MapContextProvider = ({ children }) => {
   const token = getCookie('token');
 
   const findMarkerIconById = id => markerIcons.find(icon => icon.id === id);
+
+  const findMarkerByRefId = refId => markers.find(marker => marker.refId === refId);
+
+  const findInfoWindowByMarkerRefId = refId => infoWindows.find(infoWindow => infoWindow.markerRefId === refId);
 
   const toggleMenu = () => setMenu(!isMenu);
   
@@ -50,6 +55,15 @@ export const MapContextProvider = ({ children }) => {
     
     setMarkerIcons(data);
     setTimeout(() => setPlusIcon(true), 500);
+    // add new marker for testing purpose
+    const newM = {
+      lat: 54.23955075555233,
+      lng: 39.052787609375,
+      refId: "50y519e680f23k5gra0e",
+      markerIconId: 7
+    }
+    setMarkers([newM]);
+    setInfoWindowModal(true);
   }
 
   const onSelectMarkerIcon = e => setSelectedMarkerIcon(e.target.value);
@@ -63,6 +77,8 @@ export const MapContextProvider = ({ children }) => {
       markerIconId: selectedMarkerIcon.id
     }
     setMarkers(markers.concat(newMarker));
+    // clear the edit id (because this is a new marker)
+    setMarkerEditId('');
     // open infowindow modal
     setInfoWindowModal(true);
   }
@@ -82,11 +98,13 @@ export const MapContextProvider = ({ children }) => {
         markers,
         selectedMarkerIcon,
         isInfoWindowModal,
+        markerEditId,
         setSelectedMarkerIconModal,
         setMenu,
         setState,
         toggleMenu,
         findMarkerIconById,
+        findMarkerByRefId,
         onSelectMarkerIcon,
         onAddMarker,
       }}>

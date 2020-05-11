@@ -27,7 +27,7 @@ const SelectedMarkerIconModal = () => {
         <div>
           <Select style={{width: '100%'}} labelId="markerIcon" id="markerSelect" onChange={onSelectMarkerIcon} value={selectedMarkerIcon}>
             {markerIcons.map(icon => (
-              <MenuItem value={icon}>{showIconImg(icon.image)}{icon.name}</MenuItem>
+              <MenuItem key={icon.id} value={icon}>{showIconImg(icon.image)}{icon.name}</MenuItem>
             ))}
           </Select>
 

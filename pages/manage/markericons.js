@@ -8,9 +8,9 @@ import PlusIcon from '../../components/PlusIcon';
 import { MarkerIconContextProvider, MarkerIconContext } from '../../contexts/MarkerIconContext';
 
 const AddMarkerIcon = () => {
-  const { openModal } = useContext(MarkerIconContext);
+  const { initNew } = useContext(MarkerIconContext);
   return (
-    <PlusIcon onClick={openModal} />
+    <PlusIcon onClick={initNew} />
   )
 }
 

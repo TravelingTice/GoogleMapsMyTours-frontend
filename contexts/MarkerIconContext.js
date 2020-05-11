@@ -79,14 +79,18 @@ export const MarkerIconContextProvider = ({ children }) => {
   }
 
   const onRemoveMarkerIcon = async () => {
-    setModal(false);
+    const choice = window.confirm('Are you sure?');
 
-    const data = await removeMarkerIcon(editId, token);
-
-    if (data.error) return setError(data.error);
-
-    const newMarkerIcons = markerIcons.filter(icon => icon.id !== editId);
-    setMarkerIcons(newMarkerIcons);
+    if (choice) {
+      setModal(false);
+  
+      const data = await removeMarkerIcon(editId, token);
+  
+      if (data.error) return setError(data.error);
+  
+      const newMarkerIcons = markerIcons.filter(icon => icon.id !== editId);
+      setMarkerIcons(newMarkerIcons);
+    }
   }
 
   return (

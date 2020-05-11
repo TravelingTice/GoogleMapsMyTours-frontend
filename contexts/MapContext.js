@@ -130,6 +130,7 @@ export const MapContextProvider = ({ children }) => {
     <MapContext.Provider
       value={{
         state,
+        saving,
         isSelectedMarkerIconModal,
         isMenu,
         plusIconAppear,

@@ -1,12 +1,12 @@
-import Private from '../../components/auth/Private';
-import Layout from '../../components/layout/Layout';
-import { MapContextProvider } from '../../contexts/MapContext';
-import GoogleMap from '../../components/map/GoogleMap';
-import MapMenu from '../../components/map/MapMenu';
-import SelectedMarkerIconModal from '../../components/map/SelectedMarkerIconModal';
-import InfoWindowModal from '../../components/map/InfoWindowModal';
-import SavingPrompt from '../../components/map/SavingPrompt';
-import LoadingPrompt from '../../components/map/LoadingPrompt';
+import Private from '../../../components/auth/Private';
+import Layout from '../../../components/layout/Layout';
+import { MapContextProvider } from '../../../contexts/MapContext';
+import GoogleMap from '../../../components/map/GoogleMap';
+import MapMenu from '../../../components/map/MapMenu';
+import SelectedMarkerIconModal from '../../../components/map/SelectedMarkerIconModal';
+import InfoWindowModal from '../../../components/map/InfoWindowModal';
+import SavingPrompt from '../../../components/map/SavingPrompt';
+import LoadingPrompt from '../../../components/map/LoadingPrompt';
 import { withRouter } from 'next/router';
 
 const MapsEdit = ({ router }) => {

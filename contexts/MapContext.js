@@ -14,6 +14,8 @@ export const MapContextProvider = ({ children, id }) => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   // startup
+  const [mapName, setMapName] = useState('');
+  const [isMapNameModal, setMapNameModal] = useState(false);
   const [plusIconAppear, setPlusIcon] = useState(false);
   const [markerIcons, setMarkerIcons] = useState([]);
   // states: add marker, add line, add kml
@@ -56,11 +58,20 @@ export const MapContextProvider = ({ children, id }) => {
       const { markers, infoWindows } = await getMapForEdit(id, token);
       setMarkers(markers);
       setInfoWindows(infoWindows);
+    } else {
+      // new map -> fetch name
+      setMapNameModal(true);
     }
 
     setLoading(false);
         
     setTimeout(() => setPlusIcon(true), 500);
+  }
+
+  const initMapName = name => {
+    setMapName(name);
+    setMapNameModal(false);
+    setMenu(true);
   }
 
   const onSelectMarkerIcon = e => setSelectedMarkerIcon(e.target.value);
@@ -90,7 +101,7 @@ export const MapContextProvider = ({ children, id }) => {
     // get the marker we need
     const marker = findMarkerByRefId(infoWindow.markerRefId);
 
-    const data = await addMarkerInfoWindow({ marker: lowerSnakalize(marker), info_window: lowerSnakalize(infoWindow), map_id: id || undefined }, token);
+    const data = await addMarkerInfoWindow({ marker: lowerSnakalize(marker), info_window: lowerSnakalize(infoWindow), map_id: id || undefined, map_name: mapName }, token);
 
     setSaving(false);
 
@@ -146,6 +157,8 @@ export const MapContextProvider = ({ children, id }) => {
         selectedMarkerIcon,
         isInfoWindowModal,
         markerEditId,
+        isMapNameModal,
+        initMapName,
         setSelectedMarkerIconModal,
         setInfoWindowModal,
         setMenu,

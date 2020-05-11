@@ -16,13 +16,25 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media(min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media(min-width: 992px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  @media(min-width: 1200px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
 `;
 
 const MapContainer = styled.div`
   box-shadow: 1px 1px 5px rgba(0,0,0,.3);
   background-image: url(${props => cloudinaryCore.url(props.image, { height: 400, crop: 'fill' })});
   background-size: cover;
-  height: 100px;
+  height: 130px;
   width: 100%;
   border-radius: 5px;
   position: relative;
@@ -32,7 +44,7 @@ const MapContainer = styled.div`
 
 const AddMap = () => {
   return (
-    <div role="button" onClick={() => Router.push('/manage/maps/new')} style={{height: 100, width: '100%', backgroundColor: 'rgba(0,0,0,.2)', borderRadius: '5px', boxShadow: '1px 1px 5px rgba(0,0,0,.3)'}} className="d-flex align-items-center justify-content-center">
+    <div role="button" onClick={() => Router.push('/manage/maps/new')} style={{height: 130, width: '100%', backgroundColor: 'rgba(0,0,0,.2)', borderRadius: '5px', boxShadow: '1px 1px 5px rgba(0,0,0,.3)'}} className="d-flex align-items-center justify-content-center">
       <AddCircleRoundedIcon style={{color: 'white', fontSize: 35}} />
     </div>
   )

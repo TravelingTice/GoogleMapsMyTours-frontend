@@ -96,8 +96,10 @@ export const MapContextProvider = ({ children, id }) => {
 
     if (data.error) return setError(data.error);
 
-    // set the map id in the router
-    Router.replace(`/maps/${data.mapId}`);
+    // set the map id in the router if the id is not provided already
+    if (!id) {
+      Router.replace(`/maps/${data.mapId}`);
+    }
   }
 
   const onUpdateMarkerInfoWindow = async newInfoWindow => {

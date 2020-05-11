@@ -51,7 +51,6 @@ const GoogleMap = ({ google }) => {
     const markerIcon = findMarkerIconById(marker.markerIconId);
     const isImage = info.option === 'image' && info.image;
     const isYoutube = info.option === 'youtube' && info.youtube;
-    console.log(markerIcon.image);
 
     return (
       <div className="infowindow">

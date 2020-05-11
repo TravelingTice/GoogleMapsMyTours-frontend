@@ -1,31 +1,15 @@
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { GOOGLE_API_KEY } from '../../config';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { MapContext } from '../../contexts/MapContext';
 import { Container, Row, Col } from 'reactstrap';
 import { cloudinaryCore } from '../../config';
 
-const MapMarker = ({ marker }) => {
-  const { findMarkerIconById } = useContext(MapContext);
-
-  const { markerIconId, lat, lng } = marker;
-  const { image, width, height, anchor } = findMarkerIconById(markerIconId);
-  const anchorX = width / 2;
-  const anchorY = anchor === 'bottom' ? height : height / 2;
-  return (
-    <Marker 
-      name='New marker'
-      position={{lat, lng }}
-      icon={{
-        url: cloudinaryCore.url(image, { height: 70, crop: 'fill' }),
-        scaledSize: new google.maps.Size(width, height),
-        anchor: new google.maps.Point(anchorX, anchorY)
-      }}/>
-  )
-}
-
 const GoogleMap = ({ google }) => {
-  const { state, selectedMarkerIcon, setMenu, onAddMarker, markers } = useContext(MapContext);
+  const { state, selectedMarkerIcon, setMenu, onAddMarker, markers, findMarkerIconById, findInfoWindowByMarkerRefId } = useContext(MapContext);
+  const [activeMarker, setActiveMarker] = useState(null);
+  const [activeMarkerRefId, setActiveMarkerRefId] = useState('');
+  const [isInfoWindow, setInfoWindow] = useState(false);
 
   const handleClickMap = (t, map, coord) => {
     // just to be sure, make sure the menu is collapsed
@@ -36,6 +20,45 @@ const GoogleMap = ({ google }) => {
     }
   }
 
+  const onMarkerClick = refId => (props, marker, e) => {
+    setActiveMarkerRefId(refId);
+    setActiveMarker(marker);
+    setInfoWindow(true);
+  }
+
+  const showMarkers = () => markers.map(({ markerIconId, lat, lng, refId }) => {
+    const { image, width, height, anchor } = findMarkerIconById(markerIconId);
+    const anchorX = width / 2;
+    const anchorY = anchor === 'bottom' ? height : height / 2;
+
+    return (
+      <Marker 
+        name='New marker'
+        position={{ lat, lng }}
+        onClick={onMarkerClick(refId)}
+        icon={{
+          url: cloudinaryCore.url(image, { height: 100, crop: 'fill' }),
+          scaledSize: new google.maps.Size(width, height),
+          anchor: new google.maps.Point(anchorX, anchorY)
+        }}/>
+    )
+  });
+
+  const showInfoWindow = () => {
+    const info = findInfoWindowByMarkerRefId(activeMarkerRefId);
+    return (
+      <InfoWindow
+        marker={activeMarker}
+        visible={isInfoWindow}>
+          {info && (
+            <div className="infowindow">
+              <h4>{info.title}</h4>
+            </div>
+          )}
+      </InfoWindow>
+    )
+  }
+
   const showMap = () => (
     <Map 
       google={google} 
@@ -43,9 +66,10 @@ const GoogleMap = ({ google }) => {
       zoom={2}
       disableDefaultUI={true}
       onClick={handleClickMap}>
-        {markers.map(marker => (
-          <MapMarker key={marker.refId} marker={marker} />
-        ))}
+
+        {showMarkers()}
+        {showInfoWindow()}
+
     </Map>
   );
 

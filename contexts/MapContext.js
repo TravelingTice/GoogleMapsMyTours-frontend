@@ -150,6 +150,7 @@ export const MapContextProvider = ({ children, id }) => {
         setMarkers,
         findMarkerIconById,
         findMarkerByRefId,
+        findInfoWindowByMarkerRefId,
         onSelectMarkerIcon,
         onAddMarker,
         onAddMarkerInfoWindow,

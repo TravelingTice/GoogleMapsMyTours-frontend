@@ -1,9 +1,10 @@
 import { MapContext } from "../../contexts/MapContext";
 import { useContext, useState, useEffect } from 'react';
-import { Modal, ModalHeader, ModalBody, Form } from 'reactstrap';
-import { Button, FormGroup, FormControl, Input, InputLabel } from '@material-ui/core';
+import { Modal, ModalHeader, ModalBody, Form, Row, Col } from 'reactstrap';
+import { Button, FormGroup, FormControl, Input, InputLabel, TextField, Checkbox } from '@material-ui/core';
 import convertToBase64 from '../../helpers/convertToBase64';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { Image, Transformation } from 'cloudinary-react';
 
 const InfoWindowModal = () => {
   const { isInfoWindowModal, markerEditId, findMarkerByRefId, markers } = useContext(MapContext);
@@ -14,10 +15,12 @@ const InfoWindowModal = () => {
     body: '',
     youtube: '',
     image: '',
+    cloudinaryImage: '',
+    option: 'youtube',
     markerRefId: ''
   });
 
-  const { title, body, youtube, image, markerRefId } = values;
+  const { title, body, youtube, image, markerRefId, option } = values;
 
   useEffect(() => {
     if (isInfoWindowModal) {
@@ -30,6 +33,8 @@ const InfoWindowModal = () => {
           body: '',
           youtube: '',
           image: '',
+          cloudinaryImage: '',
+          option: 'youtube',
           markerRefId: markers[markers.length - 1].refId
         })
       }
@@ -51,6 +56,10 @@ const InfoWindowModal = () => {
     }
   }
 
+  const handleOptionChange = name => e => {
+    setValues({ ...values, option: name });
+  }
+
   const handleSubmit = e => {
     e.preventDefault();
   }
@@ -60,6 +69,25 @@ const InfoWindowModal = () => {
       // clear the last marker because no infowindow is attached to it
 
     }
+  }
+
+  const showPreview = () => {
+    const isYoutube = option === 'youtube' && youtube 
+    const isImage = option === 'image' && image;
+    const isCloudinaryImage = option === 'image' && cloudinaryImage;
+
+    if (isImage) return (
+      <img src={image} alt="" height="130" />
+    )
+    if (isCloudinaryImage) return (
+      <Image publicId={cloudinaryImage} height="130">
+        <Transformation height="200" crop="fill" />
+      </Image>
+    )
+    if (isYoutube) return (
+      <iframe width="200" height="130" src={`https://www.youtube.com/embed/${youtube}`}></iframe>
+    )
+    return null;
   }
 
   const showSubmitButton = () => (
@@ -79,25 +107,73 @@ const InfoWindowModal = () => {
 
           <FormGroup>
             <FormControl>
-              <InputLabel htmlFor="title">title</InputLabel>
+              <InputLabel htmlFor="title">Title</InputLabel>
               <Input id="title" onChange={handleChange(title)} value={title} />
             </FormControl>
           </FormGroup>
 
-          <FormGroup className="my-4">
-            <label className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary" htmlFor="icon">
-              <span className="MuiButton-label">
-                <span className="MuiButton-startIcon MuiButton-iconSizeMedium">
-                  <CloudUploadIcon />
-                </span>
-                Upload image
-              </span>
-              <span className="MuiTouchRipple-root"></span>
-            </label>
-
-            <input type="file" id="icon" hidden onChange={handleImageChange}/>
-
+          <FormGroup className="mt-3">
+            <FormControl>
+              <TextField
+                id="body"
+                label="Body"
+                value={body}
+                onChange={handleChange('body')}
+                multiline
+                rows={4}
+              />
+            </FormControl>
           </FormGroup>
+
+          <Row className="mt-3">
+            <Col xs="2">
+              <Checkbox
+                className="mt-3"
+                checked={option === 'youtube'}
+                onChange={handleOptionChange('youtube')}
+              />
+            </Col>
+            <Col xs="10">
+              <FormGroup>
+                <FormControl>
+                  <InputLabel htmlFor="youtube">Youtube Link Id</InputLabel>
+                  <Input id="youtube" onChange={handleChange('youtube')} value={youtube} />
+                </FormControl>
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <div className="my-3">
+            {showPreview()}
+          </div>
+
+
+          <Row>
+            <Col xs="2">
+              <Checkbox
+                className="mt-3"
+                checked={option === 'image'}
+                onChange={handleOptionChange('image')}
+              />
+            </Col>
+            <Col xs="10">
+              <FormGroup className="my-4">
+                <label className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary" htmlFor="icon">
+                  <span className="MuiButton-label">
+                    <span className="MuiButton-startIcon MuiButton-iconSizeMedium">
+                      <CloudUploadIcon />
+                    </span>
+                    Upload image
+                  </span>
+                  <span className="MuiTouchRipple-root"></span>
+                </label>
+
+                <input type="file" id="icon" hidden onChange={handleImageChange}/>
+
+              </FormGroup>
+            </Col>
+          </Row>
+
 
 
           <div className="mt-3 d-flex justify-content-between">

@@ -11,7 +11,7 @@ import Error from '../../Error';
 
 const MarkerCrudModal = () => {
   const anchorOptions = ['bottom', 'center'];
-  const { isModal, closeModal, editId, handleCreateUpdate, modalError, modalLoading, findMarkerIconById, onRemoveMarkerIcon } = useContext(MarkerIconContext);
+  const { isModal, closeModal, editId, handleCreateUpdate, modalError, modalLoading, findMarkerIconById, onRemoveMarkerIcon, setModalError } = useContext(MarkerIconContext);
   const [imgPreview, setPreview] = useState(null);
   const [cloudinaryImg, setCloudinaryImg] = useState('');
   const [name, setName] = useState('');
@@ -54,7 +54,10 @@ const MarkerCrudModal = () => {
     }
   }, [isModal])
 
-  const handleChange = e => setName(e.target.value);
+  const handleChange = e => {
+    setModalError('');
+    setName(e.target.value);
+  }
 
   const handleImageChange = async e => {
     if (e.target.files && e.target.files[0]) {

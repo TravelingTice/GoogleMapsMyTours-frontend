@@ -109,6 +109,7 @@ export const MarkerIconContextProvider = ({ children }) => {
         openModal,
         closeModal,
         handleCreateUpdate,
+        setModalError,
         onRemoveMarkerIcon
       }}>
       {children}

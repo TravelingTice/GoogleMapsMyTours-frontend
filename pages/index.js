@@ -38,7 +38,6 @@ const Home = () => {
     const opacity = appear ? 1 : 0;
     const top = appear ? 0 : 35;
     let left;
-    console.log(appearStep);
     if (appearStep === 2) {
       left = -100;
     } else if (appearStep === 3) {
@@ -78,7 +77,7 @@ const Home = () => {
       <Container>
         <Row>
           <Col xs="12">
-            <div className="text-center my-5">
+            <div className="text-center my-4">
               <h1>{APP_NAME}</h1>
             </div>
           </Col>
@@ -91,7 +90,7 @@ const Home = () => {
             {showMaps()}
           </Col>
 
-          <Col xs="12" className="mt-5 text-center">
+          <Col xs="12" className="my-5 text-center">
             {showTryNowButton()}
           </Col>
         </Row>

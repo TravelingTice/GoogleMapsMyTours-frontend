@@ -8,7 +8,7 @@ import { Image, Transformation } from 'cloudinary-react';
 import moment from 'moment';
 
 const GoogleMap = ({ google }) => {
-  const { state, selectedMarkerIcon, setMenu, onAddMarker, markers, findMarkerIconById, findInfoWindowByMarkerRefId, findMarkerByRefId } = useContext(MapContext);
+  const { state, selectedMarkerIcon, setMenu, onAddMarker, markers, findMarkerIconById, findInfoWindowByMarkerRefId, findMarkerByRefId, initMarkerEdit } = useContext(MapContext);
 
   const handleClickMap = (t, map, coord) => {
     // just to be sure, make sure the menu is collapsed
@@ -17,10 +17,6 @@ const GoogleMap = ({ google }) => {
     if (state === 'newMarker') {
       onAddMarker(coord);
     }
-  }
-
-  const onMarkerClick = refId => (props, marker, e) => {
-    console.log(refId);
   }
 
   const showMarkers = () => markers.map(({ markerIconId, lat, lng, refId }) => {
@@ -32,7 +28,7 @@ const GoogleMap = ({ google }) => {
       <Marker 
         name='New marker'
         position={{ lat, lng }}
-        onClick={onMarkerClick(refId)}
+        onClick={initMarkerEdit(refId)}
         icon={{
           url: cloudinaryCore.url(image, { height: 100, crop: 'fill' }),
           scaledSize: new google.maps.Size(width, height),

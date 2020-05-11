@@ -9,7 +9,7 @@ import Router from 'next/router';
 
 export const MapContext = createContext();
 
-export const MapContextProvider = ({ children, id, google }) => {
+export const MapContextProvider = ({ children, id }) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -73,6 +73,11 @@ export const MapContextProvider = ({ children, id, google }) => {
     setMapName(name);
     setMapNameModal(false);
     setMenu(true);
+  }
+
+  const initMarkerEdit = refId => (props, marker, e) => {
+    setMarkerEditId(refId);
+    setInfoWindowModal(true);
   }
 
   const onSelectMarkerIcon = e => setSelectedMarkerIcon(e.target.value);
@@ -161,6 +166,7 @@ export const MapContextProvider = ({ children, id, google }) => {
         markerEditId,
         isMapNameModal,
         initMapName,
+        initMarkerEdit,
         setSelectedMarkerIconModal,
         setInfoWindowModal,
         setMenu,

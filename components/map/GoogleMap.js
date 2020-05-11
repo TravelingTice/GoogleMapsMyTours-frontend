@@ -9,9 +9,6 @@ import moment from 'moment';
 
 const GoogleMap = ({ google }) => {
   const { state, selectedMarkerIcon, setMenu, onAddMarker, markers, findMarkerIconById, findInfoWindowByMarkerRefId, findMarkerByRefId } = useContext(MapContext);
-  const [activeMarker, setActiveMarker] = useState(null);
-  const [activeMarkerRefId, setActiveMarkerRefId] = useState('');
-  const [isInfoWindow, setInfoWindow] = useState(false);
 
   const handleClickMap = (t, map, coord) => {
     // just to be sure, make sure the menu is collapsed
@@ -23,9 +20,7 @@ const GoogleMap = ({ google }) => {
   }
 
   const onMarkerClick = refId => (props, marker, e) => {
-    setActiveMarkerRefId(refId);
-    setActiveMarker(marker);
-    setInfoWindow(true);
+    console.log(refId);
   }
 
   const showMarkers = () => markers.map(({ markerIconId, lat, lng, refId }) => {
@@ -46,45 +41,6 @@ const GoogleMap = ({ google }) => {
     )
   });
 
-  const showInfoWindowContent = (info) => {
-    const marker = findMarkerByRefId(activeMarkerRefId);
-    const markerIcon = findMarkerIconById(marker.markerIconId);
-    const isImage = info.option === 'image' && info.image;
-    const isYoutube = info.option === 'youtube' && info.youtube;
-
-    return (
-      <div className="infowindow">
-        <div className="d-flex align-items-center">
-          <img src={cloudinaryCore.url(markerIcon.image, { height: 100, crop: 'fill' })} alt="yo" height="25" className="mr-2" />
-          <h4 className="m-0">{info.title}</h4>
-        </div>
-        <div className="mt-3 pb-2 border-bottom">{moment(info.date).format('DD MMMM YYYY')}</div>
-        <div className="mt-2">
-          <p>{info.body}</p>
-        </div>
-
-        {isYoutube && (
-          <iframe width="200" height="130" src={`https://www.youtube.com/embed/${info.youtube}`}></iframe>
-        )}
-
-        {isImage && (
-          <img src={cloudinaryCore.url(markerIcon.image, { height: 400, crop: 'fill' })} alt={info.title} height="130"/>
-        )}
-      </div>
-    )
-  }
-
-  const showInfoWindow = () => {
-    const info = findInfoWindowByMarkerRefId(activeMarkerRefId);
-    return (
-      <InfoWindow
-        marker={activeMarker}
-        visible={isInfoWindow}>
-          {info && showInfoWindowContent(info)}
-      </InfoWindow>
-    )
-  }
-
   const showMap = () => (
     <Map 
       google={google} 
@@ -94,7 +50,6 @@ const GoogleMap = ({ google }) => {
       onClick={handleClickMap}>
 
         {showMarkers()}
-        {showInfoWindow()}
 
     </Map>
   );

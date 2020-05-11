@@ -9,7 +9,7 @@ import Router from 'next/router';
 
 export const MapContext = createContext();
 
-export const MapContextProvider = ({ children, id }) => {
+export const MapContextProvider = ({ children, id, google }) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');

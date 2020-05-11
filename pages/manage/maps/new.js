@@ -8,6 +8,7 @@ import InfoWindowModal from '../../../components/map/InfoWindowModal';
 import SavingPrompt from '../../../components/map/SavingPrompt';
 import LoadingPrompt from '../../../components/map/LoadingPrompt';
 import MapNameModal from '../../../components/map/MapNameModal';
+import MapNamePrompt from '../../../components/map/MapNamePrompt';
 
 const MapsNew = () => {
   return (
@@ -23,6 +24,7 @@ const MapsNew = () => {
               <InfoWindowModal />
               <SavingPrompt />
               <LoadingPrompt />
+              <MapNamePrompt />
               <MapNameModal />
 
             </div>

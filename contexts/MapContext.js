@@ -55,9 +55,10 @@ export const MapContextProvider = ({ children, id }) => {
     setMarkerIcons(markerIcons);
 
     if (id) {
-      const { markers, infoWindows } = await getMapForEdit(id, token);
+      const { markers, infoWindows, mapName } = await getMapForEdit(id, token);
       setMarkers(markers);
       setInfoWindows(infoWindows);
+      setMapName(mapName);
     } else {
       // new map -> fetch name
       setMapNameModal(true);
@@ -109,7 +110,7 @@ export const MapContextProvider = ({ children, id }) => {
 
     // set the map id in the router if the id is not provided already
     if (!id) {
-      Router.replace(`/maps/${data.mapId}`);
+      Router.replace(`/manage/maps/${data.mapId}`);
     }
   }
 
@@ -146,6 +147,7 @@ export const MapContextProvider = ({ children, id }) => {
         state,
         saving,
         isSelectedMarkerIconModal,
+        mapName,
         isMenu,
         plusIconAppear,
         loading,

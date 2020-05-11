@@ -102,7 +102,7 @@ const GoogleMap = ({ google }) => {
   const showAddMarkerPrompt = () => (
     <Container>
       <Row>
-        <Col xs="12" className="mt-4 text-center text-white">
+        <Col xs="12" className="mt-5 text-center text-white">
           <div style={{backgroundColor: 'rgba(0,0,0,.5)', borderRadius: 5, padding: 5}}>
             <p className="m-0">Click anywhere on the map to drop the marker</p>
           </div>

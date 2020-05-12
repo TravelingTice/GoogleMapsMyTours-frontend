@@ -187,16 +187,6 @@ export const MapContextProvider = ({ children, id }) => {
   const onAddLine = async () => {
     setLineModal(false);
     setSaving(true);
-    
-    const data = await addLine(selectedLine, id, token);
-    
-    setSaving(false);
-
-    if (data.error) return setError(data.error);
-
-    // concat the line to the lines arr
-    setLines(lines.concat(data.line));
-
     // clear the selectedLine (no need to display it anymore)
     setSelectedLine({
       strokeColor: '#000000',
@@ -204,6 +194,15 @@ export const MapContextProvider = ({ children, id }) => {
       strokeWeight: 1,
       coords: []
     });
+    
+    const data = await addLine(selectedLine, id, token);
+    
+    setSaving(false);
+
+    // concat the line to the lines arr
+    setLines(lines.concat(data.line));
+    
+    if (data.error) setError(data.error);
   }
 
   const onUpdateLine = async () => {

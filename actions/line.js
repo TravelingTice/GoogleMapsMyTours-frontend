@@ -1,7 +1,8 @@
 import fetch from 'isomorphic-fetch';
 import { API } from '../config';
+import lowerSnakalize from '../helpers/lowerSnakalize';
 
-export const addLine = (line, token) => {
+export const addLine = (line, mapId, token) => {
   return fetch(`${API}/lines`, {
     method: 'POST',
     headers: {
@@ -9,7 +10,7 @@ export const addLine = (line, token) => {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json'
     },
-    body: JSON.stringify(line)
+    body: JSON.stringify({line: lowerSnakalize(line), map_id: mapId })
   })
   .then(res => res.json())
   .catch(err => console.log(err))

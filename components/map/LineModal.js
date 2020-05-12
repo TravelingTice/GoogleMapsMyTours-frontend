@@ -6,7 +6,7 @@ import Error from '../Error';
 import ColorPicker from 'material-ui-color-picker';
 
 const LineModal = () => {
-  const { isLineModal, setLineModal, selectedLine, setSelectedLine, onAddLine, onUpdateLine, lineError, setLineError, onRemoveLine } = useContext(MapContext);
+  const { isLineModal, setLineModal, selectedLine, setSelectedLine, onAddLine, onUpdateLine, lineError, setLineError, onRemoveLine, setState } = useContext(MapContext);
   const isEdit = !!selectedLine.id;
 
   const { strokeColor, strokeOpacity, strokeWeight } = selectedLine;
@@ -24,8 +24,9 @@ const LineModal = () => {
   }
   
   const handleSubmit = e => {
-    setLineError('');
     e.preventDefault();
+    setLineError('');
+    setState('');
     if (isEdit) {
       onUpdateLine();
     } else {
@@ -41,6 +42,7 @@ const LineModal = () => {
       strokeWeight: 1,
       coords: []
     });
+    setState('');
     setLineModal(false);
   }
   

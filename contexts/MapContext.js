@@ -70,8 +70,9 @@ export const MapContextProvider = ({ children, id }) => {
     setMarkerIcons(markerIcons);
 
     if (id) {
-      const { markers, infoWindows, mapName } = await getMapForEdit(id, token);
+      const { markers, infoWindows, lines, mapName } = await getMapForEdit(id, token);
       setMarkers(markers);
+      setLines(lines);
       setInfoWindows(infoWindows);
       setMapName(mapName);
     } else {
@@ -186,8 +187,10 @@ export const MapContextProvider = ({ children, id }) => {
   const onAddLine = async () => {
     setLineModal(false);
     setSaving(true);
-
-    const data = await addLine(selectedLine, token);
+    
+    const data = await addLine(selectedLine, id, token);
+    
+    setSaving(false);
 
     if (data.error) return setError(data.error);
 

@@ -5,7 +5,7 @@ import { MapContext } from '../../contexts/MapContext';
 import { panMapTo } from '../../helpers/map';
 
 const GoogleMap = ({ google }) => {
-  const { state, setMenu, setMoreMenu, onAddMarker, markers, lines, findMarkerIconById, selectedLine, setSelectedLine, initMarkerEdit, setLineModal } = useContext(MapContext);
+  const { state, setMenu, setMoreMenu, onAddMarker, markers, lines, findMarkerIconById, selectedLine, setSelectedLine, initMarkerEdit, isLineModal, setLineModal } = useContext(MapContext);
   const [selectedMarkers, setMarkers] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
@@ -31,7 +31,7 @@ const GoogleMap = ({ google }) => {
   useEffect(() => {
     setRefresh(true);
     setTimeout(() => setRefresh(false), 10);
-  }, [selectedLine])
+  }, [selectedLine]);
 
   const handleClickMap = (t, map, coord) => {
     // just to be sure, make sure the menu is collapsed
@@ -49,6 +49,12 @@ const GoogleMap = ({ google }) => {
     } else {
       initMarkerEdit(marker.id);
     }
+  }
+
+  const handleLineClick = line => (e) => {
+    setSelectedLine(line);
+    panMapTo(line.coords, e.map, google);
+    setLineModal(true);
   }
 
   const showMarkers = () => markers.map(marker => {
@@ -71,14 +77,17 @@ const GoogleMap = ({ google }) => {
     )
   });
 
-  const showLines = () => lines.map(line => (
-    <Polyline
-      path={line.path}
-      strokeColor={line.strokeColor}
-      strokeOpacity={line.strokeOpacity}
-      strokeWeight={line.strokeWeight} />
-  ))
-
+  const showLines = () => lines.map(line => {
+    if (line.id !== selectedLine.id) return (
+      <Polyline
+        onClick={handleLineClick(line)}
+        path={line.coords}
+        strokeColor={line.strokeColor}
+        strokeOpacity={line.strokeOpacity}
+        strokeWeight={line.strokeWeight} />
+    )
+    return null;
+  })
 
   const showSelectedLine = () => {
     const { strokeColor, strokeWeight, strokeOpacity, coords } = selectedLine;

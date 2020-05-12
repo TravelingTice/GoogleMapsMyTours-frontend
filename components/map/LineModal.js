@@ -7,7 +7,7 @@ import ColorPicker from 'material-ui-color-picker';
 
 const LineModal = () => {
   const { isLineModal, setLineModal, selectedLine, setSelectedLine, onAddLine, onUpdateLine, lineError, setLineError, onRemoveLine } = useContext(MapContext);
-  const isEdit = false;
+  const isEdit = !!selectedLine.id;
 
   const { strokeColor, strokeOpacity, strokeWeight } = selectedLine;
 
@@ -27,14 +27,14 @@ const LineModal = () => {
     setLineError('');
     e.preventDefault();
     if (isEdit) {
-      onUpdateLine(values);
+      onUpdateLine();
     } else {
-      onAddLine(values);
+      onAddLine();
     }
   }
   
   const closeModal = () => {
-    // remove the selected 2 coords
+    // remove the selected line
     setSelectedLine({
       strokeColor: '#000000',
       strokeOpacity: 1,

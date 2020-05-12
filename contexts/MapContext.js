@@ -181,6 +181,31 @@ export const MapContextProvider = ({ children, id }) => {
     }
   }
 
+  // line crud
+  const onAddLine = async () => {
+    setLineModal(false);
+    setSaving(true);
+
+    const data = await addLine(selectedLine, token);
+
+    if (data.error) return setError(data.error);
+
+    // concat the line to the lines arr
+    setLines(lines.concat(data.line));
+
+    // clear the selectedLine (no need to display it anymore)
+    setSelectedLine({
+      strokeColor: '#000000',
+      strokeOpacity: 1,
+      strokeWeight: 1,
+      coords: []
+    });
+  }
+
+  const onUpdateLine = async () => {
+
+  }
+
   const onRemoveMap = async () => {
     const answer = window.confirm(`Are you sure you want to remove ${mapName}?`);
 
@@ -246,6 +271,8 @@ export const MapContextProvider = ({ children, id }) => {
         onAddMarkerInfoWindow,
         onUpdateMarkerInfoWindow,
         onRemoveMarker,
+        onAddLine,
+        onUpdateLine,
         onRemoveMap
       }}>
       {children}

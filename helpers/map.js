@@ -7,10 +7,5 @@ export const panMapTo = (coords, map, google) => {
   const diff = orderedByLng[1].lng - orderedByLng[0].lng;
   const lng = orderedByLng[0].lng + (diff / 2);
 
-  console.log(lat);
-  console.log(orderedByLng);
-  console.log(diff)
-  console.log(lng);
-
   map.panTo(new google.maps.LatLng(lat, lng));
 }

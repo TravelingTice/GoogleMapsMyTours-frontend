@@ -10,7 +10,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import Error from '../Error';
 
 const InfoWindowModal = () => {
-  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findInfoWindowByMarkerRefId, markers, onAddMarkerInfoWindow, onUpdateMarkerInfoWindow, error, onRemoveMarker } = useContext(MapContext);
+  const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findInfoWindowByMarkerRefId, markers, onAddMarkerInfoWindow, onUpdateMarkerInfoWindow, infoWindowError, setIWError, onRemoveMarker } = useContext(MapContext);
   const isEdit = !!markerEditId;
 
   const [values, setValues] = useState({
@@ -47,9 +47,13 @@ const InfoWindowModal = () => {
     }
   }, [isInfoWindowModal]);
 
-  const handleChange = name => e => setValues({ ...values, [name]: e.target.value });
+  const handleChange = name => e => {
+    setIWError('');
+    setValues({ ...values, [name]: e.target.value });
+  }
 
   const handleImageChange = async e => {
+    setIWError('');
     if (e.target.files && e.target.files[0]) {
       const prev = await convertToBase64(e.target.files[0]);
 
@@ -59,11 +63,18 @@ const InfoWindowModal = () => {
     }
   }
 
-  const handleOptionChange = name => e => setValues({ ...values, option: name });
+  const handleOptionChange = name => e => {
+    setIWError('');
+    setValues({ ...values, option: name });
+  };
 
-  const handleDateChange = date => setValues({ ...values, date });
+  const handleDateChange = date => {
+    setIWError('');
+    setValues({ ...values, date });
+  }
 
   const handleSubmit = e => {
+    setIWError('');
     e.preventDefault();
     if (isEdit) {
       onUpdateMarkerInfoWindow(values);
@@ -105,7 +116,7 @@ const InfoWindowModal = () => {
   
   const showDeleteButton = () => <Button onClick={onRemoveMarker} color="secondary" variant="outlined">Delete</Button>
 
-  const showError = () => error && <Error content={error} />
+  const showError = () => infoWindowError && <Error content={infoWindowError} />
 
   return (
     <Modal isOpen={isInfoWindowModal} toggle={closeModal}>

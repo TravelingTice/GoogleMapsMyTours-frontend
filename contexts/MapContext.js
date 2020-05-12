@@ -28,6 +28,7 @@ export const MapContextProvider = ({ children, id }) => {
   const [selectedMarkerIcon, setSelectedMarkerIcon] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [infoWindows, setInfoWindows] = useState([]);
+  const [infoWindowError, setIWError] = useState('');
   const [markerEditId, setMarkerEditId] = useState('');
 
   const [modalError, setModalError] = useState('');
@@ -78,7 +79,7 @@ export const MapContextProvider = ({ children, id }) => {
     setMenu(true);
   }
 
-  const initMarkerEdit = refId => (props, marker, e) => {
+  const initMarkerEdit = refId => {
     setMarkerEditId(refId);
     setInfoWindowModal(true);
   }
@@ -103,6 +104,8 @@ export const MapContextProvider = ({ children, id }) => {
   const onAddMarkerInfoWindow = async infoWindow => {
     // frontend -> add infowindow for the marker (marker is already on the map)
     setInfoWindows(infoWindows.concat(infoWindow));
+
+    setInfoWindowModal(false);
 
     // backend
     // show saving prompt in the top right
@@ -204,13 +207,16 @@ export const MapContextProvider = ({ children, id }) => {
         selectedMarkerIcon,
         isInfoWindowModal,
         markerEditId,
+        infoWindowError,
         isMapNameModal,
         initMapName,
         initMarkerEdit,
         setSelectedMarkerIconModal,
         setInfoWindowModal,
+        setIWError,
         setMenu,
         setMoreMenu,
+        setError,
         setState,
         toggleMenu,
         toggleMoreMenu,

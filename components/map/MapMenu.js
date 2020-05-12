@@ -9,7 +9,7 @@ import { Motion, spring } from 'react-motion';
 import { MapContext } from "../../contexts/MapContext";
 
 const MapMenu = () => {
-  const { buttonsAppear, isMenu, toggleMenu, setState, setSelectedMarkerIconModal } = useContext(MapContext);
+  const { buttonsAppear, isMenu, toggleMenu, setState, setSelectedMarkerIconModal, markers, setError } = useContext(MapContext);
   const [step, setStep] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
 
@@ -26,6 +26,14 @@ const MapMenu = () => {
       setTimeout(() => setZIndex(-1), 500);
     }
   }, [isMenu]);
+
+  const initLine = () => {
+    if (markers.length < 2) {
+      setError('You need at least 2 markers to connect a line');
+    } else {
+      setState('newLine');
+    }
+  }
 
   const button = (style, icon, text, onClick) => (
     <Motion style={{opacity: spring(style.opacity), right: spring(style.right)}}>{({opacity, right}) =>
@@ -46,9 +54,7 @@ const MapMenu = () => {
           setSelectedMarkerIconModal(true)
           setState('newMarker');
         })}
-        {button(buttonAppears[1], <TimelineIcon/>, 'Line', () => {
-          setState('newLine')
-        })}
+        {button(buttonAppears[1], <TimelineIcon/>, 'Line', initLine)}
         {button(buttonAppears[2], <CodeIcon/>, 'KML', () => {
           setState('newKML');
         })}

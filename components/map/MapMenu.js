@@ -9,8 +9,7 @@ import { Motion, spring } from 'react-motion';
 import { MapContext } from "../../contexts/MapContext";
 
 const MapMenu = () => {
-  const { buttonsAppear, setState, setSelectedMarkerIconModal } = useContext(MapContext);
-  const [isMenu, setMenu] = useState(false);
+  const { buttonsAppear, isMenu, toggleMenu, setState, setSelectedMarkerIconModal } = useContext(MapContext);
   const [step, setStep] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
 

@@ -1,18 +1,16 @@
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import { GOOGLE_API_KEY } from '../../config';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { MapContext } from '../../contexts/MapContext';
-import { Container, Row, Col } from 'reactstrap';
 import { cloudinaryCore } from '../../config';
-import { Image, Transformation } from 'cloudinary-react';
-import moment from 'moment';
 
 const GoogleMap = ({ google }) => {
-  const { state, selectedMarkerIcon, setMenu, onAddMarker, markers, findMarkerIconById, findInfoWindowByMarkerRefId, findMarkerByRefId, initMarkerEdit } = useContext(MapContext);
+  const { state, setMenu, setMoreMenu, onAddMarker, markers, findMarkerIconById, findInfoWindowByMarkerRefId, findMarkerByRefId, initMarkerEdit } = useContext(MapContext);
 
   const handleClickMap = (t, map, coord) => {
     // just to be sure, make sure the menu is collapsed
     setMenu(false);
+    setMoreMenu(false);
     // handle click for when state = marker
     if (state === 'newMarker') {
       onAddMarker(coord);

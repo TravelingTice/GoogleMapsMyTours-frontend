@@ -26,3 +26,14 @@ export const getMap = id => {
   .then(res => res.json())
   .catch(err => console.log(err))
 }
+
+export const removeMap = (id, token) => {
+  return fetch(`${API}/maps/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(res => res.json())
+  .catch(err => console.log(err))
+}

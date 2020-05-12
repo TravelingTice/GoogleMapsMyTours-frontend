@@ -2,7 +2,7 @@ import { useState, createContext, useEffect } from 'react';
 import { getMarkerIcons } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
 import generateId from 'generate-unique-id';
-import { getMapForEdit } from '../actions/map';
+import { getMapForEdit, removeMap } from '../actions/map';
 import { addMarkerInfoWindow, updateMarkerInfoWindow, removeMarker } from '../actions/marker';
 import lowerSnakalize from '../helpers/lowerSnakalize';
 import Router from 'next/router';
@@ -20,6 +20,8 @@ export const MapContextProvider = ({ children, id }) => {
   const [markerIcons, setMarkerIcons] = useState([]);
   // states: add marker, add line, add kml
   const [state, setState] = useState('');
+  const [isMenu, setMenu] = useState(false);
+  const [isMoreMenu, setMoreMenu] = useState(false);
   // marker crud
   const [isSelectedMarkerIconModal, setSelectedMarkerIconModal] = useState(false);
   const [isInfoWindowModal, setInfoWindowModal] = useState(false);
@@ -39,6 +41,10 @@ export const MapContextProvider = ({ children, id }) => {
 
   const findInfoWindowByMarkerRefId = refId => infoWindows.find(infoWindow => infoWindow.markerRefId === refId);
 
+  const toggleMenu = () => setMenu(!isMenu);
+
+  const toggleMoreMenu = () => setMoreMenu(!isMoreMenu);
+  
   useEffect(() => {
     fetchMapData(id);
   }, [id]);
@@ -161,6 +167,23 @@ export const MapContextProvider = ({ children, id }) => {
       if (data.error) return setError(data.error);
     }
   }
+
+  const onRemoveMap = async () => {
+    const answer = window.confirm(`Are you sure you want to remove ${mapName}?`);
+
+    if (answer) {
+      setLoading(true);
+
+      const data = await removeMap(id, token);
+
+      if (data.error) {
+        setLoading(false);
+        setError(data.error);
+      }
+
+      Router.push('/dashboard');
+    }
+  }
   
   return (
     <MapContext.Provider
@@ -169,6 +192,8 @@ export const MapContextProvider = ({ children, id }) => {
         saving,
         isSelectedMarkerIconModal,
         mapName,
+        isMenu,
+        isMoreMenu,
         buttonsAppear,
         loading,
         error,
@@ -184,7 +209,11 @@ export const MapContextProvider = ({ children, id }) => {
         initMarkerEdit,
         setSelectedMarkerIconModal,
         setInfoWindowModal,
+        setMenu,
+        setMoreMenu,
         setState,
+        toggleMenu,
+        toggleMoreMenu,
         setMarkers,
         findMarkerIconById,
         findMarkerByRefId,
@@ -193,7 +222,8 @@ export const MapContextProvider = ({ children, id }) => {
         onAddMarker,
         onAddMarkerInfoWindow,
         onUpdateMarkerInfoWindow,
-        onRemoveMarker
+        onRemoveMarker,
+        onRemoveMap
       }}>
       {children}
     </MapContext.Provider>

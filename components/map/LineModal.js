@@ -55,36 +55,17 @@ const LineModal = () => {
 
   const closeModal = () => {
     if (!isEdit) {
-      
+
     } else {
       setLineModal(false);
     }
   }
 
-  const showPreview = () => {
-    const isYoutube = option === 'youtube' && youtube 
-    const isImage = option === 'image' && image;
-    const isCloudinaryImage = option === 'image' && cloudinaryImage;
-
-    if (isImage) return (
-      <img src={image} alt="" style={{maxHeight: 130}} />
-    )
-    if (isCloudinaryImage) return (
-      <Image publicId={cloudinaryImage} height="130">
-        <Transformation height="200" crop="fill" />
-      </Image>
-    )
-    if (isYoutube) return (
-      <iframe width="200" height="130" src={`https://www.youtube.com/embed/${youtube}`}></iframe>
-    )
-    return null;
-  }
-
   const showSubmitButton = () => <Button type="submit" color="primary" variant="outlined">{isEdit ? 'Update' : 'Create'}</Button>
   
-  const showDeleteButton = () => <Button onClick={onRemoveMarker} color="secondary" variant="outlined">Delete</Button>
+  const showDeleteButton = () => <Button onClick={onRemoveLine} color="secondary" variant="outlined">Delete</Button>
 
-  const showError = () => infoWindowError && <Error content={infoWindowError} />
+  const showError = () => lineError && <Error content={lineError} />
 
   return (
     <Modal isOpen={isLineModal} toggle={closeModal}>

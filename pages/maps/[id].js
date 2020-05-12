@@ -1,4 +1,4 @@
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Map, InfoWindow, Marker, GoogleApiWrapper, Polyline } from 'google-maps-react';
 import { GOOGLE_API_KEY } from '../../config';
 import { useState, useEffect } from 'react';
 import { cloudinaryCore } from '../../config';
@@ -10,6 +10,7 @@ import Layout from '../../components/layout/Layout';
 
 const MapShow = ({ google, router }) => {
   const [markers, setMarkers] = useState([]);
+  const [lines, setLines] = useState([]);
   const [error, setError] = useState('');
   const [bounds, setBounds] = useState('');
   const [activeGoogleMarker, setActiveGoogleMarker] = useState(null);
@@ -26,9 +27,10 @@ const MapShow = ({ google, router }) => {
 
       if (data.error) return setError(data.error);
 
-      const { markers, mapName } = data;
+      const { markers, mapName, lines } = data;
 
       setMarkers(markers);
+      setLines(lines);
 
       // extend the bounds to the map markers
       const bounds = new google.maps.LatLngBounds();
@@ -99,6 +101,16 @@ const MapShow = ({ google, router }) => {
     )
   }
 
+  const showLines = () => lines.map(line => {
+    const { strokeColor, strokeWeight, strokeOpacity, coords } = line;
+    return (
+      <Polyline
+        path={coords}
+        strokeColor={strokeColor}
+        strokeWeight={strokeWeight}
+        strokeOpacity={parseFloat(strokeOpacity)} />
+    )});
+
   const showInfoWindow = () => {
     return (
       <InfoWindow
@@ -119,6 +131,7 @@ const MapShow = ({ google, router }) => {
         onClick={handleClickMap}>
 
           {showMarkers()}
+          {showLines()}
           {showInfoWindow()}
 
       </Map>

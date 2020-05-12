@@ -87,7 +87,7 @@ const GoogleMap = ({ google }) => {
         strokeWeight={line.strokeWeight} />
     )
     return null;
-  })
+  });
 
   const showSelectedLine = () => {
     const { strokeColor, strokeWeight, strokeOpacity, coords } = selectedLine;

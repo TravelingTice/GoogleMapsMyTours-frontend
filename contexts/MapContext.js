@@ -3,7 +3,7 @@ import { getMarkerIcons } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
 import generateId from 'generate-unique-id';
 import { getMapForEdit, removeMap } from '../actions/map';
-import { addLine } from '../actions/line';
+import { addLine, updateLine } from '../actions/line';
 import { addMarkerInfoWindow, updateMarkerInfoWindow, removeMarker } from '../actions/marker';
 import lowerSnakalize from '../helpers/lowerSnakalize';
 import Router from 'next/router';
@@ -207,7 +207,32 @@ export const MapContextProvider = ({ children, id }) => {
   }
 
   const onUpdateLine = async () => {
+    // frontend
+    setLineModal(false);
 
+    // replace the line in the lines array
+    const oldLine = lines.find(line => line.id === selectedLine.id);
+    const index = lines.indexOf(oldLine);
+    const newLines = lines;
+    newLines[index] = selectedLine;
+    setLines(newLines);
+
+    // backend
+    setSaving(true);
+    
+    const data = await updateLine(selectedLine, selectedLine.id, token);
+    
+    setSaving(false);
+
+    if (data.error) setError(data.error);
+
+    // clear the selectedLine (no need to display it anymore)
+    setSelectedLine({
+      strokeColor: '#000000',
+      strokeOpacity: 1,
+      strokeWeight: 1,
+      coords: []
+    });
   }
 
   const onRemoveMap = async () => {

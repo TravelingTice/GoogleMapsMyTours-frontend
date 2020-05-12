@@ -16,11 +16,10 @@ export const MapContextProvider = ({ children, id }) => {
   // startup
   const [mapName, setMapName] = useState('');
   const [isMapNameModal, setMapNameModal] = useState(false);
-  const [plusIconAppear, setPlusIcon] = useState(false);
+  const [buttonsAppear, setButtonsAppear] = useState(false);
   const [markerIcons, setMarkerIcons] = useState([]);
   // states: add marker, add line, add kml
   const [state, setState] = useState('');
-  const [isMenu, setMenu] = useState(false);
   // marker crud
   const [isSelectedMarkerIconModal, setSelectedMarkerIconModal] = useState(false);
   const [isInfoWindowModal, setInfoWindowModal] = useState(false);
@@ -40,8 +39,6 @@ export const MapContextProvider = ({ children, id }) => {
 
   const findInfoWindowByMarkerRefId = refId => infoWindows.find(infoWindow => infoWindow.markerRefId === refId);
 
-  const toggleMenu = () => setMenu(!isMenu);
-  
   useEffect(() => {
     fetchMapData(id);
   }, [id]);
@@ -66,7 +63,7 @@ export const MapContextProvider = ({ children, id }) => {
 
     setLoading(false);
         
-    setTimeout(() => setPlusIcon(true), 500);
+    setTimeout(() => setButtonsAppear(true), 500);
   }
 
   const initMapName = name => {
@@ -172,8 +169,7 @@ export const MapContextProvider = ({ children, id }) => {
         saving,
         isSelectedMarkerIconModal,
         mapName,
-        isMenu,
-        plusIconAppear,
+        buttonsAppear,
         loading,
         error,
         modalLoading,
@@ -188,9 +184,7 @@ export const MapContextProvider = ({ children, id }) => {
         initMarkerEdit,
         setSelectedMarkerIconModal,
         setInfoWindowModal,
-        setMenu,
         setState,
-        toggleMenu,
         setMarkers,
         findMarkerIconById,
         findMarkerByRefId,

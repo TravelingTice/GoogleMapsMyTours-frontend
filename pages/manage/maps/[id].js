@@ -10,6 +10,7 @@ import ErrorPrompt from '../../../components/map/ErrorPrompt';
 import LoadingPrompt from '../../../components/map/LoadingPrompt';
 import MapNamePrompt from '../../../components/map/MapNamePrompt';
 import InstructionsPrompt from '../../../components/map/InstructionsPrompt';
+import MapMoreMenu from '../../../components/map/MapMoreMenu';
 import { withRouter } from 'next/router';
 
 const MapsEdit = ({ router }) => {
@@ -23,6 +24,7 @@ const MapsEdit = ({ router }) => {
               <GoogleMap />
               <InstructionsPrompt />
               <MapMenu />
+              <MapMoreMenu />
               <SelectedMarkerIconModal />
               <InfoWindowModal />
               <SavingPrompt />

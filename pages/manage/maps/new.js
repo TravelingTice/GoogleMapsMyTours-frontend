@@ -10,6 +10,7 @@ import LoadingPrompt from '../../../components/map/LoadingPrompt';
 import MapNameModal from '../../../components/map/MapNameModal';
 import MapNamePrompt from '../../../components/map/MapNamePrompt';
 import InstructionsPrompt from '../../../components/map/InstructionsPrompt';
+import MapMoreMenu from '../../../components/map/MapMoreMenu';
 
 const MapsNew = () => {
   return (
@@ -22,6 +23,7 @@ const MapsNew = () => {
               <GoogleMap />
               <InstructionsPrompt />
               <MapMenu />
+              <MapMoreMenu />
               <SelectedMarkerIconModal />
               <InfoWindowModal />
               <SavingPrompt />

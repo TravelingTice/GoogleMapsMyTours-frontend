@@ -129,6 +129,8 @@ export const MapContextProvider = ({ children, id }) => {
 
     setSaving(false);
 
+    setState('');
+
     if (data.error) return setError(data.error);
 
     // set the map id in the router if the id is not provided already

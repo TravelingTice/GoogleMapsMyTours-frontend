@@ -47,7 +47,7 @@ const GoogleMap = ({ google }) => {
     if (state === 'newLine') {
       setMarkers(selectedMarkers.concat(marker));
     } else {
-      initMarkerEdit(marker.id);
+      initMarkerEdit(marker.refId);
     }
   }
 
@@ -83,7 +83,7 @@ const GoogleMap = ({ google }) => {
         onClick={handleLineClick(line)}
         path={line.coords}
         strokeColor={line.strokeColor}
-        strokeOpacity={line.strokeOpacity}
+        strokeOpacity={parseFloat(line.strokeOpacity)}
         strokeWeight={line.strokeWeight} />
     )
     return null;
@@ -96,7 +96,7 @@ const GoogleMap = ({ google }) => {
         path={coords}
         strokeColor={strokeColor}
         strokeWeight={strokeWeight}
-        strokeOpacity={strokeOpacity} />
+        strokeOpacity={parseFloat(strokeOpacity)} />
     )
   }
 

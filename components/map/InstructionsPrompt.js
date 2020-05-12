@@ -4,12 +4,11 @@ import { MapContext } from '../../contexts/MapContext';
 const InstructionsPrompt = () => {
   const { state, selectedMarkerIcon } = useContext(MapContext);
 
-  const texts = {
-    newMarker: 'Click anywhere on the map to drop the marker',
-    addLine: 'Click 2 markers to connect the line between'
-  }
+  let text;
 
-  const text = texts[state] || '';
+  if (state === 'newMarker' && selectedMarkerIcon) {
+    text = 'Click anywhere on the map to drop the marker'
+  }
 
   return text && selectedMarkerIcon ? (
     <div style={{position: 'absolute', zIndex: 2, top: 65, width: '100%'}} className="d-flex justify-content-center">

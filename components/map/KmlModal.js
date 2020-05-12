@@ -10,7 +10,6 @@ import { addKml } from '../../actions/kml';
 
 const KmlModal = () => {
   const { isKmlModal, setKmlModal, id, setKmls, kmls } = useContext(MapContext);
-  const isEdit = false;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [file, setFile] = useState(null);
@@ -48,19 +47,11 @@ const KmlModal = () => {
     setKmls(kmls.concat({ name: data.name }));
   }
 
-  const handleRemove = e => {
-    console.log('ya');
-  }
-
   const showSubmitButton = () => {
     let text = 'Add';
     if (loading) text = <img style={{height: '0.875rem'}} src="/loading.svg" alt="Loading..."/>
     return <Button disabled={!file} color='primary' type="submit" variant='outlined'>{text}</Button>
   }
-
-  const showDeleteButton = () => (
-    <Button color="secondary" onClick={handleRemove} variant="outlined">Delete</Button>
-  )
 
   const displayFileName = () => file && (
     <div className="my-3">{file.name}</div>
@@ -75,6 +66,8 @@ const KmlModal = () => {
       <ModalBody>
         {showError()}
         <Form onSubmit={handleSubmit}>
+
+          <p className="m-0 text-muted font-italic">Make sure your kml file name doesn't contain any spaces</p>
 
           <FormGroup className="my-4">
             <label className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary" htmlFor="icon">
@@ -95,7 +88,6 @@ const KmlModal = () => {
 
           <div className="mt-3 d-flex justify-content-between">
             {showSubmitButton()}
-            {isEdit && showDeleteButton()}
           </div>
         </Form>
       </ModalBody>

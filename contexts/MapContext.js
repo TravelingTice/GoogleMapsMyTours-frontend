@@ -43,6 +43,7 @@ export const MapContextProvider = ({ children, id }) => {
   const [lineError, setLineError] = useState('');
   // kml crud
   const [isKmlModal, setKmlModal] = useState(false);
+  const [isKmlManageModal, setKmlManageModal] = useState(false);
   const [kmls, setKmls] = useState([]);
 
   const token = getCookie('token');
@@ -63,7 +64,8 @@ export const MapContextProvider = ({ children, id }) => {
 
   useEffect(() => {
     setMenu(false);
-  }, [state]);
+    setMoreMenu(false);
+  }, [state, isKmlManageModal ]);
 
   const fetchMapData = async (id) => {
     const markerIcons = await getMarkerIcons(token);
@@ -302,15 +304,18 @@ export const MapContextProvider = ({ children, id }) => {
         isInfoWindowModal,
         isLineModal,
         isKmlModal,
+        isKmlManageModal,
         markerEditId,
         infoWindowError,
         isMapNameModal,
+        setLoading,
         initMapName,
         initMarkerEdit,
         setSelectedMarkerIconModal,
         setInfoWindowModal,
         setLineModal,
         setKmlModal,
+        setKmlManageModal,
         setIWError,
         setLineError,
         setSelectedLine,

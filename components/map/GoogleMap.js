@@ -43,7 +43,6 @@ const GoogleMap = ({ google }) => {
           preserveViewport: true,
           map: mapRef.map
         });
-        console.log(kmlLayer);
       })
     }
   }, [kmls])

@@ -6,44 +6,21 @@ import Error from '../Error';
 import ColorPicker from 'material-ui-color-picker';
 
 const LineModal = () => {
-  const { isLineModal, lineEditId, setLineModal, findLineById, lines, onAddLine, onUpdateLine, lineError, setLineError, onRemoveLine, setSelectedCoords } = useContext(MapContext);
+  const { isLineModal, setLineModal, selectedLine, setSelectedLine, onAddLine, onUpdateLine, lineError, setLineError, onRemoveLine } = useContext(MapContext);
+  const isEdit = false;
 
-  const isEdit = !!lineEditId;
+  const { strokeColor, strokeOpacity, strokeWeight } = selectedLine;
 
   const strokeWeights = [1,2,3,4,5];
-
-  const [values, setValues] = useState({
-    strokeColor: '#000000',
-    strokeOpacity: 1,
-    strokeWeight: 1
-  });
-  
-  const { strokeColor, strokeOpacity, strokeWeight } = values;
-  
-  useEffect(() => {
-    if (isLineModal) {
-      if (isEdit) {
-        const line = findLineById(lineEditId);
-        setValues({ ...line });
-      } else {
-        // new marker, which means we only need to attach the last marker that was added to this marker ref id value
-        setValues({
-          strokeColor: '#000000',
-          strokeOpacity: 1,
-          strokeWeight: 1
-        })
-      }
-    }
-  }, [isLineModal]);
   
   const handleChange = name => e => {
     setLineError('');
-    setValues({ ...values, [name]: e.target.value });
+    setSelectedLine({ ...selectedLine, [name]: e.target.value });
   }
 
   const handleColorChange = color => {
     setLineError('');
-    setValues({ ...values, strokeColor: color });
+    setSelectedLine({ ...selectedLine, strokeColor: color });
   }
   
   const handleSubmit = e => {
@@ -57,10 +34,13 @@ const LineModal = () => {
   }
   
   const closeModal = () => {
-    if (!isEdit) {
-      // remove the selected 2 coords
-      setSelectedCoords([]);
-    } 
+    // remove the selected 2 coords
+    setSelectedLine({
+      strokeColor: '#000000',
+      strokeOpacity: 1,
+      strokeWeight: 1,
+      coords: []
+    });
     setLineModal(false);
   }
   

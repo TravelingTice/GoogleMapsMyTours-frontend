@@ -32,9 +32,13 @@ export const MapContextProvider = ({ children, id }) => {
   const [markerEditId, setMarkerEditId] = useState('');
   // line crud
   const [lines, setLines] = useState([]);
-  const [selectedCoords, setSelectedCoords] = useState([]);
-  const [isLineModal, setLineModal] = useState(true);
-  const [lineEditId, setLineEditId] = useState('');
+  const [isLineModal, setLineModal] = useState(false);
+  const [selectedLine, setSelectedLine] = useState({
+    strokeColor: '#000000',
+    strokeOpacity: 1,
+    strokeWeight: 1,
+    coords: []
+  });
   const [lineError, setLineError] = useState('');
 
   const [modalError, setModalError] = useState('');
@@ -59,7 +63,7 @@ export const MapContextProvider = ({ children, id }) => {
   useEffect(() => {
     setMenu(false);
   }, [state]);
-  
+
   const fetchMapData = async (id) => {
     const markerIcons = await getMarkerIcons(token);
     setMarkerIcons(markerIcons);
@@ -212,6 +216,7 @@ export const MapContextProvider = ({ children, id }) => {
         markerIcons,
         markers,
         lines,
+        selectedLine,
         selectedMarkerIcon,
         isInfoWindowModal,
         isLineModal,
@@ -225,7 +230,7 @@ export const MapContextProvider = ({ children, id }) => {
         setLineModal,
         setIWError,
         setLineError,
-        setSelectedCoords,
+        setSelectedLine,
         setMenu,
         setMoreMenu,
         setError,

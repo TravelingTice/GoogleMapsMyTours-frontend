@@ -39,6 +39,7 @@
     "react-motion": "^0.5.2",
     "reactstrap": "^8.4.1",
     "sass": "^1.26.5",
+    "sort-by": "^1.2.0",
     "styled-components": "^5.1.0"
   }
 }

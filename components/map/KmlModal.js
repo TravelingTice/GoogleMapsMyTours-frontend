@@ -5,27 +5,22 @@ import { getCookie } from "../../actions/auth";
 import Error from '../Error';
 import CodeIcon from '@material-ui/icons/Code';
 import { MapContext } from "../../contexts/MapContext";
-import convertToBase64 from '../../helpers/convertToBase64';
+import convertToText from '../../helpers/convertToText';
 import { addKml } from '../../actions/kml';
 
 const KmlModal = () => {
-  const { isKmlModal, setKmlModal } = useContext(MapContext);
+  const { isKmlModal, setKmlModal, id } = useContext(MapContext);
   const isEdit = false;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [name, setName] = useState('');
   const [file, setFile] = useState(null);
 
   const token = getCookie('token');
 
   const closeModal = () => setKmlModal(false);
 
-  const handleNameChange = e => {
-    setError('');
-    setName(e.target.value);
-  }
-
   const handleFileChange = async e => {
+    setError('');
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     }
@@ -33,18 +28,20 @@ const KmlModal = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (!name) return setError('Name cannot be blank');
     if (!file) return setError('File needed');
-    if (!file.match(/.kml$/)) return setError('File can only be of type KML');
+    if (!file.name.match(/.kml$/)) return setError('File can only be of type KML');
 
-    const content = await convertToBase64(file);
-    const newKml = { name, content }
+    setLoading(true);
 
-    const data = await addKml(newKml, token);
+    const code = await convertToText(file);
+    const newKml = { name: file.name, code }
+
+    const data = await addKml(newKml, id, token);
+
+    setLoading(false);
+    setKmlModal(false);
 
     if (data.error) return setError(data.error);
-
-
   }
 
   const handleRemove = e => {
@@ -54,7 +51,7 @@ const KmlModal = () => {
   const showSubmitButton = () => {
     let text = 'Add';
     if (loading) text = <img style={{height: '0.875rem'}} src="/loading.svg" alt="Loading..."/>
-    return <Button color='primary' type="submit" variant='outlined'>{text}</Button>
+    return <Button disabled={!file} color='primary' type="submit" variant='outlined'>{text}</Button>
   }
 
   const showDeleteButton = () => (
@@ -74,13 +71,6 @@ const KmlModal = () => {
       <ModalBody>
         {showError()}
         <Form onSubmit={handleSubmit}>
-
-          <FormGroup>
-            <FormControl>
-              <InputLabel htmlFor="name">Name</InputLabel>
-              <Input id="name" onChange={handleNameChange} value={name} />
-            </FormControl>
-          </FormGroup>
 
           <FormGroup className="my-4">
             <label className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary" htmlFor="icon">

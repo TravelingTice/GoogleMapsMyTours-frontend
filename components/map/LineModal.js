@@ -86,7 +86,7 @@ const LineModal = () => {
                 onChange={handleChange('strokeWeight')}
               >
                 {strokeWeights.map(option => (
-                  <MenuItem value={option}>{option}</MenuItem>
+                  <MenuItem key={option} value={option}>{option}</MenuItem>
                 ))}
               </Select>
             </FormControl>

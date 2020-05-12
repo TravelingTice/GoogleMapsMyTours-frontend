@@ -10,7 +10,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import Error from '../Error';
 
 const LineModal = () => {
-  const { isLineModal, lineEditId, setLineModal, findLineById, lines, onAddLine, onUpdateLine, lineError, setLineError, onRemoveLine } = useContext(MapContext);
+  const { isLineModal, lineEditId, setLineModal, findLineById, lines, onAddLine, onUpdateLine, lineError, setLineError, onRemoveLine, setSelectedCoords } = useContext(MapContext);
 
   const isEdit = !!lineEditId;
 
@@ -55,10 +55,10 @@ const LineModal = () => {
 
   const closeModal = () => {
     if (!isEdit) {
-
-    } else {
-      setLineModal(false);
-    }
+      // remove the selected 2 coords
+      setSelectedCoords([]);
+    } 
+    setLineModal(false);
   }
 
   const showSubmitButton = () => <Button type="submit" color="primary" variant="outlined">{isEdit ? 'Update' : 'Create'}</Button>
@@ -69,7 +69,7 @@ const LineModal = () => {
 
   return (
     <Modal isOpen={isLineModal} toggle={closeModal}>
-      <ModalHeader toggle={closeModal}>{isEdit ? 'Edit' : 'Add'} Info Window</ModalHeader>
+      <ModalHeader toggle={closeModal}>{isEdit ? 'Edit' : 'Add'} Line</ModalHeader>
 
       <ModalBody>
         {showError()}

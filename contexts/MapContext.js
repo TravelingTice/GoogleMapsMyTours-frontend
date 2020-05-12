@@ -32,8 +32,10 @@ export const MapContextProvider = ({ children, id }) => {
   const [markerEditId, setMarkerEditId] = useState('');
   // line crud
   const [lines, setLines] = useState([]);
+  const [selectedCoords, setSelectedCoords] = useState([]);
   const [isLineModal, setLineModal] = useState(true);
   const [lineEditId, setLineEditId] = useState('');
+  const [lineError, setLineError] = useState('');
 
   const [modalError, setModalError] = useState('');
   const [modalLoading, setModalLoading] = useState(false);
@@ -206,6 +208,7 @@ export const MapContextProvider = ({ children, id }) => {
         error,
         modalLoading,
         modalError,
+        lineError,
         markerIcons,
         markers,
         lines,
@@ -221,6 +224,8 @@ export const MapContextProvider = ({ children, id }) => {
         setInfoWindowModal,
         setLineModal,
         setIWError,
+        setLineError,
+        setSelectedCoords,
         setMenu,
         setMoreMenu,
         setError,

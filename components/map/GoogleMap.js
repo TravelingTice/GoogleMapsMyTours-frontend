@@ -5,12 +5,16 @@ import { MapContext } from '../../contexts/MapContext';
 import { cloudinaryCore } from '../../config';
 
 const GoogleMap = ({ google }) => {
-  const { state, setMenu, setMoreMenu, onAddMarker, markers, findMarkerIconById, findInfoWindowByMarkerRefId, findMarkerByRefId, initMarkerEdit } = useContext(MapContext);
+  const { state, setMenu, setMoreMenu, onAddMarker, markers, findMarkerIconById, setSelectedCoords, findInfoWindowByMarkerRefId, findMarkerByRefId, initMarkerEdit } = useContext(MapContext);
   const [selectedMarkers, setMarkers] = useState([]);
 
   useEffect(() => {
     if (selectedMarkers.length >= 2) {
-      console.log(selectedMarkers[0].lat);
+      const coords = selectedMarkers.map(({lat, lng}) => {
+        return { lat, lng }
+      });
+
+      setSelectedCoords(coords);
     }
   }, [selectedMarkers]);
 

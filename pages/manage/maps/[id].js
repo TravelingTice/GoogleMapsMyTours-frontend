@@ -5,6 +5,7 @@ import GoogleMap from '../../../components/map/GoogleMap';
 import MapMenu from '../../../components/map/MapMenu';
 import SelectedMarkerIconModal from '../../../components/map/SelectedMarkerIconModal';
 import InfoWindowModal from '../../../components/map/InfoWindowModal';
+import LineModal from '../../../components/map/LineModal';
 import SavingPrompt from '../../../components/map/SavingPrompt';
 import ErrorPrompt from '../../../components/map/ErrorPrompt';
 import LoadingPrompt from '../../../components/map/LoadingPrompt';
@@ -22,15 +23,20 @@ const MapsEdit = ({ router }) => {
             <div style={{position: 'relative', height: '100%'}}>
 
               <GoogleMap />
+
               <InstructionsPrompt />
-              <MapMenu />
-              <MapMoreMenu />
-              <SelectedMarkerIconModal />
-              <InfoWindowModal />
               <SavingPrompt />
               <ErrorPrompt />
               <LoadingPrompt />
               <MapNamePrompt />
+
+              <MapMenu />
+              <MapMoreMenu />
+
+              <SelectedMarkerIconModal />
+              <InfoWindowModal />
+              <LineModal />
+              
             </div>
           </Layout>
         </div>

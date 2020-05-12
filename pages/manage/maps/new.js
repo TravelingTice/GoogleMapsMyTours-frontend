@@ -9,6 +9,8 @@ import SavingPrompt from '../../../components/map/SavingPrompt';
 import LoadingPrompt from '../../../components/map/LoadingPrompt';
 import MapNameModal from '../../../components/map/MapNameModal';
 import MapNamePrompt from '../../../components/map/MapNamePrompt';
+import InstructionsPrompt from '../../../components/map/InstructionsPrompt';
+import MapMoreMenu from '../../../components/map/MapMoreMenu';
 
 const MapsNew = () => {
   return (
@@ -19,7 +21,9 @@ const MapsNew = () => {
             <div style={{position: 'relative', height: '100%'}}>
 
               <GoogleMap />
+              <InstructionsPrompt />
               <MapMenu />
+              <MapMoreMenu />
               <SelectedMarkerIconModal />
               <InfoWindowModal />
               <SavingPrompt />

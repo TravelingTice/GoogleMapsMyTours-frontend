@@ -4,7 +4,7 @@ import Router from 'next/router';
 import { useState, useEffect } from 'react';
 import { getMaps } from '../../../actions/map';
 import { getCookie } from '../../../actions/auth';
-import { cloudinaryCore, DOMAIN } from '../../../config';
+import { cloudinaryCore } from '../../../config';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Motion, spring } from 'react-motion';
 import { Button } from '@material-ui/core';
@@ -44,7 +44,7 @@ const MapContainer = styled.div`
 
 const AddMap = () => {
   return (
-    <div role="button" onClick={() => Router.push('/manage/maps/new')} style={{height: 130, width: '100%', backgroundColor: 'rgba(0,0,0,.2)', borderRadius: '5px', boxShadow: '1px 1px 5px rgba(0,0,0,.3)'}} className="d-flex align-items-center justify-content-center">
+    <div role="button" onClick={() => Router.push('/manage/maps/new')} style={{height: 130, width: '100%', backgroundColor: 'rgba(0,0,0,.2)', borderRadius: '5px', boxShadow: '1px 1px 5px rgba(0,0,0,.3)', cursor: 'pointer'}} className="d-flex align-items-center justify-content-center">
       <AddCircleRoundedIcon style={{color: 'white', fontSize: 35}} />
     </div>
   )
@@ -93,8 +93,8 @@ const Map = ({ map }) => {
   }
 
   return (
-    <MapContainer id='map-container' image={'default_map.png'} onClick={handleClick}>
-      <p id="map-paragraph" className="p-1 m-1 font-weight-bold" style={{backgroundColor: 'rgba(255,255,255,.7)', borderRadius: 5}}>{map.name}</p>
+    <MapContainer id='map-container' image={'default_map.png'} onClick={handleClick} style={{cursor: 'pointer'}}>
+      <p id="map-paragraph" className="p-1 m-1" style={{backgroundColor: 'rgba(255,255,255,.7)', borderRadius: 5}}>{map.name}</p>
       <button onClick={toggleMenu} style={{position: 'absolute', right: 5, top: 5, backgroundColor: 'rgba(255,255,255,.7)', width: 25, height: 25, borderRadius: '50%', border: 'none', padding: 0, zIndex: 2}}>
         <MoreVertIcon />
       </button>

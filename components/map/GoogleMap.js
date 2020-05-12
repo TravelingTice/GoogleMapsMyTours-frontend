@@ -1,34 +1,74 @@
-import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { GOOGLE_API_KEY } from '../../config';
-import { useContext, useState } from 'react';
+import { Map, Marker, Polyline, GoogleApiWrapper } from 'google-maps-react';
+import { GOOGLE_API_KEY, cloudinaryCore } from '../../config';
+import { useContext, useState, useEffect, useRef } from 'react';
 import { MapContext } from '../../contexts/MapContext';
-import { Container, Row, Col } from 'reactstrap';
-import { cloudinaryCore } from '../../config';
-import { Image, Transformation } from 'cloudinary-react';
-import moment from 'moment';
+import { panMapTo } from '../../helpers/map';
 
 const GoogleMap = ({ google }) => {
-  const { state, selectedMarkerIcon, setMenu, onAddMarker, markers, findMarkerIconById, findInfoWindowByMarkerRefId, findMarkerByRefId, initMarkerEdit } = useContext(MapContext);
+  const { state, setMenu, setMoreMenu, onAddMarker, markers, lines, findMarkerIconById, selectedLine, setSelectedLine, initMarkerEdit, isLineModal, setLineModal } = useContext(MapContext);
+  const [selectedMarkers, setMarkers] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+
+  let mapRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedMarkers.length >= 2) {
+      const coords = selectedMarkers.map(({lat, lng}) => {
+        return { lat, lng }
+      });
+
+      setSelectedLine({
+        strokeColor: '#000000',
+        strokeOpacity: 1,
+        strokeWeight: 1,
+        coords
+      });
+      panMapTo(coords, mapRef.map, google);
+      setLineModal(true);
+    }
+  }, [selectedMarkers]);
+
+  useEffect(() => {
+    setRefresh(true);
+    setTimeout(() => setRefresh(false), 10);
+  }, [selectedLine]);
 
   const handleClickMap = (t, map, coord) => {
     // just to be sure, make sure the menu is collapsed
     setMenu(false);
+    setMoreMenu(false);
     // handle click for when state = marker
     if (state === 'newMarker') {
       onAddMarker(coord);
     }
   }
 
-  const showMarkers = () => markers.map(({ markerIconId, lat, lng, refId }) => {
+  const handleMarkerClick = marker => (props, googleMarker, e) => {
+    if (state === 'newLine') {
+      setMarkers(selectedMarkers.concat(marker));
+    } else {
+      initMarkerEdit(marker.refId);
+    }
+  }
+
+  const handleLineClick = line => (e) => {
+    setSelectedLine(line);
+    panMapTo(line.coords, e.map, google);
+    setLineModal(true);
+  }
+
+  const showMarkers = () => markers.map(marker => {
+    const { markerIconId, lat, lng, refId } = marker;
     const { image, width, height, anchor } = findMarkerIconById(markerIconId);
     const anchorX = width / 2;
     const anchorY = anchor === 'bottom' ? height : height / 2;
 
     return (
       <Marker 
+        key={refId}
         name='New marker'
         position={{ lat, lng }}
-        onClick={initMarkerEdit(refId)}
+        onClick={handleMarkerClick(marker)}
         icon={{
           url: cloudinaryCore.url(image, { height: 100, crop: 'fill' }),
           scaledSize: new google.maps.Size(width, height),
@@ -37,8 +77,32 @@ const GoogleMap = ({ google }) => {
     )
   });
 
-  const showMap = () => (
+  const showLines = () => lines.map(line => {
+    if (line.id !== selectedLine.id) return (
+      <Polyline
+        onClick={handleLineClick(line)}
+        path={line.coords}
+        strokeColor={line.strokeColor}
+        strokeOpacity={parseFloat(line.strokeOpacity)}
+        strokeWeight={line.strokeWeight} />
+    )
+    return null;
+  });
+
+  const showSelectedLine = () => {
+    const { strokeColor, strokeWeight, strokeOpacity, coords } = selectedLine;
+    return (
+      <Polyline
+        path={coords}
+        strokeColor={strokeColor}
+        strokeWeight={strokeWeight}
+        strokeOpacity={parseFloat(strokeOpacity)} />
+    )
+  }
+
+  return (
     <Map 
+      ref={(map) => mapRef = map}
       google={google} 
       initialCenter={{ lat: 24.523387, lng: 11.510063 }} 
       zoom={2}
@@ -46,27 +110,10 @@ const GoogleMap = ({ google }) => {
       onClick={handleClickMap}>
 
         {showMarkers()}
+        {showLines()}
+        {selectedLine && !refresh ? showSelectedLine() : null}
 
     </Map>
-  );
-
-  const showAddMarkerPrompt = () => (
-    <Container>
-      <Row>
-        <Col xs="12" className="mt-5 text-center text-white">
-          <div style={{backgroundColor: 'rgba(0,0,0,.5)', borderRadius: 5, padding: 5}}>
-            <p className="m-0">Click anywhere on the map to drop the marker</p>
-          </div>
-        </Col>
-      </Row>
-    </Container>
-  )
-
-  return (
-    <>
-     {showMap()}
-     {state === 'newMarker' && selectedMarkerIcon && showAddMarkerPrompt()}
-    </>
   )
 }
 

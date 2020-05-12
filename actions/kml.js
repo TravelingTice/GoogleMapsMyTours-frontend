@@ -14,7 +14,7 @@ export const addKml = (kml, map_id, token) => {
   .catch(err => console.log(err))
 }
 
-export const removeKML = (id, token) => {
+export const removeKml = (id, token) => {
   return fetch(`${API}/kmls/${id}`, {
     method: 'DELETE',
     headers: {

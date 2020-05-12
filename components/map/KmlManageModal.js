@@ -1,11 +1,12 @@
 import { MapContext } from "../../contexts/MapContext";
-import { useContext, useState, useEffect } from 'react';
-import { Modal, ModalHeader, ModalBody, Form, Row, Col } from 'reactstrap';
-import { IconButton, FormGroup, FormControl, Input, InputLabel, TextField, Checkbox } from '@material-ui/core';
+import { useContext, useState } from 'react';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { IconButton } from '@material-ui/core';
 import CodeIcon from '@material-ui/icons/Code';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Error from '../Error';
 import { getCookie } from "../../actions/auth";
+import { removeKml } from '../../actions/kml';
 
 const KmlManageModal = () => {
   const { kmls, setKmls, isKmlManageModal, setKmlManageModal, setLoading } = useContext(MapContext);
@@ -23,6 +24,8 @@ const KmlManageModal = () => {
       setLoading(true);
 
       const data = await removeKml(id, token);
+
+      setLoading(false);
 
       if (data.error) return setError(data.error);
 

@@ -29,3 +29,15 @@ export const updateLine = (line, lineId, token) => {
   .then(res => res.json())
   .catch(err => console.log(err))
 }
+
+export const removeLine = (id, token) => {
+  return fetch(`${API}/lines/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .catch(err => console.log(err))
+}

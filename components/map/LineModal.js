@@ -10,84 +10,52 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import Error from '../Error';
 
 const LineModal = () => {
-  const { isLineModal, lineEditId, setLineModal, setMarkers, findInfoWindowByMarkerRefId, markers, onAddMarkerInfoWindow, onUpdateMarkerInfoWindow, infoWindowError, setIWError, onRemoveMarker } = useContext(MapContext);
+  const { isLineModal, lineEditId, setLineModal, findLineById, lines, onAddLine, onUpdateLine, lineError, setLineError, onRemoveLine } = useContext(MapContext);
+
   const isEdit = !!lineEditId;
 
   const [values, setValues] = useState({
-    title: '',
-    body: '',
-    date: new Date(),
-    youtube: '',
-    image: '',
-    cloudinaryImage: '',
-    option: 'youtube',
-    markerRefId: ''
+    strokeColor: '#000000',
+    strokeOpacity: 1,
+    strokeWeight: 1
   });
 
-  const { title, body, date, youtube, image, markerRefId, option, cloudinaryImage } = values;
+  const { strokeColor, strokeOpacity, strokeWeight } = values;
 
   useEffect(() => {
     if (isLineModal) {
       if (isEdit) {
-        const infoWindow = findInfoWindowByMarkerRefId(markerEditId);
-        setValues({ ...infoWindow });
+        const line = findLineById(lineEditId);
+        setValues({ ...line });
       } else {
         // new marker, which means we only need to attach the last marker that was added to this marker ref id value
         setValues({
-          title: '',
-          body: '',
-          date: new Date(),
-          youtube: '',
-          image: '',
-          cloudinaryImage: '',
-          option: 'youtube',
-          markerRefId: markers[markers.length - 1].refId
+          strokeColor: '#000000',
+          strokeOpacity: 1,
+          strokeWeight: 1
         })
       }
     }
   }, [isLineModal]);
 
   const handleChange = name => e => {
-    setIWError('');
+    setLineError('');
     setValues({ ...values, [name]: e.target.value });
   }
 
-  const handleImageChange = async e => {
-    setIWError('');
-    if (e.target.files && e.target.files[0]) {
-      const prev = await convertToBase64(e.target.files[0]);
-
-      if (prev) {
-        setValues({ ...values, image: prev });
-      };
-    }
-  }
-
-  const handleOptionChange = name => e => {
-    setIWError('');
-    setValues({ ...values, option: name });
-  };
-
-  const handleDateChange = date => {
-    setIWError('');
-    setValues({ ...values, date });
-  }
-
   const handleSubmit = e => {
-    setIWError('');
+    setLineError('');
     e.preventDefault();
     if (isEdit) {
-      onUpdateMarkerInfoWindow(values);
+      onUpdateLine(values);
     } else {
-      onAddMarkerInfoWindow(values);
+      onAddLine(values);
     }
   }
 
   const closeModal = () => {
     if (!isEdit) {
-      // clear the attached marker because no infowindow is attached to it
-      setMarkers(markers.filter(mark => mark.refId !== markerRefId));
-      setLineModal(false);
+      
     } else {
       setLineModal(false);
     }

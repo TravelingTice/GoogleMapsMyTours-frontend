@@ -37,7 +37,7 @@ const GoogleMap = ({ google }) => {
     )
   });
 
-  const showMap = () => (
+  return (
     <Map 
       google={google} 
       initialCenter={{ lat: 24.523387, lng: 11.510063 }} 
@@ -48,25 +48,6 @@ const GoogleMap = ({ google }) => {
         {showMarkers()}
 
     </Map>
-  );
-
-  const showAddMarkerPrompt = () => (
-    <Container>
-      <Row>
-        <Col xs="12" className="mt-5 text-center text-white">
-          <div style={{backgroundColor: 'rgba(0,0,0,.5)', borderRadius: 5, padding: 5}}>
-            <p className="m-0">Click anywhere on the map to drop the marker</p>
-          </div>
-        </Col>
-      </Row>
-    </Container>
-  )
-
-  return (
-    <>
-     {showMap()}
-     {state === 'newMarker' && selectedMarkerIcon && showAddMarkerPrompt()}
-    </>
   )
 }
 

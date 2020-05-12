@@ -3,6 +3,7 @@ import { getMarkerIcons } from '../actions/markerIcon';
 import { getCookie } from '../actions/auth';
 import generateId from 'generate-unique-id';
 import { getMapForEdit, removeMap } from '../actions/map';
+import { addLine } from '../actions/line';
 import { addMarkerInfoWindow, updateMarkerInfoWindow, removeMarker } from '../actions/marker';
 import lowerSnakalize from '../helpers/lowerSnakalize';
 import Router from 'next/router';

@@ -6,6 +6,7 @@ import MapMenu from '../../../components/map/MapMenu';
 import SelectedMarkerIconModal from '../../../components/map/SelectedMarkerIconModal';
 import InfoWindowModal from '../../../components/map/InfoWindowModal';
 import LineModal from '../../../components/map/LineModal';
+import KmlModal from '../../../components/map/KmlModal';
 import SavingPrompt from '../../../components/map/SavingPrompt';
 import ErrorPrompt from '../../../components/map/ErrorPrompt';
 import LoadingPrompt from '../../../components/map/LoadingPrompt';
@@ -36,6 +37,7 @@ const MapsEdit = ({ router }) => {
               <SelectedMarkerIconModal />
               <InfoWindowModal />
               <LineModal />
+              <KmlModal />
               
             </div>
           </Layout>

@@ -1,13 +1,15 @@
 import { useContext, useState } from "react";
-import { MarkerIconContext } from '../../../contexts/MarkerIconContext';
 import { Modal, ModalHeader, ModalBody, Form } from 'reactstrap';
 import { FormGroup, FormControl, InputLabel, Input, Button } from '@material-ui/core';
-import { getCookie } from "../../../actions/auth";
-import Error from '../../Error';
+import { getCookie } from "../../actions/auth";
+import Error from '../Error';
 import CodeIcon from '@material-ui/icons/Code';
+import { MapContext } from "../../contexts/MapContext";
+import convertToBase64 from '../../helpers/convertToBase64';
+import { addKml } from '../../actions/kml';
 
-const MarkerCrudModal = () => {
-  const { isKmlModal, setKmlModal } = useContext(MarkerIconContext);
+const KmlModal = () => {
+  const { isKmlModal, setKmlModal } = useContext(MapContext);
   const isEdit = false;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -25,13 +27,24 @@ const MarkerCrudModal = () => {
 
   const handleFileChange = async e => {
     if (e.target.files && e.target.files[0]) {
-      console.log(e.target.files[0])
+      setFile(e.target.files[0]);
     }
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log('ya');
+    if (!name) return setError('Name cannot be blank');
+    if (!file) return setError('File needed');
+    if (!file.match(/.kml$/)) return setError('File can only be of type KML');
+
+    const content = await convertToBase64(file);
+    const newKml = { name, content }
+
+    const data = await addKml(newKml, token);
+
+    if (data.error) return setError(data.error);
+
+
   }
 
   const handleRemove = e => {
@@ -39,14 +52,17 @@ const MarkerCrudModal = () => {
   }
 
   const showSubmitButton = () => {
-    let text = 'Create';
-    if (isEdit) text = 'Update';
+    let text = 'Add';
     if (loading) text = <img style={{height: '0.875rem'}} src="/loading.svg" alt="Loading..."/>
     return <Button color='primary' type="submit" variant='outlined'>{text}</Button>
   }
 
   const showDeleteButton = () => (
     <Button color="secondary" onClick={handleRemove} variant="outlined">Delete</Button>
+  )
+
+  const displayFileName = () => file && (
+    <div className="my-3">{file.name}</div>
   )
 
   const showError = () => error && <Error content={error} />
@@ -77,9 +93,11 @@ const MarkerCrudModal = () => {
               <span className="MuiTouchRipple-root"></span>
             </label>
 
-            <input type="file" id="icon" hidden onChange={handleFileChange}/>
+            <input type="file" id="icon" accept=".kml" hidden onChange={handleFileChange}/>
 
           </FormGroup>
+
+          {displayFileName()}
 
           <div className="mt-3 d-flex justify-content-between">
             {showSubmitButton()}
@@ -91,4 +109,4 @@ const MarkerCrudModal = () => {
   )
 }
 
-export default MarkerCrudModal;
+export default KmlModal;

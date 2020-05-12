@@ -9,7 +9,7 @@ import { Motion, spring } from 'react-motion';
 import { MapContext } from "../../contexts/MapContext";
 
 const MapMenu = () => {
-  const { buttonsAppear, isMenu, toggleMenu, setState, setSelectedMarkerIconModal, markers, setError } = useContext(MapContext);
+  const { buttonsAppear, isMenu, toggleMenu, setState, setSelectedMarkerIconModal, setKmlModal, markers, setError } = useContext(MapContext);
   const [step, setStep] = useState(0);
   const [zIndex, setZIndex] = useState(-1);
 
@@ -56,7 +56,7 @@ const MapMenu = () => {
         })}
         {button(buttonAppears[1], <TimelineIcon/>, 'Line', initLine)}
         {button(buttonAppears[2], <CodeIcon/>, 'KML', () => {
-          setState('newKML');
+          setKmlModal(true);
         })}
       </>
     )

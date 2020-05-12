@@ -41,6 +41,8 @@ export const MapContextProvider = ({ children, id }) => {
     coords: []
   });
   const [lineError, setLineError] = useState('');
+  // kml crud
+  const [isKmlModal, setKmlModal] = useState(false);
 
   const [modalError, setModalError] = useState('');
   const [modalLoading, setModalLoading] = useState(false);
@@ -300,6 +302,7 @@ export const MapContextProvider = ({ children, id }) => {
         selectedMarkerIcon,
         isInfoWindowModal,
         isLineModal,
+        isKmlModal,
         markerEditId,
         infoWindowError,
         isMapNameModal,
@@ -308,6 +311,7 @@ export const MapContextProvider = ({ children, id }) => {
         setSelectedMarkerIconModal,
         setInfoWindowModal,
         setLineModal,
+        setKmlModal,
         setIWError,
         setLineError,
         setSelectedLine,

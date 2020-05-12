@@ -43,9 +43,7 @@ export const MapContextProvider = ({ children, id }) => {
   const [lineError, setLineError] = useState('');
   // kml crud
   const [isKmlModal, setKmlModal] = useState(false);
-
-  const [modalError, setModalError] = useState('');
-  const [modalLoading, setModalLoading] = useState(false);
+  const [kmls, setKmls] = useState([]);
 
   const token = getCookie('token');
 
@@ -72,9 +70,10 @@ export const MapContextProvider = ({ children, id }) => {
     setMarkerIcons(markerIcons);
 
     if (id) {
-      const { markers, infoWindows, lines, mapName } = await getMapForEdit(id, token);
+      const { markers, infoWindows, lines, kmls, mapName } = await getMapForEdit(id, token);
       setMarkers(markers);
       setLines(lines);
+      setKmls(kmls);
       setInfoWindows(infoWindows);
       setMapName(mapName);
     } else {
@@ -293,12 +292,11 @@ export const MapContextProvider = ({ children, id }) => {
         buttonsAppear,
         loading,
         error,
-        modalLoading,
-        modalError,
         lineError,
         markerIcons,
         markers,
         lines,
+        kmls,
         selectedLine,
         selectedMarkerIcon,
         isInfoWindowModal,
@@ -323,6 +321,7 @@ export const MapContextProvider = ({ children, id }) => {
         toggleMenu,
         toggleMoreMenu,
         setMarkers,
+        setKmls,
         findMarkerIconById,
         findMarkerByRefId,
         findInfoWindowByMarkerRefId,

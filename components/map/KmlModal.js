@@ -5,11 +5,11 @@ import { getCookie } from "../../actions/auth";
 import Error from '../Error';
 import CodeIcon from '@material-ui/icons/Code';
 import { MapContext } from "../../contexts/MapContext";
-import convertToText from '../../helpers/convertToText';
+import convertToBase64 from '../../helpers/convertToBase64';
 import { addKml } from '../../actions/kml';
 
 const KmlModal = () => {
-  const { isKmlModal, setKmlModal, id } = useContext(MapContext);
+  const { isKmlModal, setKmlModal, id, setKmls, kmls } = useContext(MapContext);
   const isEdit = false;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -33,15 +33,19 @@ const KmlModal = () => {
 
     setLoading(true);
 
-    const code = await convertToText(file);
-    const newKml = { name: file.name, code }
+    const enc = await convertToBase64(file);
+    const newKml = { name: file.name, enc }
 
     const data = await addKml(newKml, id, token);
 
     setLoading(false);
     setKmlModal(false);
-
+    
     if (data.error) return setError(data.error);
+
+    setFile(null);
+
+    setKmls(kmls.concat({ name: data.name }));
   }
 
   const handleRemove = e => {

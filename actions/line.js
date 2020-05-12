@@ -16,7 +16,7 @@ export const addLine = (line, mapId, token) => {
   .catch(err => console.log(err))
 }
 
-export const updateLine = (line, lineId, token) => {
+export const updateLine = (line, id, token) => {
   return fetch(`${API}/lines/${id}`, {
     method: 'PUT',
     headers: {

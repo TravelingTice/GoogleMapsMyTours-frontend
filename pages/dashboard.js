@@ -5,6 +5,7 @@ import Layout from '../components/layout/Layout';
 import MapList from '../components/manage/dashboard/MapList';
 import ShareModal from '../components/manage/dashboard/ShareModal';
 import EmbedModal from '../components/manage/dashboard/EmbedModal';
+import ApiKeyModal from '../components/manage/dashboard/ApiKeyModal';
 import { DashboardContextProvider } from '../contexts/DashboardContext';
 
 const Dashboard = () => {
@@ -19,6 +20,7 @@ const Dashboard = () => {
                 <MapList />
                 <ShareModal />
                 <EmbedModal />
+                <ApiKeyModal />
               </Col>
             </Row>
           </Container>

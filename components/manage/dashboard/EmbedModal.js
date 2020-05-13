@@ -17,11 +17,13 @@ const EmbedModal = () => {
   const token = getCookie('token');
 
   useEffect(() => {
-    fetchCodeData();
-  }, []);
+    if (isEmbedModal) {
+      fetchCodeData();
+    }
+  }, [isEmbedModal]);
 
   const fetchCodeData = async () => {
-    const apiKey = await getApiKey(token);
+    const { apiKey } = await getApiKey(token);
 
     if (!apiKey) {
       setEmbedModal(false);
@@ -30,7 +32,7 @@ const EmbedModal = () => {
       return;
     }
 
-    const code = await getCodeForMap(selectedMap.id, apiKey, token);
+    const { code } = await getCodeForMap(selectedMap.id, apiKey, token);
 
     setInput(code);
   }

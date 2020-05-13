@@ -12,6 +12,8 @@ export const DashboardContextProvider = ({ children }) => {
   });
   const [isShareModal, setShareModal] = useState(false);
   const [isEmbedModal, setEmbedModal] = useState(false);
+  const [isApiKeyModal, setApiKeyModal] = useState(false);
+  const [apiKeyModalError, setApiKeyModalError] = useState('');
 
   const token = getCookie('token');
 
@@ -23,9 +25,6 @@ export const DashboardContextProvider = ({ children }) => {
     const maps = await getMaps(token);
     setMaps(maps);
     setLoading(false);
-    // remove
-    setSelectedMap(maps[0]);
-    setShareModal(true);
   }
 
   return (
@@ -36,8 +35,13 @@ export const DashboardContextProvider = ({ children }) => {
         selectedMap,
         isShareModal,
         isEmbedModal,
+        isApiKeyModal,
+        apiKeyModalError,
         setShareModal,
-        setEmbedModal
+        setEmbedModal,
+        setApiKeyModal,
+        setApiKeyModalError,
+        setSelectedMap
       }}>
       {children}
     </DashboardContext.Provider>

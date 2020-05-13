@@ -51,8 +51,13 @@ const AddMap = () => {
 
 // Map snapshot will be here => `${DOMAIN}/maps/${map.id}`
 const Map = ({ map }) => {
+  const { setEmbedModal, setShareModal, setSelectedMap, isShareModal, isEmbedModal } = useContext(DashboardContext);
   const [isMenu, setMenu] = useState(false);
   const [zIndex, setZIndex] = useState(-1);
+
+  useEffect(() => {
+    setMenu(false);
+  }, [isShareModal, isEmbedModal])
 
   useEffect(() => {
     if (isMenu) {
@@ -61,6 +66,16 @@ const Map = ({ map }) => {
       setTimeout(() => setZIndex(-1), 300);
     }
   }, [isMenu]);
+
+  const handleShare = () => {
+    setSelectedMap(map);
+    setShareModal(true);
+  }
+
+  const handleEmbed = () => {
+    setSelectedMap(map);
+    setEmbedModal(true);
+  }
 
   const toggleMenu = () => {
     setMenu(!isMenu);
@@ -80,10 +95,10 @@ const Map = ({ map }) => {
       <Motion style={{opacity: spring(opacity), right: spring(right)}}>{({opacity, right}) =>
         <div style={{position: 'absolute', bottom: 135, opacity, right, zIndex}}>
           <div className="my-1">
-            <Button onClick={() => setShareModal(true)} color="primary" variant="contained" startIcon={<ShareIcon/>}></Button>
+            <Button onClick={handleShare} color="primary" variant="contained" startIcon={<ShareIcon/>}></Button>
           </div>
           <div className="my-1">
-            <Button color="primary" variant="contained" startIcon={<CodeIcon/>}></Button>
+            <Button onClick={handleEmbed} color="primary" variant="contained" startIcon={<CodeIcon/>}></Button>
           </div>
           <Button role="link" onClick={() => Router.push(`/maps/${map.id}`)} color="primary" variant="contained" startIcon={<VisibilityIcon/>}></Button>
         </div>

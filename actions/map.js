@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import { API } from '../config';
+import { API, API_WITHOUT_VERSION } from '../config';
 
 export const getMaps = token => {
   return fetch(`${API}/maps`, {
@@ -41,5 +41,15 @@ export const removeMap = (id, token) => {
     }
   })
   .then(res => res.json())
+  .catch(err => console.log(err))
+}
+
+export const getCodeForMap = (mapId, apiKey, token) => {
+  return fetch(`${API_WITHOUT_VERSION}/maps/${mapId}/code?api_key=${apiKey}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(res => res.text())
   .catch(err => console.log(err))
 }

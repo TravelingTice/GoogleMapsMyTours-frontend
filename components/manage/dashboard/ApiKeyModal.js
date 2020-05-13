@@ -4,7 +4,7 @@ import { FormGroup, FormControl, InputLabel, Input, Button, IconButton } from '@
 import Error from '../../Error';
 import { DashboardContext } from "../../../contexts/DashboardContext";
 import { getCookie, isAuth } from '../../../actions/auth';
-import { getApiKey, addApiKey, addOrigin, removeOrigin } from '../../../actions/apikey';
+import { getApiKey, addApiKey, addOrigin, removeOrigin, updateGoogleApiKey } from '../../../actions/apikey';
 import generateId from 'generate-unique-id';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -12,6 +12,7 @@ const ApiKeyModal = () => {
   const { isApiKeyModal, setApiKeyModal, apiKeyModalError, setApiKeyModalError } = useContext(DashboardContext);
   const [apiKey, setApiKey] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [reveal, setReveal] = useState(false);
   const [origin, setOrigin] = useState('');
 
   const closeModal = () => setApiKeyModal(false);
@@ -68,6 +69,27 @@ const ApiKeyModal = () => {
     setApiKey({ ...apiKey, origins: apiKey.origins.filter(or => or.id !== origin.id) });
   }
 
+  const handleGoogleKeyChange = async e => {
+    setApiKey({ ...apiKey, googleKey: e.target.value });
+
+    if (e.target.value) {
+      const data = await updateGoogleApiKey(e.target.value, apiKey.id, token);
+      console.log(data);
+    }
+  }
+
+  const showGoogleKeyForm = () => (
+    <div className="mb-3">
+      <p>Fill in your Google Api Key to use your map:</p>
+      <FormGroup>
+        <FormControl>
+          <Input value={apiKey.googleKey} onChange={handleGoogleKeyChange} />
+        </FormControl>
+      </FormGroup>
+      <small className="text-muted font-italic">And make sure you enable the domain you will use for the key ON GOOGLE</small>
+    </div>
+  )
+
   const listOrigins = () => apiKey.origins.map(origin => (
     <div key={origin.id} className="d-flex justify-content-between">
       <span className="p-2 mr-2 mb-2" style={{backgroundColor: '#ddd', borderRadius: 5 }}>{origin.address}</span>
@@ -77,7 +99,7 @@ const ApiKeyModal = () => {
 
   const showOriginsForm = () => (
     <Form onSubmit={handleSubmit}>
-      <p>Origins:</p>
+      <p>Domains:</p>
       {listOrigins()}
       <FormGroup className="mt-3">
         <FormControl>
@@ -106,7 +128,8 @@ const ApiKeyModal = () => {
 
         {!apiKey ? showButton() : (
           <>
-            <p className="text-muted font-italic pr-3">{apiKey.key}</p>
+            <p onClick={() => setReveal(true)} className="text-muted font-italic pr-3">{reveal ? apiKey.key : 'Key generated! (click to reveal)'}</p>
+            {showGoogleKeyForm()}
             {showOriginsForm()}
           </>
         )}

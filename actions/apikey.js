@@ -47,3 +47,16 @@ export const removeOrigin = (originId, token) => {
   .then(res => res.json())
   .catch(err => console.log(err))
 }
+
+export const updateGoogleApiKey = (google_key, keyId, token) => {
+  return fetch(`${API}/api_keys/${keyId}/google-key`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ google_key })
+  })
+  .then(res => res.json())
+  .catch(err => console.log(err))
+}

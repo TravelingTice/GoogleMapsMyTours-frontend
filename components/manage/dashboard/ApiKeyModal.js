@@ -20,7 +20,7 @@ const ApiKeyModal = () => {
     fetchApiKey();
   }, []);
 
-  const generateApiKey = () => {
+  const generateApiKey = async () => {
     setApiKeyModalError('');
     setLoading(true);
     const generatedKey = `GMMT_${generateId()}${isAuth().username}${generateId()}`;
@@ -37,6 +37,10 @@ const ApiKeyModal = () => {
     if (apiKey) {
       setApiKey(apiKey);
     }
+  }
+
+  const handleSubmit = e => {
+    
   }
 
   const showOriginsForm = () => (

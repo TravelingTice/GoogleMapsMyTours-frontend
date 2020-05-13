@@ -5,6 +5,8 @@ import GoogleMap from '../../../components/manage/map/GoogleMap';
 import MapMenu from '../../../components/manage/map/MapMenu';
 import SelectedMarkerIconModal from '../../../components/manage/map/SelectedMarkerIconModal';
 import InfoWindowModal from '../../../components/manage/map/InfoWindowModal';
+import KmlModal from '../../../components/manage/map/KmlModal';
+import KmlManageModal from '../../../components/manage/map/KmlManageModal';
 import SavingPrompt from '../../../components/manage/map/SavingPrompt';
 import LoadingPrompt from '../../../components/manage/map/LoadingPrompt';
 import MapNameModal from '../../../components/manage/map/MapNameModal';
@@ -30,6 +32,9 @@ const MapsNew = () => {
               <LoadingPrompt />
               <MapNamePrompt />
               <MapNameModal />
+
+              <KmlModal />
+              <KmlManageModal />
 
             </div>
           </Layout>

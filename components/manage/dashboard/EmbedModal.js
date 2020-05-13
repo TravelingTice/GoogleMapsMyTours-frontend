@@ -5,7 +5,6 @@ import { DashboardContext } from "../../../contexts/DashboardContext";
 import { getCookie } from '../../../actions/auth';
 import { getApiKey } from '../../../actions/apikey';
 import ReactMarkdown from 'react-markdown';
-import renderCodeFor from '../../../helpers/renderCodeFor';
 
 const EmbedModal = () => {
   const { isEmbedModal, setEmbedModal, selectedMap, setApiKeyModalError, setApiKeyModal } = useContext(DashboardContext);

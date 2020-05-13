@@ -9,8 +9,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const EmbedModal = () => {
   const { isEmbedModal, setEmbedModal, selectedMap, setApiKeyModalError, setApiKeyModal } = useContext(DashboardContext);
+  const [htmlCode, setHtmlCode] = useState(''); 
   const [input, setInput] = useState('loading ...');
-  const [height, setHeight] = useState(100);
+  const [height, setHeight] = useState(400);
   const [copied, setCopied] = useState(false);
   
   const closeModal = () => setEmbedModal(false);
@@ -47,9 +48,14 @@ const EmbedModal = () => {
     }
 
     const htmlCode = await getCodeForMap(selectedMap.id, apiKey.key, token);
-
-    setInput(htmlCode);
+    setHtmlCode(htmlCode);
+    setInput(htmlCode.replace('HEIGHT', `${height}px`));
   }
+
+  useEffect(() => {
+    setInput(htmlCode.replace('HEIGHT', `${height}px`));
+  }, [height]);
+
   
   return (
     <Modal isOpen={isEmbedModal} toggle={closeModal}>

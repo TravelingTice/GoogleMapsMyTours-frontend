@@ -4,13 +4,14 @@ import { FormGroup, FormControl, InputLabel, Input, Button } from '@material-ui/
 import Error from '../../Error';
 import { DashboardContext } from "../../../contexts/DashboardContext";
 import { getCookie, isAuth } from '../../../actions/auth';
-import { getApiKey, addApiKey } from '../../../actions/apikey';
+import { getApiKey, addApiKey, addOrigin } from '../../../actions/apikey';
 import generateId from 'generate-unique-id';
 
 const ApiKeyModal = () => {
   const { isApiKeyModal, setApiKeyModal, apiKeyModalError, setApiKeyModalError } = useContext(DashboardContext);
   const [apiKey, setApiKey] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [origin, setOrigin] = useState('');
 
   const closeModal = () => setApiKeyModal(false);
 
@@ -39,13 +40,32 @@ const ApiKeyModal = () => {
     }
   }
 
-  const handleSubmit = e => {
-    
+  const handleChange = e => setOrigin(e.target.value);
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setApiKeyModalError('');
+    // check the new origin
+    if (origin.match(/https?/)) return setApiKeyModalError('Don\'t include http or https protocol');
+
+    // add origin
+    const data = await addOrigin(origin, apiKey.id, token);
   }
+
+  const listOrigins = () => apiKey.origins.map(origin => (
+    <p className="p-2 mr-2" style={{backgroundColor: '#bbb'}}></p>
+  ))
 
   const showOriginsForm = () => (
     <Form onSubmit={handleSubmit}>
-
+      <p>Origins:</p>
+      {listOrigins()}
+      <FormGroup>
+        <FormControl>
+          <InputLabel htmlFor="origins">Add origin</InputLabel>
+          <Input value={origin} onChange={handleChange} />
+        </FormControl>
+      </FormGroup>
     </Form>
   )
 
@@ -67,7 +87,7 @@ const ApiKeyModal = () => {
 
         {!apiKey ? showButton() : (
           <>
-            <p className="text-muted font-italic mr-3">{apiKey.key}</p>
+            <p className="text-muted font-italic pr-3">{apiKey.key}</p>
             {showOriginsForm()}
           </>
         )}

@@ -23,3 +23,16 @@ export const addApiKey = (key, token) => {
   .then(res => res.json())
   .catch(err => console.log(err))
 }
+
+export const addOrigin = (origin, keyId, token) => {
+  return fetch(`${API}/api_keys/${keyId}/origins`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ origin })
+  })
+  .then(res => res.json())
+  .catch(err => console.log(err))
+}

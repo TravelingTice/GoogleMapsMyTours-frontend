@@ -1,5 +1,5 @@
 import { MapContext } from "../../../contexts/MapContext";
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import { Modal, ModalHeader, ModalBody, Form, Row, Col } from 'reactstrap';
 import { Button, FormGroup, FormControl, Input, InputLabel, TextField, Checkbox } from '@material-ui/core';
 import convertToBase64 from '../../../helpers/convertToBase64';
@@ -20,7 +20,7 @@ const InfoWindowModal = () => {
     youtube: '',
     image: '',
     cloudinaryImage: '',
-    option: 'youtube',
+    option: '',
     markerRefId: ''
   });
 
@@ -40,7 +40,7 @@ const InfoWindowModal = () => {
           youtube: '',
           image: '',
           cloudinaryImage: '',
-          option: 'youtube',
+          option: '',
           markerRefId: markers[markers.length - 1].refId
         })
       }
@@ -49,6 +49,8 @@ const InfoWindowModal = () => {
 
   const handleChange = name => e => {
     setIWError('');
+    if (name === 'youtube') return setValues({ ...values, [name]: e.target.value, option: 'youtube' });
+
     setValues({ ...values, [name]: e.target.value });
   }
 
@@ -58,13 +60,14 @@ const InfoWindowModal = () => {
       const prev = await convertToBase64(e.target.files[0]);
 
       if (prev) {
-        setValues({ ...values, image: prev });
+        setValues({ ...values, image: prev, option: 'image' });
       };
     }
   }
 
   const handleOptionChange = name => e => {
     setIWError('');
+    if (option === name) return setValues({ ...values, option: '' });
     setValues({ ...values, option: name });
   };
 
@@ -137,7 +140,7 @@ const InfoWindowModal = () => {
             <FormControl>
               <TextField
                 id="body"
-                label="Body"
+                label="Description"
                 value={body}
                 onChange={handleChange('body')}
                 multiline

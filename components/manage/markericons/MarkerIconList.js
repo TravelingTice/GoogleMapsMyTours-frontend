@@ -5,7 +5,6 @@ import Error from '../../Error';
 import MarkerIcon from './MarkerIcon';
 import styled from 'styled-components';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
-import { useTheme } from '@material-ui/core/styles';
 
 const GridContainer = styled.div`
   display: grid;
@@ -26,10 +25,9 @@ const GridContainer = styled.div`
 `;
 
 const AddMarkerBtn = () => {
-  const { palette } = useTheme();
   const { initNew } = useContext(MarkerIconContext);
   return (
-    <div onClick={initNew} style={{height: 100, width: '100%', backgroundColor: 'rgba(0,0,0,.2)', borderRadius: '5px', boxShadow: '1px 1px 5px rgba(0,0,0,.3)'}} className="d-flex align-items-center justify-content-center">
+    <div role="button" onClick={initNew} style={{height: 100, width: '100%', backgroundColor: 'rgba(0,0,0,.2)', borderRadius: '5px', boxShadow: '1px 1px 5px rgba(0,0,0,.3)', cursor: 'pointer'}} className="d-flex align-items-center justify-content-center">
       <AddCircleRoundedIcon style={{color: 'white', fontSize: 35}} />
     </div>
   )

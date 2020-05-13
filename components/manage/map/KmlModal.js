@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Modal, ModalHeader, ModalBody, Form } from 'reactstrap';
-import { FormGroup, FormControl, InputLabel, Input, Button } from '@material-ui/core';
+import { FormGroup, Button } from '@material-ui/core';
 import { getCookie } from "../../../actions/auth";
 import Error from '../../Error';
 import CodeIcon from '@material-ui/icons/Code';

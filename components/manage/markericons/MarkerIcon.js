@@ -12,13 +12,14 @@ const StyledDiv = styled.div`
   box-shadow: 1px 1px 5px rgba(0,0,0,.3);
   padding: 5px;
   border-radius: 5px;
+  cursor: pointer;
 `;
 
 const MarkerIcon = ({ icon }) => {
   const { initEdit } = useContext(MarkerIconContext);
 
   return (
-    <StyledDiv onClick={() => initEdit(icon.id)}>
+    <StyledDiv role="button" onClick={() => initEdit(icon.id)}>
       <Image publicId={icon.image} height="50">
         <Transformation crop="fill" width="150" />
       </Image>

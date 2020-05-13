@@ -4,6 +4,7 @@ import { FormGroup, FormControl, InputLabel, Input } from '@material-ui/core';
 import { DashboardContext } from "../../../contexts/DashboardContext";
 import { getCookie } from '../../../actions/auth';
 import { getApiKey } from '../../../actions/apikey';
+import { getCodeForMap } from '../../../actions/map';
 import ReactMarkdown from 'react-markdown';
 
 const EmbedModal = () => {

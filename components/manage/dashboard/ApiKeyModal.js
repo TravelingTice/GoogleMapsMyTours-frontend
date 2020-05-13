@@ -25,11 +25,9 @@ const ApiKeyModal = () => {
   }
 
   const fetchApiKey = async () => {
-    const apiKey = await getApiKey(token);
+    const { apiKey } = await getApiKey(token);
+    setApiKey(apiKey);
 
-    const code = await getCodeForMap(selectedMap.id, apiKey, token);
-
-    setInput(code);
   }
 
   const showError = () => apiKeyModalError && <Error content={apiKeyModalError} />

@@ -98,7 +98,7 @@ const ApiKeyModal = () => {
   ))
 
   const showOriginsForm = () => (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} className="mt-4">
       <p>Domains:</p>
       {listOrigins()}
       <FormGroup className="mt-3">
@@ -128,7 +128,7 @@ const ApiKeyModal = () => {
 
         {!apiKey ? showButton() : (
           <>
-            <p onClick={() => setReveal(true)} className="text-muted font-italic pr-3">{reveal ? apiKey.key : 'Key generated! (click to reveal)'}</p>
+            <p onClick={() => setReveal(true)} className="text-muted font-italic pr-3 mb-4">{reveal ? apiKey.key : 'Key generated! (click to reveal)'}</p>
             {showGoogleKeyForm()}
             {showOriginsForm()}
           </>

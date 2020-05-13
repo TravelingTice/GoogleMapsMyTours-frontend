@@ -27,6 +27,12 @@ export const getMap = id => {
   .catch(err => console.log(err))
 }
 
+export const getMapName = id => {
+  return fetch(`${API}/maps/${id}/map-name`)
+  .then(res => res.json())
+  .catch(err => console.log(err))
+}
+
 export const removeMap = (id, token) => {
   return fetch(`${API}/maps/${id}`, {
     method: 'DELETE',

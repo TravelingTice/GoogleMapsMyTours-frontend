@@ -1,14 +1,33 @@
 import { Container, Row, Col } from "reactstrap";
-import { APP_NAME } from '../config';
+import { APP_NAME, APP_DESC, DOMAIN } from '../config';
 import Router from 'next/router';
 import Layout from '../components/layout/Layout';
 import { useState, useEffect } from "react";
 import { Motion, spring } from 'react-motion';
 import { Button } from '@material-ui/core';
+import Head from 'next/head';
 
 const stepIntervals = [1000, 1000, 200, 200, 1000];
 
 const Home = () => {
+  const head = () => (
+    <Head>
+      <meta name='description' content={APP_DESC} />
+      <meta property='og:type' content='website' />
+      <meta property='og:title' content={APP_NAME} />
+      <meta property='og:description' content={APP_DESC} />
+      <meta property='og:site_name' content={APP_NAME} />
+      <meta property='og:url' content={DOMAIN} />
+      <meta property='og:image' content={`${DOMAIN}/apple-icon.png`} />
+      
+      <meta name='twitter:card' content='summary' />
+      <meta name='twitter:url' content={DOMAIN} />
+      <meta name='twitter:title' content={APP_NAME} />
+      <meta name='twitter:description' content={APP_DESC} />
+      <meta name='twitter:image' content={`${DOMAIN}/android-icon-192x192.png`} />
+      <meta name='twitter:creator' content='@travelingtice' />
+    </Head>
+  )
   const [step, setStep] = useState(0);
 
   const incrementStep = () => setStep(step + 1);
@@ -73,29 +92,32 @@ const Home = () => {
   }
 
   return (
-    <Layout>
-      <Container>
-        <Row>
-          <Col xs="12">
-            <div className="text-center my-4">
-              <h1>{APP_NAME}</h1>
-            </div>
-          </Col>
+    <>
+      {head()}
+      <Layout>
+        <Container>
+          <Row>
+            <Col xs="12">
+              <div className="text-center my-4">
+                <h1>{APP_NAME}</h1>
+              </div>
+            </Col>
 
-          <Col xs="12">
-            {showSubtitle()}
-          </Col>
+            <Col xs="12">
+              {showSubtitle()}
+            </Col>
 
-          <Col xs="12" className="mt-4" style={{height: 300}}>
-            {showMaps()}
-          </Col>
+            <Col xs="12" className="mt-4" style={{height: 300}}>
+              {showMaps()}
+            </Col>
 
-          <Col xs="12" className="my-5 text-center">
-            {showTryNowButton()}
-          </Col>
-        </Row>
-      </Container>
-    </Layout>
+            <Col xs="12" className="my-5 text-center">
+              {showTryNowButton()}
+            </Col>
+          </Row>
+        </Container>
+      </Layout>
+    </>
   )
 }
 

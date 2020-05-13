@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
-import { MapContext } from '../../contexts/MapContext';
+import { MapContext } from '../../../contexts/MapContext';
 import { Motion, spring } from "react-motion";
-import Message from '../Message';
+import Message from '../../Message';
 
 const SavingPrompt = () => {
   const { saving } = useContext(MapContext);

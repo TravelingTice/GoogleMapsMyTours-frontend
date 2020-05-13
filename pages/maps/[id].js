@@ -1,144 +1,46 @@
-import { Map, InfoWindow, Marker, GoogleApiWrapper, Polyline } from 'google-maps-react';
-import { GOOGLE_API_KEY } from '../../config';
-import { useState, useEffect } from 'react';
-import { cloudinaryCore } from '../../config';
-import moment from 'moment';
-import { withRouter } from 'next/router';
-import { getMap } from '../../actions/map';
-import Error from '../../components/Error';
-import Layout from '../../components/layout/Layout';
+import { getMapName } from "../../actions/map";
+import Head from 'next/head';
+import { APP_NAME, DOMAIN } from '../../config';
+import MapShow from '../../components/map/MapShow';
 
-const MapShow = ({ google, router }) => {
-  const [markers, setMarkers] = useState([]);
-  const [lines, setLines] = useState([]);
-  const [error, setError] = useState('');
-  const [bounds, setBounds] = useState('');
-  const [activeGoogleMarker, setActiveGoogleMarker] = useState(null);
-  const [activeMarker, setActiveMarker] = useState(null);
-  const [isInfoWindow, setInfoWindow] = useState(false);
+const MapId = ({ mapName, id }) => {
+  const head = () => (
+    <Head>
+      <title>{mapName} - {APP_NAME}</title>
+      <meta name="description" content={`View my map ${mapName} on ${APP_NAME}!`} />
+      <link rel="canonical" href={`${DOMAIN}/maps/${id}`} />
+      <meta property="og:title" content={`${mapName} - ${APP_NAME}`} />
+      <meta property="og:description" content={`View my map ${mapName} on ${APP_NAME}!`} />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content={`${DOMAIN}/maps/${id}`} />
+      <meta property="og:site_name" content={APP_NAME} />
 
-  useEffect(() => {
-    fetchMapData();
-  }, [router.query.id]);
+      <meta property="og:image" content={`${DOMAIN}/map3.jpg`} />
+      <meta property="og:image:secure_url" content={`${DOMAIN}/map3.jpg`} />
+      <meta property="og:image:type" content="image/jpg" />
 
-  const fetchMapData = async () => {
-    if (router.query.id) {
-      const data = await getMap(router.query.id);
-
-      if (data.error) return setError(data.error);
-
-      const { markers, mapName, lines } = data;
-
-      setMarkers(markers);
-      setLines(lines);
-
-      // extend the bounds to the map markers
-      const bounds = new google.maps.LatLngBounds();
-      for (let i = 0; i < markers.length; i++) {
-        bounds.extend(markers[i]);
-      }
-
-      setBounds(bounds);
-
-      document.title = mapName
-    }
-  }
-
-  const handleClickMap = (t, map, coord) => setInfoWindow(false);
-
-  const onMarkerClick = marker => (props, googleMarker, e) => {
-    if (activeMarker === marker) {
-      setInfoWindow(false);
-    } else {
-      setActiveMarker(marker);
-      setActiveGoogleMarker(googleMarker);
-      setInfoWindow(true);
-    }
-  }
-
-  const showMarkers = () => markers.map(marker => {
-    const { lat, lng } = marker;
-    const { image, width, height, anchor } = marker.markerIcon;
-    const anchorX = width / 2;
-    const anchorY = anchor === 'bottom' ? height : height / 2;
-
-    return (
-      <Marker 
-        name='New marker'
-        position={{ lat, lng }}
-        onClick={onMarkerClick(marker)}
-        icon={{
-          url: cloudinaryCore.url(image, { height: 100, crop: 'fill' }),
-          scaledSize: new google.maps.Size(width, height),
-          anchor: new google.maps.Point(anchorX, anchorY)
-        }}/>
-    )
-  });
-
-  const showInfoWindowContent = ({ infoWindow, markerIcon }) => {
-    const isImage = infoWindow.option === 'image' && infoWindow.image;
-    const isYoutube = infoWindow.option === 'youtube' && infoWindow.youtube;
-
-    return (
-      <div className="infowindow">
-        <div className="d-flex align-items-center">
-          <img src={cloudinaryCore.url(markerIcon.image, { height: 100, crop: 'fill' })} alt='' height="25" className="mr-2" />
-          <h4 className="m-0">{infoWindow.title}</h4>
-        </div>
-        <div className="mt-3 pb-2 border-bottom">{moment(infoWindow.date).format('DD MMMM YYYY')}</div>
-        <div className="mt-2">
-          <p>{infoWindow.body}</p>
-        </div>
-
-        {isYoutube && (
-          <iframe width="200" height="130" src={`https://www.youtube.com/embed/${infoWindow.youtube}`}></iframe>
-        )}
-
-        {isImage && (
-          <img src={cloudinaryCore.url(markerIcon.image, { height: 400, crop: 'fill' })} alt={infoWindow.title} height="130"/>
-        )}
-      </div>
-    )
-  }
-
-  const showLines = () => lines.map(line => {
-    const { strokeColor, strokeWeight, strokeOpacity, coords } = line;
-    return (
-      <Polyline
-        path={coords}
-        strokeColor={strokeColor}
-        strokeWeight={strokeWeight}
-        strokeOpacity={parseFloat(strokeOpacity)} />
-    )});
-
-  const showInfoWindow = () => {
-    return (
-      <InfoWindow
-        marker={activeGoogleMarker}
-        visible={isInfoWindow}>
-          {activeMarker && showInfoWindowContent(activeMarker)}
-      </InfoWindow>
-    )
-  }
-
-  return !error ? (
-    <div style={{width: '100vw', height: '100vh'}}>
-      <Map 
-        google={google} 
-        initialCenter={{ lat: 24.523387, lng: 11.510063 }} 
-        bounds={bounds}
-        disableDefaultUI={true}
-        onClick={handleClickMap}>
-
-          {showMarkers()}
-          {showLines()}
-          {showInfoWindow()}
-
-      </Map>
-    </div>
-  ) : <Layout><Error content={error} /></Layout>
+      <meta name='twitter:card' content='summary' />
+      <meta name='twitter:url' content={DOMAIN} />
+      <meta name='twitter:title' content={APP_NAME} />
+      <meta name='twitter:description' content={`View my map ${mapName} on ${APP_NAME}!`} />
+      <meta name='twitter:image' content={`${DOMAIN}/map3.jpg`} />
+      <meta name='twitter:creator' content='@travelingtice' />
+    </Head>
+  )
+  return (
+    <>
+      {head()}
+      <MapShow id={id} />
+    </>
+  )
 }
 
-export default withRouter(GoogleApiWrapper({
-  apiKey: GOOGLE_API_KEY
-})(MapShow))
+MapId.getInitialProps = ({ query }) => {
+  return getMapName(query.id).then(data => {
+    if (data.error) return console.log(data.error);
+
+    return { mapName: data.mapName, id: query.id }
+  });
+}
+
+export default MapId;

@@ -4,7 +4,7 @@ import { FormGroup, FormControl, InputLabel, Input, Button, IconButton } from '@
 import Error from '../../Error';
 import { DashboardContext } from "../../../contexts/DashboardContext";
 import { getCookie, isAuth } from '../../../actions/auth';
-import { getApiKey, addApiKey, addOrigin } from '../../../actions/apikey';
+import { getApiKey, addApiKey, addOrigin, removeOrigin } from '../../../actions/apikey';
 import generateId from 'generate-unique-id';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -48,19 +48,30 @@ const ApiKeyModal = () => {
     setApiKeyModalError('');
     // check the new origin
     if (origin.match(/https?/)) return setApiKeyModalError('Don\'t include http or https protocol');
-
-    // add origin to the api key
-    setApiKey({ ...apiKey, origins: apiKey.origins.concat({ address: origin }) });
+    if (origin.match(/\//)) return setApiKeyModalError('Don\'t include any sub adresses');
 
     const data = await addOrigin(origin, apiKey.id, token);
 
-    if (data.error) setApiKeyModalError(data.error);
+    if (data.error) return setApiKeyModalError(data.error);
+
+    // add origin to the api key
+    setOrigin('');
+    setApiKey({ ...apiKey, origins: apiKey.origins.concat(data.origin) });
+
+  }
+
+  const handleRemoveOrigin = origin => async e => {
+    const data = await removeOrigin(origin.id, token);
+
+    if (data.error) return setApiKeyModalError(data.error);
+
+    setApiKey({ ...apiKey, origins: apiKey.origins.filter(or => or.id !== origin.id) });
   }
 
   const listOrigins = () => apiKey.origins.map(origin => (
     <div className="d-flex justify-content-between">
       <span className="p-2 mr-2 mb-2" style={{backgroundColor: '#ddd', borderRadius: 5 }}>{origin.address}</span>
-      <IconButton color="primary"><DeleteIcon/></IconButton>
+      <IconButton onClick={handleRemoveOrigin(origin)} color="primary"><DeleteIcon/></IconButton>
     </div>
   ))
 

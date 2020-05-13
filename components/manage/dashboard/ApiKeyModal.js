@@ -69,7 +69,7 @@ const ApiKeyModal = () => {
   }
 
   const listOrigins = () => apiKey.origins.map(origin => (
-    <div className="d-flex justify-content-between">
+    <div key={origin.id} className="d-flex justify-content-between">
       <span className="p-2 mr-2 mb-2" style={{backgroundColor: '#ddd', borderRadius: 5 }}>{origin.address}</span>
       <IconButton onClick={handleRemoveOrigin(origin)} color="primary"><DeleteIcon/></IconButton>
     </div>

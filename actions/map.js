@@ -45,7 +45,11 @@ export const removeMap = (id, token) => {
 }
 
 export const getCodeForMap = (mapId, apiKey, token) => {
-  return fetch(`${API_WITHOUT_VERSION}/maps/${mapId}/code`)
-  .then(res => res.json())
+  return fetch(`${API_WITHOUT_VERSION}/maps/${mapId}/code?api_key=${apiKey}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(res => res.text())
   .catch(err => console.log(err))
 }

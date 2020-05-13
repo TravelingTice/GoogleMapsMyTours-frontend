@@ -1,20 +1,34 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { FormGroup, FormControl, InputLabel, Input } from '@material-ui/core';
 import { DashboardContext } from "../../../contexts/DashboardContext";
 import { getCookie } from '../../../actions/auth';
 import { getApiKey } from '../../../actions/apikey';
 import { getCodeForMap } from '../../../actions/map';
-import ReactMarkdown from 'react-markdown';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const EmbedModal = () => {
   const { isEmbedModal, setEmbedModal, selectedMap, setApiKeyModalError, setApiKeyModal } = useContext(DashboardContext);
-  const [input, setInput] = useState('`loading ...`');
+  const [input, setInput] = useState('loading ...');
   const [height, setHeight] = useState(100);
-
+  const [copied, setCopied] = useState(false);
+  
   const closeModal = () => setEmbedModal(false);
-
+  
   const token = getCookie('token');
+  
+  useEffect(() => {
+    if (copied) {
+      setCopied(true);
+      let timeout = setTimeout(() => {
+        setCopied(false);
+      }, 3000);
+
+      return () => {
+        clearTimeout(timeout);
+      }
+    }
+  }, [copied]);
 
   useEffect(() => {
     if (isEmbedModal) {
@@ -32,9 +46,9 @@ const EmbedModal = () => {
       return;
     }
 
-    const { code } = await getCodeForMap(selectedMap.id, apiKey, token);
+    const htmlCode = await getCodeForMap(selectedMap.id, apiKey.key, token);
 
-    setInput(code);
+    setInput(htmlCode);
   }
   
   return (
@@ -48,11 +62,17 @@ const EmbedModal = () => {
             <InputLabel htmlFor="height">Height of map container (in px)</InputLabel>
             <Input type="number" value={height} onChange={e => setHeight(parseInt(e.target.value))} />
           </FormControl>
-          </FormGroup>
+        </FormGroup>
 
-          <p className="text-muted font-italic my-3">Paste the following code on your website to show your map!</p>
+        <p className="text-muted font-italic my-3">Paste the following code on your website to show your map! (Click to copy)</p>
 
-        <ReactMarkdown source={input} />
+        {copied && (
+          <p className="text-success">Text copied!</p>
+          )}
+
+        <CopyToClipboard text={input} onCopy={() => setCopied(true)}>
+          <p style={{fontFamily: 'Mono'}}>{input}</p>
+        </CopyToClipboard>
       </ModalBody>
     </Modal>
   )

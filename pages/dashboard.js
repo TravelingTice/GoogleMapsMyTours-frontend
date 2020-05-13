@@ -26,7 +26,7 @@ const Dashboard = () => {
             <Row>
               <Col xs="12">
                 <div className="my-4 d-flex align-items-center justify-content-between">
-                  <h1 className="m-0">Dashboard</h1>
+                  <h1 className="m-0 mr-4">Dashboard</h1>
                   <Button variant="outlined" color="primary" startIcon={<RoomIcon />} role="link" onClick={() => Router.push('/manage/markericons')}>Manage markers</Button>
                 </div>
                 <MapList />

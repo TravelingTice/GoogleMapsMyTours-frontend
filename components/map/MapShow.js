@@ -1,6 +1,6 @@
 import { Map, InfoWindow, Marker, GoogleApiWrapper, Polyline } from 'google-maps-react';
 import { GOOGLE_API_KEY } from '../../config';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { cloudinaryCore } from '../../config';
 import moment from 'moment';
 import { withRouter } from 'next/router';
@@ -11,15 +11,32 @@ import Layout from '../../components/layout/Layout';
 const MapShow = ({ google, id }) => {
   const [markers, setMarkers] = useState([]);
   const [lines, setLines] = useState([]);
+  const [kmls, setKmls] = useState([]);
   const [error, setError] = useState('');
   const [bounds, setBounds] = useState('');
   const [activeGoogleMarker, setActiveGoogleMarker] = useState(null);
   const [activeMarker, setActiveMarker] = useState(null);
   const [isInfoWindow, setInfoWindow] = useState(false);
 
+  let mapRef = useRef(null);
+
   useEffect(() => {
     fetchMapData();
   }, [id]);
+
+  useEffect(() => {
+    // render the kmls as layers on the map
+    if (kmls.length > 0) {
+      kmls.forEach(({ name }) => {
+        let src = `https://res.cloudinary.com/ticekralt/raw/upload/${name}`
+        let kmlLayer = new google.maps.KmlLayer(src, {
+          suppressInfoWindows: true,
+          preserveViewport: true,
+          map: mapRef.map
+        });
+      })
+    }
+  }, [kmls]);
 
   const fetchMapData = async () => {
     if (id) {
@@ -27,10 +44,11 @@ const MapShow = ({ google, id }) => {
 
       if (data.error) return setError(data.error);
 
-      const { markers, mapName, lines } = data;
+      const { markers, mapName, lines, kmls } = data;
 
       setMarkers(markers);
       setLines(lines);
+      setKmls(kmls);
 
       // extend the bounds to the map markers
       const bounds = new google.maps.LatLngBounds();
@@ -124,6 +142,7 @@ const MapShow = ({ google, id }) => {
   return !error ? (
     <div style={{width: '100vw', height: '100vh'}}>
       <Map 
+        ref={(map) => mapRef = map}
         google={google} 
         initialCenter={{ lat: 24.523387, lng: 11.510063 }} 
         bounds={bounds}

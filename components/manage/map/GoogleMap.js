@@ -45,7 +45,7 @@ const GoogleMap = ({ google }) => {
         });
       })
     }
-  }, [kmls])
+  }, [kmls]);
 
   const handleClickMap = (t, map, coord) => {
     // just to be sure, make sure the menu is collapsed

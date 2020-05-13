@@ -1,10 +1,10 @@
-import { MapContext } from "../../contexts/MapContext";
+import { MapContext } from "../../../contexts/MapContext";
 import { useContext, useState } from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { IconButton } from '@material-ui/core';
 import CodeIcon from '@material-ui/icons/Code';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Error from '../Error';
+import Error from '../../Error';
 import { getCookie } from "../../../actions/auth";
 import { removeKml } from '../../../actions/kml';
 

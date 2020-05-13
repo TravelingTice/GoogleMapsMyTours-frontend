@@ -12,6 +12,8 @@ export const DashboardContextProvider = ({ children }) => {
   });
   const [isShareModal, setShareModal] = useState(false);
   const [isEmbedModal, setEmbedModal] = useState(false);
+  const [isApiKeyModal, setApiKeyModal] = useState(false);
+  const [apiKeyModalError, setApiKeyModalError] = useState('');
 
   const token = getCookie('token');
 
@@ -33,8 +35,12 @@ export const DashboardContextProvider = ({ children }) => {
         selectedMap,
         isShareModal,
         isEmbedModal,
+        isApiKeyModal,
+        apiKeyModalError,
         setShareModal,
         setEmbedModal,
+        setApiKeyModal,
+        setApiKeyModalError,
         setSelectedMap
       }}>
       {children}

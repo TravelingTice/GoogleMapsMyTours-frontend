@@ -7,9 +7,10 @@ import CodeIcon from '@material-ui/icons/Code';
 import { MapContext } from "../../../contexts/MapContext";
 import convertToBase64 from '../../../helpers/convertToBase64';
 import { addKml } from '../../../actions/kml';
+import Router from 'next/router';
 
 const KmlModal = () => {
-  const { isKmlModal, setKmlModal, id, setKmls, kmls } = useContext(MapContext);
+  const { isKmlModal, setKmlModal, id, setKmls, kmls, mapName } = useContext(MapContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [file, setFile] = useState(null);
@@ -35,7 +36,7 @@ const KmlModal = () => {
     const enc = await convertToBase64(file);
     const newKml = { name: file.name, enc }
 
-    const data = await addKml(newKml, id, token);
+    const data = await addKml(newKml, id, mapName, token);
 
     setLoading(false);
     setKmlModal(false);
@@ -43,6 +44,10 @@ const KmlModal = () => {
     if (data.error) return setError(data.error);
 
     setFile(null);
+
+    if (!id) {
+      Router.push(`/manage/maps/${data.mapId}`)
+    }
 
     setKmls(kmls.concat({ name: data.name }));
   }

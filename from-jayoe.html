@@ -1,0 +1,378 @@
+<div id="scoped-content">
+  <style type="text/css" scoped>
+.hidden {
+  display: none;
+}
+#map {
+  width: 100%;
+  height: 400px;
+  font-family: Arial sans-serif;
+}
+#map .infowindow {
+  overflow: hidden;
+  font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif;
+}
+#map .infowindow .heading {
+  margin-bottom: 6px;
+  vertical-align: middle;
+  max-height: 64px;
+}
+#map .infowindow .heading #icon {
+  position: relative;
+  width: auto;
+  height: 30px;
+  top: 4px;
+}
+#map .infowindow .heading h1 {
+  display: inline;
+  margin-left: 12px;
+  font-size: 24px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1em;
+}
+#map .infowindow .main-infowindow-content {
+  margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  font-weight: 500;
+}
+#map .infowindow .main-infowindow-content .left-panel {
+  width: 180px;
+}
+#map .infowindow .main-infowindow-content .left-panel .date {
+  font-size: 12px;
+  font-weight: 400;
+  padding-bottom: 2px!important;
+  margin: 5px 0 0 0;
+}
+#map .infowindow .main-infowindow-content .left-panel .description {
+  margin: 3px 5px 0 0;
+  padding-top: 7px;
+  color: #111;
+  font-weight: 500;
+  word-wrap: break-word;
+  border-top: 2px solid #517cb5;
+}
+#map .infowindow .main-infowindow-content .left-panel .links a {
+  font-size: 13px;
+  text-decoration: none;
+  color: #0000ff;
+  line-height: 1.5em;
+}
+#map .infowindow .main-infowindow-content .left-panel .links a:hover {
+  color: #51b568;
+}
+#map .infowindow .main-infowindow-content .left-panel .links a:before {
+  content: "> ";
+}
+#map .infowindow .main-infowindow-content .left-panel .rideData a {
+  text-decoration: none;
+  color: #ff0000;
+}
+#map .infowindow .main-infowindow-content .left-panel .links {
+  border-top: 2px solid #298771;
+}
+#map .infowindow .main-infowindow-content .left-panel .rideData {
+  border-top: 2px solid #298771;
+}
+#map .infowindow .main-infowindow-content .left-panel .rideData, #map .infowindow .main-infowindow-content .left-panel .links {
+  margin: 10px 5px 0 0;
+  padding: 4px 0;
+}
+#map .infowindow .main-infowindow-content .left-panel .rideData p, #map .infowindow .main-infowindow-content .left-panel .links p {
+  font-weight: 500;
+  font-size: 14px;
+}
+#map .infowindow .main-infowindow-content img {
+  max-width: 300px;
+  max-height: 200px;
+  margin: 7px 0 7px 5px;
+}
+#map .infowindow .main-infowindow-content iframe {
+  margin: 10px 0 5px 5px;
+}
+.legend {
+  position: absolute;
+  top: 81px;
+  left: 5px;
+}
+#map-legend img {
+  padding: 0;
+  height: 540px;
+  margin: 0;
+}
+#credits {
+  position: absolute;
+  margin: 0;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  width: 100%;
+  transform: translateY(-4px);
+}
+
+#credits span {
+  float: right;
+}
+
+#legend-btn {
+  float: left;
+  width: 105px;
+  padding: 1px;
+  margin: 5px;
+  background-color: #666;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: color 300ms ease-out;
+  text-align: center;
+}
+#legend-btn:hover {
+  color: #f0f0f0;
+  background-color: #888;
+}
+@media screen and (max-width: 700px) {
+  #map .infowindow {
+    max-width: 400px;
+    padding-right: 10px;
+  }
+  #map .infowindow .heading {
+    max-height: 53px;
+  }
+  #map .infowindow .heading h1 {
+    font-size: 16px;
+    margin-left: 7px;
+  }
+  #map .infowindow .heading #icon {
+    height: 20px;
+  }
+  #map .infowindow .main-infowindow-content {
+    display: block;
+  }
+  #map .infowindow .main-infowindow-content .left-panel {
+    width: 250px;
+    font-size: 13px;
+  }
+  #map .infowindow .main-infowindow-content .left-panel .date {
+    font-size: 11px;
+    padding: 0;
+  }
+  #map .infowindow .main-infowindow-content iframe {
+    width: 250px;
+    height: 141px;
+  }
+  #map .infowindow .main-infowindow-content img {
+    max-width: 250px;
+  }
+}
+  </style>
+</div>
+<div id="map"></div>
+    <div class="legend">
+      <div id="legend-btn">
+        <span>Map legend</span>
+      </div>
+      <div class="hidden" id="map-legend">
+        <div class="text">
+          <img width="350px" src="https://myaehost.com/jayoe/wp-content/uploads/google-maps/img/talllegend2.png" alt="map legend">
+        </div>
+          
+        </div>
+    </div>
+    <script>
+// the folder in which the Json file is being put
+
+// TODO: change urls here when uploading
+const websiteUrl = 'https://jayoe.com';
+const jsonFilePath = '/map-editor/';
+const iconPath = '/fullscreenmap/icons/';
+const imagePath = '/fullscreenmap/images/';
+const mapPath = '/fullscreenmap/';
+const kmlPath = 'kmllines/';
+// paths
+// map
+let map;
+
+// function for when the http is loaded unsecurely, redirect to https
+function handleHTTP() {
+  if (location.protocol !== 'https:') {
+    location.replace(`https:${location.href.substring(location.protocol.length)}`);
+  }
+}
+
+function initMap() {
+  handleHTTP();
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {
+      lat: Number(%%centerLatPos%%),
+      lng: Number(%%centerLngPos%%)
+    },
+    zoom: %%zoom%%,
+    fullScreenControl: true,
+    fullScreenControlOptions: {
+      position: google.maps.ControlPosition.LEFT_CENTER
+    }
+  });
+  fetchJSON();
+}
+
+// get our locations array from the json file
+function fetchJSON() {
+  let locations = [];
+  const options = {
+    mode: 'no-cors'
+  }
+  fetch(`${websiteUrl}${jsonFilePath}locationsNew.json`, options).then(resp => resp.json()).then(resp => {
+    locations = resp;
+    // Make the markers on the map
+    makeMarkers(locations);
+    // Draw the kml lines on the map
+    getKmlLines();
+    // add listeners to the buttons on the page
+    addListeners();
+  });
+}
+
+function makeMarkers(locs) {
+  // Add 1 infowindow that will be assigned to the marker when that marker is clicked
+  const infoWindow = new google.maps.InfoWindow();
+  // create all markers on the map
+  locs.forEach((l, i) => {
+    const marker = new google.maps.Marker({
+      map: map,
+      animation: l.animation ? google.maps.Animation.DROP : null,
+      id: i,
+      icon: l.icon ? websiteUrl + iconPath + l.icon : websiteUrl + iconPath + 'default.png',
+      title: l.title,
+      position: l.location,
+      date: l.date ? l.date : null,
+      description: l.description ? l.description : null,
+      youtube: l.youtube ? l.youtube : null,
+      img: l.img ? websiteUrl + imagePath + l.img : null,
+      rideData: l.rideData ? l.rideData : null,
+      lineStyles: l.lineStyles ? l.lineStyles : null,
+      zIndex: l.zIndex ? l.zIndex : 1
+    });
+    // draw a line if it needs one
+    if (l.line === true) {
+      // target the previous location from which line will start
+      const prevL = locs[i-1];
+      drawLine(l, prevL);
+    }
+    marker.addListener('click', function() {
+      if (infoWindow.marker != marker) {
+        populateInfoWindow(marker, infoWindow);
+        map.addListener('click', function() {
+          infoWindow.close();
+          infoWindow.marker = null;
+        })
+      } else {
+        infoWindow.close();
+        infoWindow.marker = null;
+      }
+    });
+  });
+}
+
+function drawLine(loc, prevLoc) {
+  const points = [];
+  points.push(prevLoc.location, loc.location);
+  const lineStyles = {
+    strokeWeight: parseFloat(loc.lineStyles.thickness),
+    strokeColor: loc.lineStyles.color
+  }
+  // create polyline with our styles
+  const polyline = new google.maps.Polyline(lineStyles);
+  // set the line to the path and the map
+  polyline.setPath(points);
+  polyline.setMap(map);
+}
+
+// draw kml lines on map that are put in folder:
+function getKmlLines() {
+  // get data from PHP with info on how many files there are in the kml directory
+  jQuery.get(websiteUrl+mapPath+'getFiles.php', (data, status) => {
+    const list = JSON.parse(data);
+    list.forEach(name => {
+      console.log(name);
+      if (name !== '.' && name !== '..') {
+        const kml = new google.maps.KmlLayer({
+          url: 'https://jayoe.com/fullscreenmap/kmllines/' + name,
+          map: map,
+          preserveViewport: true,
+          suppressInfoWindows: true
+        });
+        console.log(kml);
+      }
+    });
+  });
+}
+
+// Open infowindow at marker
+function populateInfoWindow(marker, infowindow) {
+  // Check to make sure infowindow is not open already on this marker
+  const html = generateHtmlInfowindow(marker);
+  infowindow.marker = marker;
+  infowindow.setContent(html);
+  infowindow.open(map, marker);
+  // make sure marker is properly cleared if infowindow is closed
+  infowindow.addListener('closeclick', () => infowindow.marker = null);
+  // also add event listener to our map, so you can click on the map to close the infowindow as well.
+}
+
+// Return html that is content of our infowindow
+function generateHtmlInfowindow(marker) {
+  let html = `<div class="infowindow"><div class="heading"><img id="icon" src="${marker.icon}" alt="marker"><h1>${marker.title}</h1></div><div class="main-infowindow-content">`;
+  // Check if marker has description, img, yt etc.. And generate html accordingly
+
+  // has description
+  if (marker.description) {
+    html += '<div class="left-panel">';
+    // has date
+    if (marker.date) {
+      html += `<p class="date">${marker.date}</p>`;
+    }
+    html += `<p class="description">${marker.description}</p>`;
+  } else if (marker.date) {
+    // has no description but has date
+    html += `<div class="left-panel"><p class="date">${marker.date}</p>`;
+  } else {
+    // has no description and no date
+    html += '<div class="left-panel">';
+  }
+
+  // has links
+  if (marker.links) {
+    html += `<div class="links"><p>${marker.links.title}</p>`;
+    marker.links.links.forEach(link => {
+      html += `<a href="${link.link}" target="_blank">${link.name}</a><br>`;
+    });
+    html += '</div>';
+  }
+  if (marker.rideData) {
+    html += `<div class="rideData"><a href="${marker.rideData}" target="_blank">View ride data</a></div>`
+  }
+  html += '</div>'
+
+  if (marker.img) {
+    html += `<img src="${marker.img}" alt="${marker.title}">`;
+  }
+  if (marker.youtube) {
+    html += `<iframe width="391" height="220" src="https://www.youtube.com/embed/${marker.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  }
+  html += '</div>';
+
+  return html;
+}
+
+function addListeners() {
+  jQuery('#legend-btn').click(function() {
+    jQuery('#map-legend').toggleClass('hidden');
+  })
+}
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARrTVDdJ8fRvMAi3Ien-8DwvIx2UVPqT8&callback=initMap"
+    async defer></script>

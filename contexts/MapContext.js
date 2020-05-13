@@ -117,6 +117,9 @@ export const MapContextProvider = ({ children, id }) => {
   }
 
   const onAddMarkerInfoWindow = async infoWindow => {
+    // frontend checks
+    if (!infoWindow.title) return setIWError('Title cannot be blank');
+    if (!infoWindow.body) return setIWError('Description cannot be blank');
     // frontend -> add infowindow for the marker (marker is already on the map)
     setInfoWindows(infoWindows.concat(infoWindow));
 

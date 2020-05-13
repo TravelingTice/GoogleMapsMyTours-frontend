@@ -23,9 +23,6 @@ export const DashboardContextProvider = ({ children }) => {
     const maps = await getMaps(token);
     setMaps(maps);
     setLoading(false);
-    // remove
-    setSelectedMap(maps[0]);
-    setShareModal(true);
   }
 
   return (
@@ -37,7 +34,8 @@ export const DashboardContextProvider = ({ children }) => {
         isShareModal,
         isEmbedModal,
         setShareModal,
-        setEmbedModal
+        setEmbedModal,
+        setSelectedMap
       }}>
       {children}
     </DashboardContext.Provider>

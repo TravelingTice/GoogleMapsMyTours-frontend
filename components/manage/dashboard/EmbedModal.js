@@ -5,7 +5,7 @@ import { DashboardContext } from "../../../contexts/DashboardContext";
 const EmbedModal = () => {
   const { isEmbedModal, setEmbedModal, selectedMap } = useContext(DashboardContext);
 
-  const closeModal = setEmbedModal(false);
+  const closeModal = () => setEmbedModal(false);
   
   return (
     <Modal isOpen={isEmbedModal} toggle={closeModal}>

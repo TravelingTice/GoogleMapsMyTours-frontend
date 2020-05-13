@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 import { Modal, ModalHeader, ModalBody, Form } from 'reactstrap';
 import { FormGroup, FormControl, InputLabel, Input, Button } from '@material-ui/core';
-import { getCookie } from "../../actions/auth";
-import Error from '../Error';
+import { getCookie } from "../../../actions/auth";
+import Error from '../../Error';
 import CodeIcon from '@material-ui/icons/Code';
-import { MapContext } from "../../contexts/MapContext";
-import convertToBase64 from '../../helpers/convertToBase64';
-import { addKml } from '../../actions/kml';
+import { MapContext } from "../../../contexts/MapContext";
+import convertToBase64 from '../../../helpers/convertToBase64';
+import { addKml } from '../../../actions/kml';
 
 const KmlModal = () => {
   const { isKmlModal, setKmlModal, id, setKmls, kmls } = useContext(MapContext);

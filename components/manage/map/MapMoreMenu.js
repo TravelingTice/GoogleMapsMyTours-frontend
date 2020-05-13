@@ -3,7 +3,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Motion, spring } from 'react-motion';
-import { MapContext } from "../../contexts/MapContext";
+import { MapContext } from "../../../contexts/MapContext";
 import DeleteIcon from '@material-ui/icons/Delete';
 import CodeIcon from '@material-ui/icons/Code';
 

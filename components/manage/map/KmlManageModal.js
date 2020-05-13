@@ -5,8 +5,8 @@ import { IconButton } from '@material-ui/core';
 import CodeIcon from '@material-ui/icons/Code';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Error from '../Error';
-import { getCookie } from "../../actions/auth";
-import { removeKml } from '../../actions/kml';
+import { getCookie } from "../../../actions/auth";
+import { removeKml } from '../../../actions/kml';
 
 const KmlManageModal = () => {
   const { kmls, setKmls, isKmlManageModal, setKmlManageModal, setLoading } = useContext(MapContext);

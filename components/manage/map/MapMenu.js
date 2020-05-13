@@ -6,7 +6,7 @@ import RoomIcon from '@material-ui/icons/Room';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import CodeIcon from '@material-ui/icons/Code';
 import { Motion, spring } from 'react-motion';
-import { MapContext } from "../../contexts/MapContext";
+import { MapContext } from "../../../contexts/MapContext";
 
 const MapMenu = () => {
   const { buttonsAppear, isMenu, toggleMenu, setState, setSelectedMarkerIconModal, setKmlModal, markers, setError } = useContext(MapContext);

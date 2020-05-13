@@ -1,8 +1,8 @@
 import { Map, Marker, Polyline, GoogleApiWrapper } from 'google-maps-react';
-import { GOOGLE_API_KEY, cloudinaryCore, API } from '../../config';
+import { GOOGLE_API_KEY, cloudinaryCore, API } from '../../../config';
 import { useContext, useState, useEffect, useRef } from 'react';
-import { MapContext } from '../../contexts/MapContext';
-import { panMapTo } from '../../helpers/map';
+import { MapContext } from '../../../contexts/MapContext';
+import { panMapTo } from '../../../helpers/map';
 
 const GoogleMap = ({ google }) => {
   const { state, setMenu, setMoreMenu, onAddMarker, markers, lines, kmls, findMarkerIconById, selectedLine, setSelectedLine, initMarkerEdit, isLineModal, setLineModal } = useContext(MapContext);

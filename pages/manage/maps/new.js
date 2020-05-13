@@ -1,16 +1,16 @@
 import Private from '../../../components/auth/Private';
 import Layout from '../../../components/layout/Layout';
 import { MapContextProvider } from '../../../contexts/MapContext';
-import GoogleMap from '../../../components/map/GoogleMap';
-import MapMenu from '../../../components/map/MapMenu';
-import SelectedMarkerIconModal from '../../../components/map/SelectedMarkerIconModal';
-import InfoWindowModal from '../../../components/map/InfoWindowModal';
-import SavingPrompt from '../../../components/map/SavingPrompt';
-import LoadingPrompt from '../../../components/map/LoadingPrompt';
-import MapNameModal from '../../../components/map/MapNameModal';
-import MapNamePrompt from '../../../components/map/MapNamePrompt';
-import InstructionsPrompt from '../../../components/map/InstructionsPrompt';
-import MapMoreMenu from '../../../components/map/MapMoreMenu';
+import GoogleMap from '../../../components/manage/map/GoogleMap';
+import MapMenu from '../../../components/manage/map/MapMenu';
+import SelectedMarkerIconModal from '../../../components/manage/map/SelectedMarkerIconModal';
+import InfoWindowModal from '../../../components/manage/map/InfoWindowModal';
+import SavingPrompt from '../../../components/manage/map/SavingPrompt';
+import LoadingPrompt from '../../../components/manage/map/LoadingPrompt';
+import MapNameModal from '../../../components/manage/map/MapNameModal';
+import MapNamePrompt from '../../../components/manage/map/MapNamePrompt';
+import InstructionsPrompt from '../../../components/manage/map/InstructionsPrompt';
+import MapMoreMenu from '../../../components/manage/map/MapMoreMenu';
 
 const MapsNew = () => {
   return (

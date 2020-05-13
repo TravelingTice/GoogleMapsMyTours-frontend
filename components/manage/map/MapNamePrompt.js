@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MapContext } from "../../contexts/MapContext";
+import { MapContext } from "../../../contexts/MapContext";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import styled from 'styled-components';
 import Router from 'next/router';

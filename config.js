@@ -15,4 +15,6 @@ export const CLOUDINARY_CLOUDNAME = publicRuntimeConfig.CLOUDINARY_CLOUDNAME;
 
 export const GOOGLE_API_KEY = 'AIzaSyBQPDoYkte_-bXJOrSL9Oe2jRylizXFz8M';
 
+export const FB_APP_ID = publicRuntimeConfig.FB_APP_ID;
+
 export const cloudinaryCore = new cloudinary.Cloudinary({ cloud_name: CLOUDINARY_CLOUDNAME });

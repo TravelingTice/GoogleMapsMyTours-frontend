@@ -1,9 +1,8 @@
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import styled from 'styled-components';
 import Router from 'next/router';
-import { useState, useEffect } from 'react';
-import { getMaps } from '../../../actions/map';
-import { getCookie } from '../../../actions/auth';
+import { useState, useEffect, useContext } from 'react';
+import { DashboardContext } from '../../../contexts/DashboardContext';
 import { cloudinaryCore } from '../../../config';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Motion, spring } from 'react-motion';
@@ -81,7 +80,7 @@ const Map = ({ map }) => {
       <Motion style={{opacity: spring(opacity), right: spring(right)}}>{({opacity, right}) =>
         <div style={{position: 'absolute', bottom: 135, opacity, right, zIndex}}>
           <div className="my-1">
-            <Button color="primary" variant="contained" startIcon={<ShareIcon/>}></Button>
+            <Button onClick={() => setShareModal(true)} color="primary" variant="contained" startIcon={<ShareIcon/>}></Button>
           </div>
           <div className="my-1">
             <Button color="primary" variant="contained" startIcon={<CodeIcon/>}></Button>
@@ -104,25 +103,12 @@ const Map = ({ map }) => {
 }
 
 const MapList = () => {
-  const [maps, setMaps] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const token = getCookie('token');
-
-  useEffect(() => {
-    fetchMaps();
-  }, []);
-
-  const fetchMaps = async () => {
-    const maps = await getMaps(token);
-    setMaps(maps);
-    setLoading(false);
-  }
+  const { maps, loading } = useContext(DashboardContext);
   
   return !loading ? (
     <GridContainer>
       {maps.map(map => (
-        <Map map={map} />
+        <Map key={map.id} map={map} />
       ))}
       <AddMap />
     </GridContainer>

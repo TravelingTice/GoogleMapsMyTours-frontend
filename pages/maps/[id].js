@@ -3,11 +3,12 @@ import Head from 'next/head';
 import { APP_NAME, DOMAIN } from '../../config';
 import MapShow from '../../components/map/MapShow';
 
-const MapId = ({ mapName, id }) => {
+const MapId = ({ mapName, username, id }) => {
   const head = () => (
     <Head>
       <title>{mapName} - {APP_NAME}</title>
       <meta name="description" content={`View my map ${mapName} on ${APP_NAME}!`} />
+      <meta name="author" content={username} />
       <link rel="canonical" href={`${DOMAIN}/maps/${id}`} />
       <meta property="og:title" content={`${mapName} - ${APP_NAME}`} />
       <meta property="og:description" content={`View my map ${mapName} on ${APP_NAME}!`} />
@@ -24,7 +25,7 @@ const MapId = ({ mapName, id }) => {
       <meta name='twitter:title' content={APP_NAME} />
       <meta name='twitter:description' content={`View my map ${mapName} on ${APP_NAME}!`} />
       <meta name='twitter:image' content={`${DOMAIN}/map3.jpg`} />
-      <meta name='twitter:creator' content='@travelingtice' />
+      <meta name='twitter:creator' content={`@${username}`} />
     </Head>
   )
   return (
@@ -39,7 +40,7 @@ MapId.getInitialProps = ({ query }) => {
   return getMapName(query.id).then(data => {
     if (data.error) return console.log(data.error);
 
-    return { mapName: data.mapName, id: query.id }
+    return { mapName: data.mapName, username: data.username, id: query.id }
   });
 }
 

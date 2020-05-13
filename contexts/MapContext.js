@@ -41,9 +41,10 @@ export const MapContextProvider = ({ children, id }) => {
     coords: []
   });
   const [lineError, setLineError] = useState('');
-
-  const [modalError, setModalError] = useState('');
-  const [modalLoading, setModalLoading] = useState(false);
+  // kml crud
+  const [isKmlModal, setKmlModal] = useState(false);
+  const [isKmlManageModal, setKmlManageModal] = useState(false);
+  const [kmls, setKmls] = useState([]);
 
   const token = getCookie('token');
 
@@ -63,16 +64,18 @@ export const MapContextProvider = ({ children, id }) => {
 
   useEffect(() => {
     setMenu(false);
-  }, [state]);
+    setMoreMenu(false);
+  }, [state, isKmlManageModal ]);
 
   const fetchMapData = async (id) => {
     const markerIcons = await getMarkerIcons(token);
     setMarkerIcons(markerIcons);
 
     if (id) {
-      const { markers, infoWindows, lines, mapName } = await getMapForEdit(id, token);
+      const { markers, infoWindows, lines, kmls, mapName } = await getMapForEdit(id, token);
       setMarkers(markers);
       setLines(lines);
+      setKmls(kmls);
       setInfoWindows(infoWindows);
       setMapName(mapName);
     } else {
@@ -281,6 +284,7 @@ export const MapContextProvider = ({ children, id }) => {
   return (
     <MapContext.Provider
       value={{
+        id,
         state,
         saving,
         isSelectedMarkerIconModal,
@@ -290,24 +294,28 @@ export const MapContextProvider = ({ children, id }) => {
         buttonsAppear,
         loading,
         error,
-        modalLoading,
-        modalError,
         lineError,
         markerIcons,
         markers,
         lines,
+        kmls,
         selectedLine,
         selectedMarkerIcon,
         isInfoWindowModal,
         isLineModal,
+        isKmlModal,
+        isKmlManageModal,
         markerEditId,
         infoWindowError,
         isMapNameModal,
+        setLoading,
         initMapName,
         initMarkerEdit,
         setSelectedMarkerIconModal,
         setInfoWindowModal,
         setLineModal,
+        setKmlModal,
+        setKmlManageModal,
         setIWError,
         setLineError,
         setSelectedLine,
@@ -318,6 +326,7 @@ export const MapContextProvider = ({ children, id }) => {
         toggleMenu,
         toggleMoreMenu,
         setMarkers,
+        setKmls,
         findMarkerIconById,
         findMarkerByRefId,
         findInfoWindowByMarkerRefId,

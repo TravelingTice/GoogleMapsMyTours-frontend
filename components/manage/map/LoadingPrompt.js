@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { MapContext } from '../../contexts/MapContext';
+import { MapContext } from '../../../contexts/MapContext';
 import { Motion, spring } from "react-motion";
 
 const LoadingPrompt = () => {

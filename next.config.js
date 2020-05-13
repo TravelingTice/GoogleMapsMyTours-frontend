@@ -17,6 +17,7 @@ module.exports = withPWA({
     API_DEV: 'http://localhost:3001/v1',
     API_PROD: 'https://google-maps-my-tours-api.herokuapp.com/v1',
     CLOUDINARY_CLOUDNAME: 'ticekralt',
-    GOOGLE_API_KEY: process.env.GOOGLE_API_KEY
+    GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+    FB_APP_ID: '193880831633929'
   }
 })

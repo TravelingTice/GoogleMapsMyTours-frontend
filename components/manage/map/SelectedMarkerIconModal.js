@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Modal, ModalHeader, ModalBody }  from 'reactstrap';
-import { MapContext } from "../../contexts/MapContext";
+import { MapContext } from "../../../contexts/MapContext";
 import { Select, MenuItem, Button } from '@material-ui/core';
 import { Image, Transformation } from 'cloudinary-react';
 

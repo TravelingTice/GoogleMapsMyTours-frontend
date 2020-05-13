@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { MapContext } from '../../contexts/MapContext';
+import { MapContext } from '../../../contexts/MapContext';
 
 const InstructionsPrompt = () => {
   const { state, selectedMarkerIcon } = useContext(MapContext);

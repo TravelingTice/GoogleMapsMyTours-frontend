@@ -88,7 +88,6 @@ class MyDocument extends Document {
           <meta name='apple-mobile-web-app-status-bar-style' content='default' />
           <meta name='apple-mobile-web-app-title' content={APP_NAME} />
 
-          <meta name='description' content={APP_DESC} />
           <meta name='format-detection' content='telephone=no' />
           <meta name='mobile-web-app-capable' content='yes' />
           <meta name='msapplication-config' content='/browserconfig.xml' />
@@ -100,18 +99,6 @@ class MyDocument extends Document {
           <link rel='shortcut icon' href='/favicon.ico' />
           {/* <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' /> */}
               
-          <meta name='twitter:card' content='summary' />
-          <meta name='twitter:url' content={DOMAIN} />
-          <meta name='twitter:title' content={APP_NAME} />
-          <meta name='twitter:description' content={APP_DESC} />
-          <meta name='twitter:image' content={`${DOMAIN}/android-icon-192x192.png`} />
-          <meta name='twitter:creator' content='@travelingtice' />
-          <meta property='og:type' content='website' />
-          <meta property='og:title' content={APP_NAME} />
-          <meta property='og:description' content={APP_DESC} />
-          <meta property='og:site_name' content={APP_NAME} />
-          <meta property='og:url' content={DOMAIN} />
-          <meta property='og:image' content={`${DOMAIN}/apple-icon.png`} />
         </Head>
         <body>
           <Main />

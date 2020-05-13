@@ -1,13 +1,13 @@
-import { MapContext } from "../../contexts/MapContext";
+import { MapContext } from "../../../contexts/MapContext";
 import { useContext, useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, Form, Row, Col } from 'reactstrap';
 import { Button, FormGroup, FormControl, Input, InputLabel, TextField, Checkbox } from '@material-ui/core';
-import convertToBase64 from '../../helpers/convertToBase64';
+import convertToBase64 from '../../../helpers/convertToBase64';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { Image, Transformation } from 'cloudinary-react';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import Error from '../Error';
+import Error from '../../Error';
 
 const InfoWindowModal = () => {
   const { isInfoWindowModal, markerEditId, setInfoWindowModal, setMarkers, findInfoWindowByMarkerRefId, markers, onAddMarkerInfoWindow, onUpdateMarkerInfoWindow, infoWindowError, setIWError, onRemoveMarker } = useContext(MapContext);

@@ -1,11 +1,11 @@
 import { Map, Marker, Polyline, GoogleApiWrapper } from 'google-maps-react';
-import { GOOGLE_API_KEY, cloudinaryCore } from '../../config';
+import { GOOGLE_API_KEY, cloudinaryCore, API } from '../../../config';
 import { useContext, useState, useEffect, useRef } from 'react';
-import { MapContext } from '../../contexts/MapContext';
-import { panMapTo } from '../../helpers/map';
+import { MapContext } from '../../../contexts/MapContext';
+import { panMapTo } from '../../../helpers/map';
 
 const GoogleMap = ({ google }) => {
-  const { state, setMenu, setMoreMenu, onAddMarker, markers, lines, findMarkerIconById, selectedLine, setSelectedLine, initMarkerEdit, isLineModal, setLineModal } = useContext(MapContext);
+  const { state, setMenu, setMoreMenu, onAddMarker, markers, lines, kmls, findMarkerIconById, selectedLine, setSelectedLine, initMarkerEdit, isLineModal, setLineModal } = useContext(MapContext);
   const [selectedMarkers, setMarkers] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
@@ -32,6 +32,20 @@ const GoogleMap = ({ google }) => {
     setRefresh(true);
     setTimeout(() => setRefresh(false), 10);
   }, [selectedLine]);
+
+  useEffect(() => {
+    // render the kmls as layers on the map
+    if (kmls.length > 0) {
+      kmls.forEach(({ name }) => {
+        let src = `https://res.cloudinary.com/ticekralt/raw/upload/${name}`
+        let kmlLayer = new google.maps.KmlLayer(src, {
+          suppressInfoWindows: true,
+          preserveViewport: true,
+          map: mapRef.map
+        });
+      })
+    }
+  }, [kmls]);
 
   const handleClickMap = (t, map, coord) => {
     // just to be sure, make sure the menu is collapsed

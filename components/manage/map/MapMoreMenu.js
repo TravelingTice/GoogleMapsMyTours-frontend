@@ -3,11 +3,12 @@ import { useTheme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Motion, spring } from 'react-motion';
-import { MapContext } from "../../contexts/MapContext";
+import { MapContext } from "../../../contexts/MapContext";
 import DeleteIcon from '@material-ui/icons/Delete';
+import CodeIcon from '@material-ui/icons/Code';
 
 const MapMenu = () => {
-  const { buttonsAppear, isMoreMenu, toggleMoreMenu, onRemoveMap } = useContext(MapContext);
+  const { buttonsAppear, isMoreMenu, toggleMoreMenu, onRemoveMap, setKmlManageModal } = useContext(MapContext);
   const [step, setStep] = useState(0);
   const [menuZIndex, setMenuZIndex] = useState(-1);
 
@@ -15,33 +16,31 @@ const MapMenu = () => {
     if (isMoreMenu) {
       setMenuZIndex(1);
       setStep(1);
-      // setTimeout(() => setStep(2), 100);
-      // setTimeout(() => setStep(3), 200);
+      setTimeout(() => setStep(2), 100);
     } else {
-      setStep(0);
-      setTimeout(() => setMenuZIndex(-1), 300);
-      // setStep(2);
-      // setTimeout(() => setStep(1), 100);
-      // setTimeout(() => setStep(0), 200);
+      setStep(1);
+      setTimeout(() => setStep(0), 200);
+      setTimeout(() => setMenuZIndex(-1), 400);
     }
   }, [isMoreMenu]);
 
-  const button = (style, icon, text, onClick) => (
+  const button = (style, icon, text, onClick, color) => (
     <Motion style={{opacity: spring(style.opacity), left: spring(style.left)}}>{({opacity, left}) =>
-      <Button onClick={onClick} style={{opacity, position: 'relative', left }} startIcon={icon} className="mb-2" color="secondary" variant="contained">{text}</Button> 
+      <Button onClick={onClick} style={{opacity, position: 'relative', left }} startIcon={icon} className="mb-2" color={color} variant="contained">{text}</Button> 
     }</Motion>
   )
   
   const showOptions = () => {
     const buttonAppears = [
-      step >= 1 ? { opacity: 1, left: 0 } : { opacity: 0, left: -20 }
-      // step >= 2 ? { opacity: 1, left: 0 } : { opacity: 0, left: -20 },
+      step >= 1 ? { opacity: 1, left: 0 } : { opacity: 0, left: -20 },
+      step >= 2 ? { opacity: 1, left: 0 } : { opacity: 0, left: -20 }
       // step >= 3 ? { opacity: 1, left: 0 } : { opacity: 0, left: -20 }
     ];
     
     return (
       <>
-        {button(buttonAppears[0], <DeleteIcon/>, 'Delete map', onRemoveMap)}
+        {button(buttonAppears[0], <CodeIcon/>, 'Manage kmls', () => setKmlManageModal(true), 'primary')}
+        {button(buttonAppears[1], <DeleteIcon/>, 'Delete map', onRemoveMap, 'secondary')}
       </>
     )
   }

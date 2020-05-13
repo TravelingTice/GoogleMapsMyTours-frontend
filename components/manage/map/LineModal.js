@@ -1,8 +1,8 @@
-import { MapContext } from "../../contexts/MapContext";
+import { MapContext } from "../../../contexts/MapContext";
 import { useContext, useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, Form } from 'reactstrap';
 import { Button, FormGroup, FormControl, Input, InputLabel, Select, MenuItem } from '@material-ui/core';
-import Error from '../Error';
+import Error from '../../Error';
 import ColorPicker from 'material-ui-color-picker';
 
 const LineModal = () => {
@@ -86,7 +86,7 @@ const LineModal = () => {
                 onChange={handleChange('strokeWeight')}
               >
                 {strokeWeights.map(option => (
-                  <MenuItem value={option}>{option}</MenuItem>
+                  <MenuItem key={option} value={option}>{option}</MenuItem>
                 ))}
               </Select>
             </FormControl>

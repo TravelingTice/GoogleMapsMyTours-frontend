@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
-import { MapContext } from '../../contexts/MapContext';
+import { MapContext } from '../../../contexts/MapContext';
 import { Motion, spring } from "react-motion";
-import Error from '../Error';
+import Error from '../../Error';
 
 const ErrorPrompt = () => {
   const { error } = useContext(MapContext);

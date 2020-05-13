@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { Modal, ModalHeader, ModalBody, Form } from 'reactstrap';
 import { FormGroup, FormControl, InputLabel, Input } from '@material-ui/core';
 import { Button } from '@material-ui/core';
-import { MapContext } from '../../contexts/MapContext';
+import { MapContext } from '../../../contexts/MapContext';
 
 const MapNameModal = () => {
   const { isMapNameModal, initMapName } = useContext(MapContext);

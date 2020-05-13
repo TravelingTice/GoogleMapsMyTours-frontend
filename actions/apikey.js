@@ -36,3 +36,14 @@ export const addOrigin = (origin, keyId, token) => {
   .then(res => res.json())
   .catch(err => console.log(err))
 }
+
+export const removeOrigin = (originId, token) => {
+  return fetch(`${API}/origins/${originId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(res => res.json())
+  .catch(err => console.log(err))
+}

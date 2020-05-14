@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { Motion, spring } from 'react-motion';
 import { Button } from '@material-ui/core';
 import Head from 'next/head';
+import { isAuth } from '../actions/auth';
 
 const stepIntervals = [1000, 1000, 200, 200, 1000];
 
@@ -91,6 +92,17 @@ const Home = () => {
     )
   }
 
+  const showGoToDashboardButton = () => {
+    const appear = step >= 5;
+    const opacity = appear ? 1 : 0;
+
+    return (
+      <Motion style={{opacity: spring(opacity)}}>{({opacity}) =>
+        <Button color="primary" onClick={() => Router.push('/dashboard')} variant="contained" style={{opacity}}>Go to my Dashboard</Button>
+      }</Motion>
+    )
+  }
+
   return (
     <>
       {head()}
@@ -112,7 +124,7 @@ const Home = () => {
             </Col>
 
             <Col xs="12" className="my-5 text-center">
-              {showTryNowButton()}
+              {!isAuth() ? showTryNowButton() : showGoToDashboardButton()}
             </Col>
           </Row>
         </Container>

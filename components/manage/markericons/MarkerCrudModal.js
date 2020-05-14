@@ -11,6 +11,7 @@ import Error from '../../Error';
 
 const MarkerCrudModal = () => {
   const anchorOptions = ['bottom', 'center'];
+  const zIndexOptions = [1,2,3,4,5];
   const { isModal, closeModal, editId, handleCreateUpdate, modalError, modalLoading, findMarkerIconById, onRemoveMarkerIcon, setModalError } = useContext(MarkerIconContext);
   const [imgPreview, setPreview] = useState(null);
   const [cloudinaryImg, setCloudinaryImg] = useState('');
@@ -19,25 +20,25 @@ const MarkerCrudModal = () => {
   const [dimensions, setDimensions] = useState({
     height: 40,
     width: 27,
-    anchor: anchorOptions[0]
+    anchor: anchorOptions[0],
+    zIndex: zIndexOptions[0]
   });
 
-  const { height, width, anchor } = dimensions;
-
-  const token = getCookie('token');
+  const { height, width, anchor, zIndex } = dimensions;
 
   useEffect(() => {
     if (isModal) {
       if (editId) {
         const selectedIcon = findMarkerIconById(editId);
-        const { name, image, height, width, anchor } = selectedIcon;
+        const { name, image, height, width, anchor, zIndex } = selectedIcon;
         setName(name);
         setCloudinaryImg(image);
         setPreview('');
         setDimensions({
           height,
           width,
-          anchor
+          anchor,
+          zIndex
         });
         setDimensionsForm(true);
       } else {
@@ -47,7 +48,8 @@ const MarkerCrudModal = () => {
         setDimensions({
           height: 40,
           width: 27,
-          anchor: anchorOptions[0]
+          anchor: anchorOptions[0],
+          zIndex: 1
         });
         setDimensionsForm(false);
       }
@@ -81,7 +83,8 @@ const MarkerCrudModal = () => {
       image: imgPreview,
       height,
       width,
-      anchor
+      anchor,
+      z_index: zIndex
     }
     handleCreateUpdate(markerIcon);
   }
@@ -128,7 +131,7 @@ const MarkerCrudModal = () => {
   }
 
   const showDimensionsEdit = () => {
-    const divHeight = isDimensionsForm ? 200 : 0;
+    const divHeight = isDimensionsForm ? 250 : 0;
 
     return (
       <Motion style={{divHeight: spring(divHeight)}}>{({divHeight}) =>
@@ -155,21 +158,27 @@ const MarkerCrudModal = () => {
               </FormGroup>
             </Col>
           </Row>
-        
-          <Row className="mt-4">
-            <Col xs="12">
-              <p className="m-0">Anchor point</p>
-            </Col>
 
-            <Col xs="12">
-              <Select style={{width: '100%'}} labelId="anchoroption" id="anchorselect" onChange={handleDimensionChange('anchor')} value={anchor}>
-                {anchorOptions.map(option => (
-                  <MenuItem value={option}>{option}</MenuItem>
-                ))}
-              </Select>
-            </Col>
+          <div className="mt-3">
+            <p className="m-0">Anchor point</p>
 
-          </Row>
+            <Select style={{width: '100%'}} labelId="anchoroption" id="anchorselect" onChange={handleDimensionChange('anchor')} value={anchor}>
+              {anchorOptions.map(option => (
+                <MenuItem value={option}>{option}</MenuItem>
+              ))}
+            </Select>
+          </div>
+
+          <div className="mt-4">
+            <p className="m-0">Z Index</p>
+
+            <Select style={{width: '100%'}} labelId="zIndex" id="zIndexSelect" onChange={handleDimensionChange('zIndex')} value={zIndex}>
+              {zIndexOptions.map(option => (
+                <MenuItem value={option}>{option}</MenuItem>
+              ))}
+            </Select>
+          </div>
+      
         </div>
       }</Motion>
     )

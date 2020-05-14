@@ -6,185 +6,203 @@
   <title>Map test</title>
 </head>
 <body>
-  <div id="scoped-content">
+  <div id="map-container">
     <style type="text/css" scoped>
-  .hidden {
-    display: none;
-  }
-  #map {
-    width: 100%;
-    height: 400px;
-    font-family: Arial sans-serif;
-  }
-  #map .infowindow {
-    overflow: hidden;
-    font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif;
-  }
-  #map .infowindow h1 {
-    font-size: 1.6em;
-    font-weight: normal;
-    margin: 0;
-  }
-  #map .infowindow .heading {
-    display: flex;
-    align-items: center;
-  }
-
-  #map .date {
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 7px;
-    margin-bottom: 7px;
-  }
-  #map .description {
-    font-size: 1.2em;
-  }
-
-  #map .main-infowindow-content {
-    display: grid;
-  }
-
-  @media screen and (min-width: 768px) {
-    #map .main-infowindow-content {
-      grid-template-columns: 1fr 1fr;
+    .hidden {
+      display: none;
     }
-  }
-    </style>
-  </div>
-  <div id="map"></div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
-  <script>
-  let map;
+    #map-container {
+      position: relative;
+      font-family: Roboto, sans-serif;
+    }
+    #map {
+      width: 100%;
+      height: 400px;
+      font-family: Arial sans-serif;
+    }
+    #map .infowindow {
+      overflow: hidden;
+      font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif;
+    }
+    #map .infowindow h1 {
+      font-size: 1.6em;
+      font-weight: normal;
+      margin: 0;
+    }
+    #map .infowindow .heading {
+      display: flex;
+      align-items: center;
+    }
   
-  function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {
-        lat: 39.639538,
-        lng: 1.121354
-      },
-      zoom: 2,
-      disableDefaultUI: true
-    });
+    #map .date {
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 7px;
+      margin-bottom: 7px;
+    }
+    #map .description {
+      font-size: 1.2em;
+    }
   
-    fetch(`http://localhost:3001/v1/maps/13`).then(resp => resp.json()).then(data => {
-      makeMarkers(data.markers);
-      drawLines(data.lines);
-      drawKmlLines(data.kmls);
-      // setbounds
-      setBounds(data.markers);
-    });
-  }
-
-  function setBounds(markers) {
-    const bounds = new google.maps.LatLngBounds();
-      for (let i = 0; i < markers.length; i++) {
-        bounds.extend(markers[i]);
+    #map .main-infowindow-content {
+      display: grid;
+    }
+  
+    @media screen and (min-width: 768px) {
+      #map .main-infowindow-content {
+        grid-template-columns: 1fr 1fr;
       }
-      map.fitBounds(bounds);
-  }
-  
-  function makeMarkers(markers) {
-    // Add 1 infowindow that will be assigned to the marker when that marker is clicked
-    const infowindow = new google.maps.InfoWindow();
-    // create all markers on the map
-    markers.forEach(({ id, markerIcon, infoWindow, lat, lng }) => {
-      const { image, width, height, anchor } = markerIcon;
-      const { title, body, youtube, option, date } = infoWindow;
-
-      const anchorX = width / 2;
-      const anchorY = anchor === 'bottom' ? height : height / 2;
-      const marker = new google.maps.Marker({
-        map,
-        id,
-        icon: {
-          url: `https://res.cloudinary.com/ticekralt/image/upload/c_fill,h_100/${image}`,
-          scaledSize: new google.maps.Size(width, height),
-          anchor: new google.maps.Point(anchorX, anchorY)
+    }
+    #signature {
+      position: absolute;
+      bottom: 30px;
+      left: 7px;
+      padding: 10px;
+      background-color: rgba(255,255,255,.6);
+      font-size: 0.7em;
+      border-radius: 5px;
+      box-shadow: 1px 1px 3px rgba(0,0,0,.2);
+    }
+    </style>
+    <div id="map"></div>
+    <div id="signature">
+      <a style="color:#1E88E5;text-decoration: none;font-weight:bold;" href="https://google-maps-my-tours.now.sh">Make your own map here</a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+    <script>
+    let map;
+    
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {
+          lat: 39.639538,
+          lng: 1.121354
         },
-        position: { lat, lng },
-        date,
-        title,
-        body,
-        option,
-        youtube,
-        image: `https://res.cloudinary.com/ticekralt/image/upload/c_fill,h_500/${infoWindow.image}`,
+        zoom: 2,
+        disableDefaultUI: true
       });
-
-      marker.addListener('click', function() {
-        if (infowindow.marker != marker) {
-          populateInfoWindow(marker, infowindow);
-        } else {
+    
+      fetch(`http://localhost:3001/v1/maps/13`).then(resp => resp.json()).then(data => {
+        makeMarkers(data.markers);
+        drawLines(data.lines);
+        drawKmlLines(data.kmls);
+        // setbounds
+        setBounds(data.markers);
+      });
+    }
+  
+    function setBounds(markers) {
+      const bounds = new google.maps.LatLngBounds();
+        for (let i = 0; i < markers.length; i++) {
+          bounds.extend(markers[i]);
+        }
+        map.fitBounds(bounds);
+    }
+    
+    function makeMarkers(markers) {
+      // Add 1 infowindow that will be assigned to the marker when that marker is clicked
+      const infowindow = new google.maps.InfoWindow();
+      // create all markers on the map
+      markers.forEach(({ id, markerIcon, infoWindow, lat, lng }) => {
+        const { image, width, height, anchor } = markerIcon;
+        const { title, body, youtube, option, date } = infoWindow;
+  
+        const anchorX = width / 2;
+        const anchorY = anchor === 'bottom' ? height : height / 2;
+        const marker = new google.maps.Marker({
+          map,
+          id,
+          icon: {
+            url: `https://res.cloudinary.com/ticekralt/image/upload/c_fill,h_100/${image}`,
+            scaledSize: new google.maps.Size(width, height),
+            anchor: new google.maps.Point(anchorX, anchorY)
+          },
+          position: { lat, lng },
+          date,
+          title,
+          body,
+          option,
+          youtube,
+          image: `https://res.cloudinary.com/ticekralt/image/upload/c_fill,h_500/${infoWindow.image}`,
+        });
+  
+        marker.addListener('click', function() {
+          if (infowindow.marker != marker) {
+            populateInfoWindow(marker, infowindow);
+          } else {
+            infowindow.close();
+            infowindow.marker = null;
+          }
+        });
+  
+        map.addListener('click', function() {
           infowindow.close();
           infowindow.marker = null;
-        }
+        });
       });
-
-      map.addListener('click', function() {
-        infowindow.close();
-        infowindow.marker = null;
+    }
+    
+    function drawLines(lines) {
+      lines.forEach(({ strokeColor, strokeOpacity, strokeWeight, coords }) => {
+        const polyline = new google.maps.Polyline({
+          path: coords,
+          strokeColor,
+          strokeOpacity,
+          strokeWeight,
+          map
+        });
+      })
+    }
+    
+    function drawKmlLines(kmls) {
+      kmls.forEach(({ name }) => {
+        let src = `https://res.cloudinary.com/ticekralt/raw/upload/${name}`
+        let kmlLayer = new google.maps.KmlLayer(src, {
+          suppressInfoWindows: true,
+          preserveViewport: true,
+          map
+        });
       });
-    });
-  }
+    }
+    
+    function populateInfoWindow(marker, infowindow) {
+      const html = generateHtmlInfowindow(marker);
+      console.log(html);
+      infowindow.marker = marker;
+      infowindow.setContent(html);
+      infowindow.open(map, marker);
+      infowindow.addListener('closeclick', () => infowindow.marker = null);
+    }
   
-  function drawLines(lines) {
-    lines.forEach(({ strokeColor, strokeOpacity, strokeWeight, coords }) => {
-      const polyline = new google.maps.Polyline({
-        path: coords,
-        strokeColor,
-        strokeOpacity,
-        strokeWeight,
-        map
-      });
-    })
-  }
-  
-  function drawKmlLines(kmls) {
-    kmls.forEach(({ name }) => {
-      let src = `https://res.cloudinary.com/ticekralt/raw/upload/${name}`
-      let kmlLayer = new google.maps.KmlLayer(src, {
-        suppressInfoWindows: true,
-        preserveViewport: true,
-        map
-      });
-    });
-  }
-  
-  function populateInfoWindow(marker, infowindow) {
-    const html = generateHtmlInfowindow(marker);
-    console.log(html);
-    infowindow.marker = marker;
-    infowindow.setContent(html);
-    infowindow.open(map, marker);
-    infowindow.addListener('closeclick', () => infowindow.marker = null);
-  }
-
-  function showRightPanel(marker) {
-    if (marker.option === 'youtube' && marker.youtube) return `<div class="right-panel"><iframe width="200" height="130" src="https://www.youtube.com/embed/${marker.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`;
-    if (marker.option === 'image' && marker.image) return `<div class="right-panel"><img src=${marker.image} alt=${marker.title}</div>`;
-    return '';
-  }
-  
-  function generateHtmlInfowindow(marker) {
-    return `
-    <div class="infowindow">
-      <div class="heading">
-        <img id="icon" height="25" style="margin-right: 10px;" src="${marker.icon.url}" alt="marker">
-        <h1>${marker.title}</h1>
-      </div>
-
-      <div class="main-infowindow-content">
-
-        <div class="left-panel">
-          <p class="date">${moment(marker.date).format('DD MMMM YYYY')}</p>
-          <p class="description">${marker.body}</p>
+    function showRightPanel(marker) {
+      if (marker.option === 'youtube' && marker.youtube) return `<div class="right-panel"><iframe width="200" height="130" src="https://www.youtube.com/embed/${marker.youtube}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`;
+      if (marker.option === 'image' && marker.image) return `<div class="right-panel"><img src=${marker.image} alt=${marker.title}</div>`;
+      return '';
+    }
+    
+    function generateHtmlInfowindow(marker) {
+      return `
+      <div class="infowindow">
+        <div class="heading">
+          <img id="icon" height="25" style="margin-right: 10px;" src="${marker.icon.url}" alt="marker">
+          <h1>${marker.title}</h1>
         </div>
-        
-        ${showRightPanel(marker)}
-        
-      </div>
-    </div>`;
-  }  
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARrTVDdJ8fRvMAi3Ien-8DwvIx2UVPqT8&callback=initMap"
-async defer></script>
+  
+        <div class="main-infowindow-content">
+  
+          <div class="left-panel">
+            <p class="date">${moment(marker.date).format('DD MMMM YYYY')}</p>
+            <p class="description">${marker.body}</p>
+          </div>
+          
+          ${showRightPanel(marker)}
+          
+        </div>
+      </div>`;
+    }  
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARrTVDdJ8fRvMAi3Ien-8DwvIx2UVPqT8&callback=initMap"
+  async defer></script>
+
+  </div>
 </body>
 </html>

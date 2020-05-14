@@ -10,7 +10,7 @@ module.exports = withPWA({
     runtimeCaching: cacheOptions
   },
   publicRuntimeConfig: {
-    APP_NAME: 'Google Maps My Tours',
+    APP_NAME: 'Map My Tours',
     PRODUCTION: process.env.NODE_ENV === 'production',
     DOMAIN_DEV: 'http://localhost:3000',
     DOMAIN_PROD: 'https://google-maps-my-tours.now.sh',

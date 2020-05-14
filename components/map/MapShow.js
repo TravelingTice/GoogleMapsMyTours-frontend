@@ -7,6 +7,19 @@ import { withRouter } from 'next/router';
 import { getMap } from '../../actions/map';
 import Error from '../../components/Error';
 import Layout from '../../components/layout/Layout';
+import styled from 'styled-components';
+
+const Grid = styled.div`
+  display: grid;
+  margin-top: 7px;
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr auto;
+    .right-panel {
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+  }
+`;
 
 const MapShow = ({ google, id }) => {
   const [markers, setMarkers] = useState([]);
@@ -103,17 +116,23 @@ const MapShow = ({ google, id }) => {
           <h4 className="m-0">{infoWindow.title}</h4>
         </div>
         <div className="mt-3 pb-2 border-bottom">{moment(infoWindow.date).format('DD MMMM YYYY')}</div>
-        <div className="mt-2">
-          <p>{infoWindow.body}</p>
-        </div>
 
-        {isYoutube && (
-          <iframe width="200" height="130" src={`https://www.youtube.com/embed/${infoWindow.youtube}`}></iframe>
-        )}
+        <Grid>
+          <div className="left-panel">
+            <p>{infoWindow.body}</p>
+          </div>
 
-        {isImage && (
-          <img src={cloudinaryCore.url(markerIcon.image, { height: 400, crop: 'fill' })} alt={infoWindow.title} height="130"/>
-        )}
+          <div className="right-panel">
+            {isYoutube && (
+              <iframe width="200" height="130" src={`https://www.youtube.com/embed/${infoWindow.youtube}`}></iframe>
+            )}
+
+            {isImage && (
+              <img src={cloudinaryCore.url(infoWindow.image, { height: 400, crop: 'fill' })} alt={infoWindow.title} height="130" />
+            )}
+          </div>
+
+        </Grid>
       </div>
     )
   }

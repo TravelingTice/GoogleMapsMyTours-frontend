@@ -29,7 +29,10 @@ const KmlManageModal = () => {
 
       if (data.error) return setError(data.error);
 
-      setKmls(kmls.filter(kml => kml.id !== id));
+      // reload page
+      window.location.reload();
+
+      // setKmls(kmls.filter(kml => kml.id !== id));
     }
   }
 

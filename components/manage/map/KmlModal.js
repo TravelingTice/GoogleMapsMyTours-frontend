@@ -47,9 +47,11 @@ const KmlModal = () => {
 
     if (!id) {
       Router.push(`/manage/maps/${data.mapId}`)
+    } else {
+      window.location.reload();
     }
 
-    setKmls(kmls.concat({ name: data.name }));
+    // setKmls(kmls.concat({ name: data.name }));
   }
 
   const showSubmitButton = () => {

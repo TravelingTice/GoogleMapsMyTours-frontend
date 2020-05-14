@@ -87,7 +87,7 @@ const MapShow = ({ google, id }) => {
 
   const showMarkers = () => markers.map(marker => {
     const { lat, lng } = marker;
-    const { image, width, height, anchor } = marker.markerIcon;
+    const { image, width, height, anchor, zIndex } = marker.markerIcon;
     const anchorX = width / 2;
     const anchorY = anchor === 'bottom' ? height : height / 2;
 
@@ -97,6 +97,7 @@ const MapShow = ({ google, id }) => {
         name='New marker'
         position={{ lat, lng }}
         onClick={onMarkerClick(marker)}
+        zIndex={zIndex}
         icon={{
           url: cloudinaryCore.url(image, { height: 100, crop: 'fill' }),
           scaledSize: new google.maps.Size(width, height),

@@ -103,7 +103,7 @@
       const infowindow = new google.maps.InfoWindow();
       // create all markers on the map
       markers.forEach(({ id, markerIcon, infoWindow, lat, lng }) => {
-        const { image, width, height, anchor } = markerIcon;
+        const { image, width, height, anchor, zIndex } = markerIcon;
         const { title, body, youtube, option, date } = infoWindow;
   
         const anchorX = width / 2;
@@ -116,6 +116,7 @@
             scaledSize: new google.maps.Size(width, height),
             anchor: new google.maps.Point(anchorX, anchorY)
           },
+          zIndex,
           position: { lat, lng },
           date,
           title,
